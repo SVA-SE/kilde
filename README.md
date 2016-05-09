@@ -5,3 +5,18 @@ An R package that connects to
 [rjags](https://cran.r-project.org/web/packages/rjags/index.html) to
 perform source attribution analysis on MLST data from *Campylobacter
 jejuni*
+
+
+## Installation
+
+```
+library(devtools)
+install_github("trosendal/kilde")
+```
+
+## Example
+
+```
+library(kilde)
+df <- sample_data()
+```

@@ -9,5 +9,6 @@ License: BSD_3_clause
 Type: Package
 LazyLoad: yes
 Depends:
-    rjags
+    rjags,
+    R2OpenBUGS
 RoxygenNote: 5.0.1
