@@ -1,5 +1,0 @@
-* List of items to take care of
-
-** TODO Thomas Skeleton on GITHUB
-** TODO Jukka and Karin to talk about evolutionary model
-** TODO Louise will start the paper sketch
