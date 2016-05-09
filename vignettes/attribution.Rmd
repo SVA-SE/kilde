@@ -1,0 +1,21 @@
+---
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{attribution.Rmd}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+# Demonstration of package
+
+```{r, echo = TRUE, eval = TRUE, message = TRUE}
+library(kilde)
+data <- clean_data(country = 2)
+inits <- function(){list(g0=rep(1,data$ns),
+pmuta=structure(.Data=rep(0.5,data$ns*7),.Dim=c(data$ns,7)),
+h0=structure(.Data=rep(1,data$ns*data$ns),.Dim=c(data$ns,data$ns)))}
+parameters <- c("qASP","phi","etaASP")
+
+res2 <- run_model(data = data,
+                  inits = inits,
+                  parameters = parameters)
+```

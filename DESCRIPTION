@@ -8,6 +8,10 @@ Description: A package description
 License: BSD_3_clause
 Type: Package
 LazyLoad: yes
+Suggests:
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
 Depends:
     rjags,
     R2OpenBUGS

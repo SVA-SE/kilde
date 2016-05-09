@@ -1,0 +1,52 @@
+model {
+  ## This is a straightforward model for SA with allele data
+  ## without genetic parameters.  The model has only
+  ## multinomial-dirichlet parameters as such.
+  for(i in 1:ns){   # ns = number of source populations
+    ## N[i] =  number of isolates in  the sample from source population i.  
+    ## This is the same as the sample available for each locus.
+    ## Assume 7 loci:  
+    ## product multinomial model: (pseudo-likelihood), each locus independently of others.
+    N[i] <-  sum(sourcesASP[i,]) 
+    ##########################
+    ## posterior of allele frequencies (q***):
+    ## solved here analytically as dirichlet for each source population.
+    ## (Alternatively: could set q*** fixed to observed frequency)
+    ## For simplicity, the whole set of allele types (from all sources) are used as a vector
+    ## of possible allele types [1:nat[j]] for each locus.
+    ## Prior for q*** is of the form: "Dir(1/n)", "n" is the number of allele types (length of vector). 
+    qASP[i,1:nat[1]] ~ ddirich(ASPpar[i,])
+    for(j in 1:nat[1]){  ASPpar[i,j] <- sourcesASP[i,j] + 1/nat[1] ; qASP.cut[i,j]  <- cut(qASP[i,j]) }
+    qGLN[i,1:nat[2]] ~ ddirich(GLNpar[i,])
+    for(j in 1:nat[2]){  GLNpar[i,j] <- sourcesGLN[i,j] + 1/nat[2] ; qGLN.cut[i,j]  <- cut(qGLN[i,j]) }
+    qGLT[i,1:nat[3]] ~ ddirich(GLTpar[i,])
+    for(j in 1:nat[3]){  GLTpar[i,j] <- sourcesGLT[i,j] + 1/nat[3] ; qGLT.cut[i,j]  <- cut(qGLT[i,j]) }
+    qGLY[i,1:nat[4]] ~ ddirich(GLYpar[i,])
+    for(j in 1:nat[4]){  GLYpar[i,j] <- sourcesGLY[i,j] + 1/nat[4] ; qGLY.cut[i,j]  <- cut(qGLY[i,j]) }
+    qPGM[i,1:nat[5]] ~ ddirich(PGMpar[i,])
+    for(j in 1:nat[5]){  PGMpar[i,j] <- sourcesPGM[i,j] + 1/nat[5] ; qPGM.cut[i,j]  <- cut(qPGM[i,j]) }
+    qTKT[i,1:nat[6]] ~ ddirich(TKTpar[i,])
+    for(j in 1:nat[6]){  TKTpar[i,j] <- sourcesTKT[i,j] + 1/nat[6] ; qTKT.cut[i,j]  <- cut(qTKT[i,j]) }
+    qUNC[i,1:nat[7]] ~ ddirich(UNCpar[i,])
+    for(j in 1:nat[7]){  UNCpar[i,j] <- sourcesUNC[i,j] + 1/nat[7] ; qUNC.cut[i,j]  <- cut(qUNC[i,j]) }
+  }
+  M <- sum(humansASP[])  # human isolate sample size M. (Same for each locus).
+  humansASP[1:nat[1]] ~ dmulti(etaASP[1:nat[1]],M)
+  humansGLN[1:nat[2]] ~ dmulti(etaGLN[1:nat[2]],M)
+  humansGLT[1:nat[3]] ~ dmulti(etaGLT[1:nat[3]],M)
+  humansGLY[1:nat[4]] ~ dmulti(etaGLY[1:nat[4]],M)
+  humansPGM[1:nat[5]] ~ dmulti(etaPGM[1:nat[5]],M)
+  humansTKT[1:nat[6]] ~ dmulti(etaTKT[1:nat[6]],M)
+  humansUNC[1:nat[7]] ~ dmulti(etaUNC[1:nat[7]],M)
+  for(j in 1:nat[1]){etaASP[j] <- inprod(qASP.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[2]){etaGLN[j] <- inprod(qGLN.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[3]){etaGLT[j] <- inprod(qGLT.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[4]){etaGLY[j] <- inprod(qGLY.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[5]){etaPGM[j] <- inprod(qPGM.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[6]){etaTKT[j] <- inprod(qTKT.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[7]){etaUNC[j] <- inprod(qUNC.cut[1:ns,j],phi[1:ns])}
+  for(i in 1:ns){ 
+    phi[i] <- g0[i]/sum(g0[]) 
+    g0[i] ~ dgamma(beta[i],1)  # use beta[i] = 1 for Dir(1,1,1,....) prior
+  }  
+} # End of model

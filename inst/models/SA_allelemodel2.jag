@@ -1,0 +1,125 @@
+model{ 
+  # This is an adaptation from the 'island model' for SA with allele data.
+  for(i in 1:ns){    # ns = number of source populations
+    # N[i] = number of isolates in  the sample from source population i.  
+    # This is the same as the sample available for each locus.
+    # Assume 7 loci:  
+    # product multinomial model ('pseudo-likelihood'), each locus independently of others.
+    N[i] <-  sum(sourcesASP[i,]) 
+    ####################
+    # posterior of allele frequencies (q***):
+    # solved here analytically as dirichlet for each source population.
+    # These are used in the "immigration model" between sources, for
+    # representing the allele frequencies "available for migration" with 
+    # migration probability matrix khi which is unknown parameter.
+    # (Alternatively: could set q*** fixed to observed frequency leaving only khi as parameter). 
+    # For simplicity, the whole set of allele types (from all sources) are used as a vector
+    # of possible allele types [1:nat[j]] for each locus.
+    # Prior for q*** is of the form: "Dir(1/n)", "n" is the number of allele types (length of vector). 
+    qASP[i,1:nat[1]] ~ ddirich(ASPpar[i,])
+    for(j in 1:nat[1]){  ASPpar[i,j] <- sourcesASP[i,j] + 1/nat[1] ; qASP.cut[i,j]  <- cut(qASP[i,j]) }
+    qGLN[i,1:nat[2]] ~ ddirich(GLNpar[i,])
+    for(j in 1:nat[2]){  GLNpar[i,j] <- sourcesGLN[i,j] + 1/nat[2] ; qGLN.cut[i,j]  <- cut(qGLN[i,j]) }
+    qGLT[i,1:nat[3]] ~ ddirich(GLTpar[i,])
+    for(j in 1:nat[3]){  GLTpar[i,j] <- sourcesGLT[i,j] + 1/nat[3] ; qGLT.cut[i,j]  <- cut(qGLT[i,j]) }
+    qGLY[i,1:nat[4]] ~ ddirich(GLYpar[i,])
+    for(j in 1:nat[4]){  GLYpar[i,j] <- sourcesGLY[i,j] + 1/nat[4] ; qGLY.cut[i,j]  <- cut(qGLY[i,j]) }
+    qPGM[i,1:nat[5]] ~ ddirich(PGMpar[i,])
+    for(j in 1:nat[5]){  PGMpar[i,j] <- sourcesPGM[i,j] + 1/nat[5] ; qPGM.cut[i,j]  <- cut(qPGM[i,j]) }
+    qTKT[i,1:nat[6]] ~ ddirich(TKTpar[i,])
+    for(j in 1:nat[6]){  TKTpar[i,j] <- sourcesTKT[i,j] + 1/nat[6] ; qTKT.cut[i,j]  <- cut(qTKT[i,j]) }
+    qUNC[i,1:nat[7]] ~ ddirich(UNCpar[i,])
+    for(j in 1:nat[7]){  UNCpar[i,j] <- sourcesUNC[i,j] + 1/nat[7] ; qUNC.cut[i,j]  <- cut(qUNC[i,j]) }
+
+    ####################
+    # Next: models for migration and novel types per source population.
+    # Interprete observed alleles in source population i (1:ns) as a result of migration,
+    # so that the probability of an allele type j is the product of migration probability from
+    # population s to population i,  khi[i,s]
+    # and the allele frequency q***[s,j],  summed over sources s. 
+    # Hence Multinomial model.  
+    # Mutation probability for novel types is source and locus specific.
+
+    sourcesASP[i,1:nat[1]] ~ dmulti(etaASP[i,1:nat[1]],N[i]) 
+    # khi is immigration probability to source i from other sources
+    for(j in 1:nat[1]){etaASP[i,j] <- inprod(qASP.cut[1:ns,j],khi[i,1:ns])    
+    etaASP.cut[i,j] <- cut(etaASP[i,j])  }
+    # model for "novel" types in the sample: 
+    NASPnovel[i] ~ dbin(pmuta[i,1],NASP[i])  
+    # NASPnovel[i] = number of ASP allele types in source i, that were not 
+    # in the samples of other sources.  
+    # NASP[i] = number of ASP allele types in source i. 
+
+    sourcesGLN[i,1:nat[2]] ~ dmulti(etaGLN[i,1:nat[2]],N[i]) 
+    for(j in 1:nat[2]){etaGLN[i,j] <- inprod(qGLN.cut[1:ns,j],khi[i,1:ns])  
+    etaGLN.cut[i,j] <- cut(etaGLN[i,j])   }
+    NGLNnovel[i] ~ dbin(pmuta[i,2],NGLN[i])  # model for "novel" types in the sample 
+
+    sourcesGLT[i,1:nat[3]] ~ dmulti(etaGLT[i,1:nat[3]],N[i]) 
+    for(j in 1:nat[3]){etaGLT[i,j] <- inprod(qGLT.cut[1:ns,j],khi[i,1:ns])
+    etaGLT.cut[i,j] <- cut(etaGLT[i,j])   }
+    NGLTnovel[i] ~ dbin(pmuta[i,3],NGLT[i])  # model for "novel" types in the sample 
+
+    sourcesGLY[i,1:nat[4]] ~ dmulti(etaGLY[i,1:nat[4]],N[i]) 
+    for(j in 1:nat[4]){etaGLY[i,j] <- inprod(qGLY.cut[1:ns,j],khi[i,1:ns]) 
+    etaGLY.cut[i,j] <- cut(etaGLY[i,j])   } 
+    NGLYnovel[i] ~ dbin(pmuta[i,4],NGLY[i])  # model for "novel" types in the sample 
+
+    sourcesPGM[i,1:nat[5]] ~ dmulti(etaPGM[i,1:nat[5]],N[i]) 
+    for(j in 1:nat[5]){etaPGM[i,j] <- inprod(qPGM.cut[1:ns,j],khi[i,1:ns]) 
+    etaPGM.cut[i,j] <- cut(etaPGM[i,j])    } 
+    NPGMnovel[i] ~ dbin(pmuta[i,5],NPGM[i])  # model for "novel" types in the sample 
+
+    sourcesTKT[i,1:nat[6]] ~ dmulti(etaTKT[i,1:nat[6]],N[i]) 
+    for(j in 1:nat[6]){etaTKT[i,j] <- inprod(qTKT.cut[1:ns,j],khi[i,1:ns]) 
+    etaTKT.cut[i,j] <- cut(etaTKT[i,j])    } 
+    NTKTnovel[i] ~ dbin(pmuta[i,6],NTKT[i])  # model for "novel" types in the sample 
+
+    sourcesUNC[i,1:nat[7]] ~ dmulti(etaUNC[i,1:nat[7]],N[i]) 
+    for(j in 1:nat[7]){etaUNC[i,j] <- inprod(qUNC.cut[1:ns,j],khi[i,1:ns])  
+    etaUNC.cut[i,j] <- cut(etaUNC[i,j])   } 
+    NUNCnovel[i] ~ dbin(pmuta[i,7],NUNC[i])  # model for "novel" types in the sample 
+  }  ## i.   End of "training data model". (Data from source populations only)
+
+  #################
+  M <- sum(humansASP[])  # human isolate sample size M. (Same for each locus).
+
+  # all allele types modeled as possible types resulting from migration:
+  humansASP[1:nat[1]] ~ dmulti(thetaASP[1:nat[1]],M)
+  humansGLN[1:nat[2]] ~ dmulti(thetaGLN[1:nat[2]],M)
+  humansGLT[1:nat[3]] ~ dmulti(thetaGLT[1:nat[3]],M)
+  humansGLY[1:nat[4]] ~ dmulti(thetaGLY[1:nat[4]],M)
+  humansPGM[1:nat[5]] ~ dmulti(thetaPGM[1:nat[5]],M)
+  humansTKT[1:nat[6]] ~ dmulti(thetaTKT[1:nat[6]],M)
+  humansUNC[1:nat[7]] ~ dmulti(thetaUNC[1:nat[7]],M)
+  # phi = probability of each source
+  for(j in 1:nat[1]){thetaASP[j] <- inprod(etaASP.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[2]){thetaGLN[j] <- inprod(etaGLN.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[3]){thetaGLT[j] <- inprod(etaGLT.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[4]){thetaGLY[j] <- inprod(etaGLY.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[5]){thetaPGM[j] <- inprod(etaPGM.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[6]){thetaTKT[j] <- inprod(etaTKT.cut[1:ns,j],phi[1:ns])}
+  for(j in 1:nat[7]){thetaUNC[j] <- inprod(etaUNC.cut[1:ns,j],phi[1:ns])}
+
+  # Model for "novel" allele types in human sample:
+  # Nhum[i] = number of human isolates per each locus.  (=Nhuman isolates).
+  # Nhumnovel[i] = number of novel alleles. (Not observed in any source).  
+  for(j in  1:7){
+    Nhumnovel[j] ~ dbin(pmutahum[j],Nhum[j])
+    # Mutation probability is a mixture of source specific mutation probabilities:   
+    pmutahum[j] <-   inprod(pmuta.cut[1:ns,j],phi[1:ns])   
+  }
+  ##########################
+  # Prior for source probabilities:
+  for(i in 1:ns){ phi[i] <- g0[i]/sum(g0[]) 
+    g0[i] ~ dgamma(beta[i],1)  # set beta[i] = 1 for Dir(1,1,1,....) prior
+  }  
+  # Prior for mutation probabilities:
+  for(i in 1:ns){ for(j in 1:7){ pmuta[i,j] ~ dbeta(1,1); pmuta.cut[i,j] <- cut(pmuta[i,j])  }}
+  # Prior for migration probabilities:
+  for(i in 1:ns){ 
+    for(k in 1:ns){ khi[i,k] <- h0[i,k]/sum(h0[i,1:ns]) 
+      h0[i,k] ~ dgamma(alpha[i,k],1)  # set alpha for Dir-prior parameters.
+    }
+  }
+} # End of model

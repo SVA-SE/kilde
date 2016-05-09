@@ -4,7 +4,7 @@
 \alias{clean_data}
 \title{clean_data}
 \usage{
-clean_data(df, country)
+clean_data(df = sample_data(), country)
 }
 \arguments{
 \item{df}{}
