@@ -12,13 +12,13 @@
 ##' @author Thomas Rosendal
 ##' @export
 run_model <- function(model = "SA_allelemodel1.jag",
-                      data,
+                      df,
                       inits,
                       parameters,
                       n.chains = 1,
                       n.burnin = 99,
                       n.iter = 999) {
-    bugs(data,
+    bugs(df$bugs_data,
          inits,
          parameters,
          system.file(package = "kilde", paste0("models/", model)),

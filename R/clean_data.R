@@ -14,7 +14,12 @@ clean_data <- function(df = sample_data(), country){
     PGM <- table(df$group, df$PGM)
     TKT <- table(df$group, df$TKT)
     UNC <- table(df$group, df$UNC)
-    ns <- length(unique(df$group[df$group != 0]))
+    ## Which groups have observations?
+    group_names <- levels(df$group)[table(df$group) != 0]
+    ## Which groups are not the first (The first should be humans or
+    ## are at least considered the reference group)
+    group_names <- group_names[2:length(group_names)]
+    ns <- length(group_names)
     beta <- rep(1,ns)
     nat <- c(length(unique(df$ASP)),
              length(unique(df$GLN)),
@@ -26,9 +31,10 @@ clean_data <- function(df = sample_data(), country){
     alpha <- structure(.Data=rep(1,ns*ns),.Dim=c(ns,ns))
     result <- list(ASP = ASP, GLN = GLN, GLT = GLT, GLY = GLY,
                    PGM = PGM, TKT = TKT, UNC = UNC, ns =  ns,
-                   beta = beta, nat = nat, alpha = alpha)
-## The follwing are arbitrary changes to fulfill the structure of the
-## BUGS code
+                   beta = beta, nat = nat, alpha = alpha,
+                   group_names = group_names)
+    ## The follwing are arbitrary changes to fulfill the structure of
+    ## the BUGS code
     humansASP <- as.vector(result$ASP[1,])
     humansGLN <- as.vector(result$GLN[1,])
     humansGLT <- as.vector(result$GLT[1,])
@@ -61,6 +67,7 @@ clean_data <- function(df = sample_data(), country){
                    nat = nat,
                    beta = beta,
                    alpha = alpha)
-    
+    result <- list(bugs_data = result,
+                   group_names = group_names)
     return(result)
 }
