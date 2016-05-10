@@ -1,2 +1,4 @@
 Makefile
 .travis.yml
+OpenBUGS/
+OpenBUGS.tar.gz
