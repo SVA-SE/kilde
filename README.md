@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/trosendal/kilde.svg)](https://travis-ci.org/trosendal/kilde)
+
 # A package to perform Bayesian source attribution of Campylobacter in R
 
 An R package that connects to
