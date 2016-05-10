@@ -3,6 +3,9 @@ language: r
 warnings_are_errors: false
 sudo: required
 
+apt_packages:
+  - libc6-dev-i386
+
 before_install:
   - wget -O OpenBUGS.tar.gz "http://www.openbugs.net/w/OpenBUGS_3_2_3?action=AttachFile&do=get&target=OpenBUGS-3.2.3.tar.gz"
   - mkdir OpenBUGS
