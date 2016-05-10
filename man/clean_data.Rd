@@ -7,10 +7,12 @@
 clean_data(df = sample_data(), country)
 }
 \arguments{
-\item{df}{}
+\item{df}{The dataframe containing the samples}
+
+\item{country}{An country to subset the data by}
 }
 \value{
-list
+A list of which the first item goes to bugs
 }
 \description{
 Clean data to be passed on to the model function

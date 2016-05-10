@@ -1,8 +1,9 @@
 ##' Clean data to be passed on to the model function
 ##' 
 ##' @title clean_data 
-##' @param df 
-##' @return list
+##' @param df The dataframe containing the samples
+##' @param country An country to subset the data by 
+##' @return A list of which the first item goes to bugs
 ##' @author Thomas Rosendal
 ##' @export
 clean_data <- function(df = sample_data(), country){

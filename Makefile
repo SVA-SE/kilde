@@ -32,9 +32,15 @@ check: clean
 	cd .. && R CMD build --no-build-vignettes $(PKG_NAME)
 	cd .. && R CMD check --no-manual --no-vignettes --no-build-vignettes $(PKG_TAR)
 
-# Build and check package
+# Build package
 build: clean
 	cd .. && R CMD build $(PKG_NAME)
+
+# Build and check package
+check_full: clean
+	cd .. && R CMD build $(PKG_NAME)
+	cd .. && R CMD check $(PKG_TAR)
+
 
 clean:
 	-rm -f src/*.o

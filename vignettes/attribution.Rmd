@@ -35,5 +35,9 @@ for(i in 1:df$bugs_data$ns){
            col="red",
            pch=16)
 }
-
-``
+## library(ghit)
+## tmp <- file.path(tempdir(), "tmplib")
+## dir.create(tmp)
+## install_github("trosendal/kilde", lib = tmp)
+## debugonce(ghit:::build_and_insert)
+```

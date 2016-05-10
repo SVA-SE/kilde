@@ -4,8 +4,8 @@ Version: 0.1
 Date: 2016-04-04
 Authors@R: c(person("Thomas", "Rosendal", role = c("aut", "cre"),
     email = "trosendal@gmail.com"))
-Description: A package description
-License: BSD_3_clause
+Description: A package that will run 1 or more models for source attribution of Campylobacter.
+License: BSD_3_clause + file LICENCE
 Type: Package
 LazyLoad: yes
 Suggests:
@@ -13,6 +13,5 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Depends:
-    rjags,
     R2OpenBUGS
 RoxygenNote: 5.0.1

@@ -4,14 +4,14 @@
 \alias{run_model}
 \title{run_model}
 \usage{
-run_model(model = "SA_allelemodel1.jag", data, inits, parameters,
+run_model(model = "SA_allelemodel1.jag", df, inits, parameters,
   n.chains = 1, n.burnin = 99, n.iter = 999)
 }
 \arguments{
 \item{model}{The name of the model
 This is the file name in the inst/models directory of the package}
 
-\item{data}{A dataset}
+\item{df}{the object from clean_data}
 
 \item{inits}{An inits function}
 
