@@ -9,13 +9,16 @@ vignette: >
 
 ```{r, echo = TRUE, eval = TRUE, message = TRUE}
 library(kilde)
-data <- clean_data(country = 2)
-inits <- function(){list(g0=rep(1,data$ns),
-pmuta=structure(.Data=rep(0.5,data$ns*7),.Dim=c(data$ns,7)),
-h0=structure(.Data=rep(1,data$ns*data$ns),.Dim=c(data$ns,data$ns)))}
-parameters <- c("qASP","phi","etaASP")
-
-res2 <- run_model(data = data,
-                  inits = inits,
+df <- clean_data(country = 2)
+inits <- function() {
+    list(g0 = rep(1, df$ns), 
+         pmuta = structure(.Data = rep(0.5, df$ns * 7), 
+                           .Dim = c(df$ns, 7)), 
+         h0=structure(.Data=rep(1, df$ns * df$ns), 
+                      .Dim=c(df$ns, df$ns)))
+}
+parameters <- c("qASP", "phi", "etaASP")
+res <- run_model(data = df, 
+                  inits = inits, 
                   parameters = parameters)
 ```

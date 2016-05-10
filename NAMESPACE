@@ -2,4 +2,5 @@
 
 export(clean_data)
 export(run_model)
+export(run_model_jags)
 export(sample_data)

@@ -32,6 +32,10 @@ check: clean
 	cd .. && R CMD build --no-build-vignettes $(PKG_NAME)
 	cd .. && R CMD check --no-manual --no-vignettes --no-build-vignettes $(PKG_TAR)
 
+# Build and check package
+build: clean
+	cd .. && R CMD build $(PKG_NAME)
+
 clean:
 	-rm -f src/*.o
 	-rm -f src/*.so
