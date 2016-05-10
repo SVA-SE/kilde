@@ -3,6 +3,7 @@
 ##' @title sample_data 
 ##' @return A data.frame
 ##' @author Thomas Rosendal
+##' @import utils
 ##' @export
 sample_data <- function(){
     df <- read.table(system.file("extdata/sampledata.txt", package = "kilde"),
