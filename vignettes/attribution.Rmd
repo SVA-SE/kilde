@@ -9,7 +9,7 @@ vignette: >
 
 ```{r, echo = TRUE, eval = TRUE, message = TRUE}
 library(kilde)
-df <- clean_data(country = 2)
+df <- clean_data(country = 4)
 inits <- function() {
     list(g0 = rep(1, df$ns), 
          pmuta = structure(.Data = rep(0.5, df$ns * 7), 
@@ -20,5 +20,20 @@ inits <- function() {
 parameters <- c("qASP", "phi", "etaASP")
 res <- run_model(data = df, 
                   inits = inits, 
-                  parameters = parameters)
-```
+                 parameters = parameters)
+par(mfrow=c(df$ns, 1))
+plotrows <- ceiling(df$ns ^ 0.5)
+plotcols <- ceiling(df$ns / plotrows)
+par(mfrow=c(plotrows, plotcols))
+for(i in 1:df$ns){
+    plot(density(res$sims.list$phi[,i]),
+         main="marginal posterior",
+         xlab=i,
+         xlim=c(0,1))
+    points(mean(res$sims.list$phi[,i]),
+           0,
+           col="red",
+           pch=16)
+}
+
+``
