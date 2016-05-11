@@ -42,16 +42,34 @@ install_github("trosendal/kilde")
 ### Windows
 
   * Install R
-  * Install OpenBUGS. Follow instructions [here](http://www.openbugs.net/w/Downloads).
+  * Install OpenBUGS. Follow instructions
+    [here](http://www.openbugs.net/w/Downloads). Or you can run the
+    following powershell script to install it with all defaults:
+
+```sh
+Invoke-WebRequest "http://www.openbugs.net/w/OpenBUGS_3_2_3?action=AttachFile&do=get&target=OpenBUGS323setup.exe" -OutFile "..\OpenBUGS323setup.exe";Start-Process -FilePath "..\OpenBUGS323setup.exe" -ArgumentList "/VERYSILENT" -NoNewWindow -Wait
+```
 
 Then install the package from github. You can clone it and install it
-or you could use the following commands in R. Either way you need to
-have the appropriate build tools installed with R to install packages
-from source on Windows. Read more about that [here](https://cran.r-project.org/bin/windows/Rtools/)
+or you could use the following commands in R to install it via the
+`ghit` library. Either way you need to have the appropriate build
+tools installed with R to install packages from source on
+Windows. Read more about that
+[here](https://cran.r-project.org/bin/windows/Rtools/)
 
 ```r
 library(ghit)
 install_github("trosendal/kilde")
+```
+
+If building the package doesn't work you should be able to install the
+built binary. Download it from
+[here](https://ci.appveyor.com/api/buildjobs/vu8xo44rsdnsjpn0/artifacts/kilde_0.1.zip). And
+install it in R with the following commands:
+
+```r
+setwd("<The directory that you saved the file in>")
+install.packages("kilde_0.1.zip", repos = NULL)
 ```
 
 ## Example
