@@ -12,6 +12,10 @@ welcome feedback via issues here on github.
 
 ## Installation
 
+The package is dependent on the software `OpenBUGS` and the R package
+`R2OpenBUGS`, so you will need to install those before the package
+works. 
+
 ### Linux
 
 Of course first you need to install R. In order to use this package
@@ -31,46 +35,81 @@ sudo make install
 cd ..
 ```
 
-Then install the package from github. You can clone it and install it
-or you could use the following commands in R.
+Then install the package from github. You can do this in a few
+different ways depending on what you are comfortable with:
+
+#### Use the `ghit` package to install from github source
+
+Just run the following commands in R:
 
 ```r
+install.packages("R2OpenBUGS")
 library(ghit)
 install_github("trosendal/kilde")
 ```
+
+#### Clone it build it, install it
+
+1. Clone this repository with `git`
+2. Navigate the the repository root and run `make install`
+3. Install the R2OpenBUGS package in R
+
 
 ### Windows
 
   * Install R
   * Install OpenBUGS. Follow instructions
     [here](http://www.openbugs.net/w/Downloads). Or you can run the
-    following powershell script to install it with all defaults:
+    following PowerShell script to install it with all defaults:
 
 ```sh
 Invoke-WebRequest "http://www.openbugs.net/w/OpenBUGS_3_2_3?action=AttachFile&do=get&target=OpenBUGS323setup.exe" -OutFile "..\OpenBUGS323setup.exe";Start-Process -FilePath "..\OpenBUGS323setup.exe" -ArgumentList "/VERYSILENT" -NoNewWindow -Wait
 ```
 
-Then install the package from github. You can clone it and install it
-or you could use the following commands in R to install it via the
-`ghit` library. Either way you need to have the appropriate build
-tools installed with R to install packages from source on
-Windows. Read more about that
-[here](https://cran.r-project.org/bin/windows/Rtools/)
+Then install the package from github. You can do this in a few
+different ways depending on what you are comfortable with:
+
+#### Download prebuilt package:
+
+1. Download the package from
+[here](https://ci.appveyor.com/api/projects/trosendal/kilde/artifacts/kilde_0.1.zip)
+2. Start R
+3. Navigate the the directory that you saved the file to, perhaps your
+Downloads folder like this:
 
 ```r
+setwd("C:/users/john.smith/downloads/")
+```
+4. Install the package like this:
+
+```r
+install.packages("kilde_0.1.zip", repos = NULL)
+```
+
+5. Install `R2OpenBUGS`
+
+```r
+install.packages("R2OpenBUGS")
+```
+
+#### Use the `ghit` package to install from github source
+
+To install from source you need the appropriate build tools for
+Windows, you can read more about that
+[here](https://cran.r-project.org/bin/windows/Rtools/). Once you have
+the build tools installed you can run the following to install the package:
+
+```r
+install.packages("R2OpenBUGS")
 library(ghit)
 install_github("trosendal/kilde")
 ```
 
-If building the package doesn't work you should be able to install the
-built binary. Download it from
-[here](https://ci.appveyor.com/api/projects/trosendal/kilde/artifacts/kilde_0.1.zip). And
-install it in R with the following commands:
+#### Clone it build it, install it
 
-```r
-setwd("<The directory that you saved the file in>")
-install.packages("kilde_0.1.zip", repos = NULL)
-```
+1. Clone this repository with `git`
+2. Navigate the the repository root and run `make install`
+3. Install the R2OpenBUGS package in R
 
 ## Example
 
