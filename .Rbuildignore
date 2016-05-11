@@ -1,5 +1,0 @@
-Makefile
-.travis.yml
-OpenBUGS/
-OpenBUGS.tar.gz
-^appveyor\.yml$
