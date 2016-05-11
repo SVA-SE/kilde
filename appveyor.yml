@@ -6,7 +6,7 @@ init:
         $ErrorActionPreference = "Stop"
         Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
-        Invoke-WebRequest http://www.openbugs.net/w/OpenBUGS_3_2_3?action=AttachFile&do=get&target=OpenBUGS323setup.exe -OutFile "..\OpenBUGS323setup.exe"
+        Invoke-WebRequest "http://www.openbugs.net/w/OpenBUGS_3_2_3?action=AttachFile&do=get&target=OpenBUGS323setup.exe" -OutFile "..\OpenBUGS323setup.exe"
         Start-Process -FilePath "..\OpenBUGS323setup.exe" -ArgumentList "/S /v/qn"
 
 install:
