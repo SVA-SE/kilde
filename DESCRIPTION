@@ -2,8 +2,9 @@ Package: kilde
 Title: A package to perform Bayesian source attribution of Campylobacter in R
 Version: 0.1
 Date: 2016-04-04
-Authors@R: c(person("Thomas", "Rosendal", role = c("aut", "cre"),
-    email = "trosendal@gmail.com"))
+Author: Thomas Rosendal (National Veterinary Institute, Sweden),
+	Jukka Ranta (Finnish Food Safety Authority)
+Maintainer: Thomas Rosendal <trosendal@gmail.com>
 Description: A package that will run 1 or more models for source attribution of Campylobacter.
 License: BSD_3_clause + file LICENCE
 Type: Package
