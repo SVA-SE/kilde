@@ -11,7 +11,7 @@ init:
 
 install:
   - ps: Bootstrap
-  - ps: Invoke-WebRequest "http://www.openbugs.net/w/OpenBUGS_3_2_3?action=AttachFile&do=get&target=OpenBUGS323setup.exe" -OutFile "..\OpenBUGS323setup.exe";Start-Process -FilePath "..\OpenBUGS323setup.exe" -ArgumentList "/S /v/qn"
+  - ps: Invoke-WebRequest "http://www.openbugs.net/w/OpenBUGS_3_2_3?action=AttachFile&do=get&target=OpenBUGS323setup.exe" -OutFile "..\OpenBUGS323setup.exe";Start-Process -FilePath "..\OpenBUGS323setup.exe" -ArgumentList "/s" 
 
 # Adapt as necessary starting from here
 
