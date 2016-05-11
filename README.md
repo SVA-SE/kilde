@@ -64,7 +64,7 @@ install_github("trosendal/kilde")
 
 If building the package doesn't work you should be able to install the
 built binary. Download it from
-[here](https://ci.appveyor.com/api/buildjobs/vu8xo44rsdnsjpn0/artifacts/kilde_0.1.zip). And
+[here](https://ci.appveyor.com/api/projects/trosendal/kilde/artifacts/kilde_0.1.zip). And
 install it in R with the following commands:
 
 ```r
