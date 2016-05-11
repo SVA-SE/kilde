@@ -11,8 +11,7 @@ init:
 
 install:
   - ps: Bootstrap
-  - ps: (new-object net.webclient).DownloadFile("http://www.openbugs.net/w/OpenBUGS_3_2_3?action=AttachFile&do=get&target=OpenBUGS323setup.exe", "..\OpenBUGS323setup.exe")
-  - ps: Start-Process -FilePath "..\OpenBUGS323setup.exe" -ArgumentList "/S /v/qn"
+  - ps: (new-object net.webclient).DownloadFile("http://www.openbugs.net/w/OpenBUGS_3_2_3?action=AttachFile&do=get&target=OpenBUGS323setup.exe", "..\OpenBUGS323setup.exe");Start-Process -FilePath "..\OpenBUGS323setup.exe" -ArgumentList "/S /v/qn"
 
 # Adapt as necessary starting from here
 
