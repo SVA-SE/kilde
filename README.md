@@ -78,7 +78,7 @@ different ways depending on what you are comfortable with:
 Downloads folder like this:
 
 ```r
-setwd("C:/users/john.smith/downloads/")
+setwd("C:/Users/thomas.rosendal/Downloads")
 ```
 4. Install the package like this:
 
