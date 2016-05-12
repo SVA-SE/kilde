@@ -1,0 +1,167 @@
+model{ 
+# This is an adaptation from the 'island model' for SA with allele data.
+for(i in 1:ns){    # ns = number of source populations
+# Assume 7 loci:  
+# product multinomial model ('pseudo-likelihood'), each locus independently of others.
+
+####################
+# Allele frequencies (q***) for each locus:
+# The sample frequencies are pre-calculated in R, and represent
+# such collection of isolates that were found in one or more of the 
+# source populations (excluding those that were only in humans).
+
+# Here q*** fixed to mean frequencies, based on sample & "Dir(1/n)"-prior: 
+for(j in 1:nat[1]){  qASP[i,j] <- (sourcesASP[i,j]+1/nat[1]) / (sum(sourcesASP[i,])+1)   }
+for(j in 1:nat[2]){  qGLN[i,j] <- (sourcesGLN[i,j]+1/nat[2]) / (sum(sourcesGLN[i,])+1)   }
+for(j in 1:nat[3]){  qGLT[i,j] <- (sourcesGLT[i,j]+1/nat[3]) / (sum(sourcesGLT[i,])+1)    }
+for(j in 1:nat[4]){  qGLY[i,j] <- (sourcesGLY[i,j]+1/nat[4]) / (sum(sourcesGLY[i,])+1)    }
+for(j in 1:nat[5]){  qPGM[i,j] <-(sourcesPGM[i,j]+1/nat[5]) / (sum(sourcesPGM[i,])+1)  }
+for(j in 1:nat[6]){  qTKT[i,j] <- (sourcesTKT[i,j]+1/nat[6]) / (sum(sourcesTKT[i,])+1)     }
+for(j in 1:nat[7]){  qUNC[i,j] <- (sourcesUNC[i,j]+1/nat[7]) / (sum(sourcesUNC[i,])+1) }
+
+####################
+# Next: models for "migration" and "novel" types per source population.
+# Interprete observed (common) alleles in source population i (1:ns) as a result of migration,
+# so that the probability of an allele type j is the product of migration probability from
+# population s to population i,  khi[i,s] and the allele frequency q***[s,j],  
+# summed over sources s. 
+# Hence: Multinomial model for the counts in source i for types common with other sources.  
+# N[i,j] = number of isolates in  the sample from source population i, (locus j), such that
+# these allele types are found at least in some other sources.  
+# "Mutation" probability for "novel" types is source and locus specific.
+
+N[i,1] <-  sum(migrateASP[i,]) 
+migrateASP[i,1:nat[1]] ~ dmulti(etaASP[i,1:nat[1]],N[i,1]) 
+# khi is immigration probability to source i from other sources
+for(j in 1:nat[1]){etaASP[i,j] <- inprod(qASP[1:ns,j],khi[i,1:ns])    
+                           etaASP.cut[i,j] <- cut(etaASP[i,j])  }
+# model for "novel" types in the sample: 
+NASPnovel[i] ~ dbin(pmuta[i,1],NASP[i])  
+# NASPnovel[i] = number of ASP allele types in source i, that were not 
+# in the samples of other sources.  
+# NASP[i] = number of isolates in source i.
+# Fixed mean frequencies of the "novel" types in a source (based on data & "Dir(1/n)"-prior):
+for(j in 1:nat[1]){ iotaASP[i,j] <- (sourcesASPnovel[i,j]+1/nat[1])/(sum(sourcesASPnovel[i,]) +1)  } 
+
+N[i,2] <-  sum(migrateGLN[i,]) 
+migrateGLN[i,1:nat[2]] ~ dmulti(etaGLN[i,1:nat[2]],N[i,2]) 
+for(j in 1:nat[2]){etaGLN[i,j] <- inprod(qGLN[1:ns,j],khi[i,1:ns])  
+                            etaGLN.cut[i,j] <- cut(etaGLN[i,j])   }
+NGLNnovel[i] ~ dbin(pmuta[i,2],NGLN[i])  # model for "novel" types in the sample
+for(j in 1:nat[2]){ iotaGLN[i,j] <- (sourcesGLNnovel[i,j]+1/nat[2])/(sum(sourcesGLNnovel[i,]) +1)  } 
+
+N[i,3] <- sum(migrateGLT[i,]) 
+migrateGLT[i,1:nat[3]] ~ dmulti(etaGLT[i,1:nat[3]],N[i,3]) 
+for(j in 1:nat[3]){etaGLT[i,j] <- inprod(qGLT[1:ns,j],khi[i,1:ns])
+                            etaGLT.cut[i,j] <- cut(etaGLT[i,j])   }
+NGLTnovel[i] ~ dbin(pmuta[i,3],NGLT[i])  # model for "novel" types in the sample
+for(j in 1:nat[3]){ iotaGLT[i,j] <- (sourcesGLTnovel[i,j]+1/nat[3])/(sum(sourcesGLTnovel[i,]) +1)  } 
+
+N[i,4] <-  sum(migrateGLY[i,]) 
+migrateGLY[i,1:nat[4]] ~ dmulti(etaGLY[i,1:nat[4]],N[i,4]) 
+for(j in 1:nat[4]){etaGLY[i,j] <- inprod(qGLY[1:ns,j],khi[i,1:ns]) 
+                            etaGLY.cut[i,j] <- cut(etaGLY[i,j])   } 
+NGLYnovel[i] ~ dbin(pmuta[i,4],NGLY[i])  # model for "novel" types in the sample 
+for(j in 1:nat[4]){ iotaGLY[i,j] <- (sourcesGLYnovel[i,j]+1/nat[4])/(sum(sourcesGLYnovel[i,]) +1)  } 
+
+N[i,5] <-  sum(migratePGM[i,]) 
+migratePGM[i,1:nat[5]] ~ dmulti(etaPGM[i,1:nat[5]],N[i,5]) 
+for(j in 1:nat[5]){etaPGM[i,j] <- inprod(qPGM[1:ns,j],khi[i,1:ns]) 
+                             etaPGM.cut[i,j] <- cut(etaPGM[i,j])    } 
+NPGMnovel[i] ~ dbin(pmuta[i,5],NPGM[i])  # model for "novel" types in the sample
+for(j in 1:nat[5]){ iotaPGM[i,j] <- (sourcesPGMnovel[i,j]+1/nat[5])/(sum(sourcesPGMnovel[i,]) +1)  } 
+
+N[i,6] <-  sum(migrateTKT[i,]) 
+migrateTKT[i,1:nat[6]] ~ dmulti(etaTKT[i,1:nat[6]],N[i,6]) 
+for(j in 1:nat[6]){etaTKT[i,j] <- inprod(qTKT[1:ns,j],khi[i,1:ns]) 
+                             etaTKT.cut[i,j] <- cut(etaTKT[i,j])    } 
+NTKTnovel[i] ~ dbin(pmuta[i,6],NTKT[i])  # model for "novel" types in the sample 
+for(j in 1:nat[6]){ iotaTKT[i,j] <- (sourcesTKTnovel[i,j]+1/nat[6])/(sum(sourcesTKTnovel[i,]) +1)  } 
+
+N[i,7] <-  sum(migrateUNC[i,]) 
+migrateUNC[i,1:nat[7]] ~ dmulti(etaUNC[i,1:nat[7]],N[i,7]) 
+for(j in 1:nat[7]){etaUNC[i,j] <- inprod(qUNC[1:ns,j],khi[i,1:ns])  
+                           etaUNC.cut[i,j] <- cut(etaUNC[i,j])   } 
+NUNCnovel[i] ~ dbin(pmuta[i,7],NUNC[i])  # model for "novel" types in the sample 
+for(j in 1:nat[7]){ iotaUNC[i,j] <- (sourcesUNCnovel[i,j]+1/nat[7])/(sum(sourcesUNCnovel[i,]) +1)  } 
+
+}  # i.   End of "training data model". (Data from source populations only)
+# these data provide estimates for "migration" probabilities khi 
+# and "mutation" probabilities pmuta only.
+# So: the multinomial probabilities of the observable types in a source are a function 
+# of the parameters khi & pmuta AND the fixed frequencies q***.
+
+#################
+# number of human allele counts that are common with at least some sources:
+MASP <- sum(humansASP[])  
+MGLN <- sum(humansGLN[])  
+MGLT <- sum(humansGLT[])  
+MGLY <- sum(humansGLY[])  
+MPGM <- sum(humansPGM[])  
+MTKT <- sum(humansTKT[])  
+MUNC <- sum(humansUNC[])  
+
+# all Human allele types modeled as possible types resulting either 
+# from migration or mutation:
+humansASP[1:nat[1]] ~ dmulti(thetaASP[1:nat[1]],MASP)
+humansGLN[1:nat[2]] ~ dmulti(thetaGLN[1:nat[2]],MGLN)
+humansGLT[1:nat[3]] ~ dmulti(thetaGLT[1:nat[3]],MGLT)
+humansGLY[1:nat[4]] ~ dmulti(thetaGLY[1:nat[4]],MGLY)
+humansPGM[1:nat[5]] ~ dmulti(thetaPGM[1:nat[5]],MPGM)
+humansTKT[1:nat[6]] ~ dmulti(thetaTKT[1:nat[6]],MTKT)
+humansUNC[1:nat[7]] ~ dmulti(thetaUNC[1:nat[7]],MUNC)
+
+for(j in 1:nat[1]){
+thetaASP[j] <- (inprod(migmutaASP[1:ns,j],phi[1:ns]))   
+for(i in 1:ns){migmutaASP[i,j]<- etaASP.cut[i,j]*(1-pmuta.cut[i,1])+pmuta.cut[i,1]*iotaASP[i,j]  }}
+
+for(j in 1:nat[2]){
+thetaGLN[j] <- (inprod(migmutaGLN[1:ns,j],phi[1:ns])) 
+for(i in 1:ns){migmutaGLN[i,j] <- etaGLN.cut[i,j]*(1-pmuta.cut[i,2])+pmuta.cut[i,2]*iotaGLN[i,j] }}
+
+for(j in 1:nat[3]){
+thetaGLT[j] <- (inprod(migmutaGLT[1:ns,j],phi[1:ns]))  
+for(i in 1:ns){migmutaGLT[i,j] <- etaGLT.cut[i,j]*(1-pmuta.cut[i,3])+pmuta.cut[i,3]*iotaGLT[i,j]  }}
+
+for(j in 1:nat[4]){
+thetaGLY[j] <- (inprod(migmutaGLY[1:ns,j],phi[1:ns]))  
+for(i in 1:ns){migmutaGLY[i,j] <- etaGLY.cut[i,j]*(1-pmuta.cut[i,4])+pmuta.cut[i,4]*iotaGLY[i,j]  }}
+
+for(j in 1:nat[5]){
+thetaPGM[j] <- (inprod(migmutaPGM[1:ns,j],phi[1:ns])) 
+for(i in 1:ns){migmutaPGM[i,j]<-etaPGM.cut[i,j]*(1-pmuta.cut[i,5])+pmuta.cut[i,5]*iotaPGM[i,j] }}
+
+for(j in 1:nat[6]){
+thetaTKT[j] <- (inprod(migmutaTKT[1:ns,j],phi[1:ns]))  
+for(i in 1:ns){migmutaTKT[i,j] <- etaTKT.cut[i,j]*(1-pmuta.cut[i,6])+pmuta.cut[i,6]*iotaTKT[i,j]  }}
+
+for(j in 1:nat[7]){
+thetaUNC[j] <- (inprod(migmutaUNC[1:ns,j],phi[1:ns]))  
+for(i in 1:ns){migmutaUNC[i,j] <-etaUNC.cut[i,j]*(1-pmuta.cut[i,7])+pmuta.cut[i,7]*iotaUNC[i,j]  }}
+##########################
+
+# Counts of human types that were not found in any of the sources:
+# Binomial distribution; Nhumans=all human isolates.
+NASPHo ~  dbin(pother,Nhumans)
+NGLNHo ~  dbin(pother,Nhumans)
+NGLTHo ~  dbin(pother,Nhumans)
+NGLYHo ~  dbin(pother,Nhumans)
+NPGMHo ~  dbin(pother,Nhumans)
+NTKTHo ~  dbin(pother,Nhumans)
+NUNCHo ~  dbin(pother,Nhumans)
+
+################
+# Prior for source probabilities:
+for(i in 1:ns){ phi[i] <- g0[i]/sum(g0[]) 
+g0[i] ~ dgamma(beta[i],1)  # set beta[i] = 1 for Dir(1,1,1,....) prior
+}  
+# Prior for mutation probabilities:
+for(i in 1:ns){ for(j in 1:7){ pmuta[i,j] ~ dbeta(1,1); pmuta.cut[i,j] <- cut(pmuta[i,j])  }}
+# Prior for migration probabilities:
+for(i in 1:ns){ 
+for(k in 1:ns){ khi[i,k] <- h0[i,k]/sum(h0[i,1:ns]) 
+     h0[i,k] ~ dgamma(alpha[i,k],1)  # set alpha for Dir-prior parameters.
+     }  }
+# Prior for probability of other unknown sources:
+pother ~ dbeta(1,1)
+} # End of model
