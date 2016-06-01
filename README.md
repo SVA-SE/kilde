@@ -40,10 +40,13 @@ different ways depending on what you are comfortable with:
 
 #### Use the `ghit` package to install from github source
 
-Just run the following commands in R:
+Just run the following commands in R (You may not need to run the
+first two lines: `install.packages()` if you already have those
+packages installed)
 
 ```r
 install.packages("R2OpenBUGS")
+install.packages("ghit")
 library(ghit)
 install_github("trosendal/kilde")
 ```
@@ -111,7 +114,7 @@ install_github("trosendal/kilde")
 2. Navigate the the repository root and run `make install`
 3. Install the R2OpenBUGS package in R
 
-## Example
+## Usage
 
 ```r
 
