@@ -47,3 +47,22 @@ res <- tools::assertError(
 stopifnot(length(grep("There are no observations in the data with the selected country name",
                      res[[1]]$message)) > 0)
 rm(list = ls())
+## Test 6 - ST and alleles must be integer values
+df <- sample_data()
+country <- "Canada"
+class(df$ST) <- "foo"
+res <- tools::assertError(
+    clean_data(df, country)
+)
+stopifnot(length(grep("ST must be an integer",
+                     res[[1]]$message)) > 0)
+rm(list = ls())
+df <- sample_data()
+country <- "Canada"
+class(df$TKT) <- "foo"
+res <- tools::assertError(
+    clean_data(df, country)
+)
+stopifnot(length(grep("TKT must be an integer",
+                     res[[1]]$message)) > 0)
+rm(list = ls())

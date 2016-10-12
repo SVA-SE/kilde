@@ -29,6 +29,24 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ##
 ##' Clean data to be passed on to the model function
+##'
+##' This function takes a dataset that has the Structure :
+##'
+##' id: A number or character that is the identifier of the individual
+##' sample. This is actually not used by the function, but required as
+##' it is passed onto the modelling tool.
+##'
+##' country: A character or factor of the county of origin that the
+##' analysis should be compleated for. If the dataset only has one
+##' country just supply a variable with one repeated value.
+##'
+##' group: Must be a factor. The first level of the factor must be the
+##' reference group. This will frequently be humans.
+##'
+##' ST: An integer value repersenting the type identifier
+##'
+##' ASP, GLN, GLT, GLY, PGM, TKT, UNC: Integer values representing the
+##' type identifier for each of the 7 MLST genes. 
 ##' 
 ##' @title clean_data 
 ##' @param df The dataframe containing the samples
@@ -50,6 +68,31 @@ clean_data <- function(df = sample_data(), country){
     }
     if(!(class(df$country) %in% c("factor", "character"))) {
         stop("The country variable should be a factor or a character")
+    }
+
+    if(!(identical(class(df$ST), "integer"))) {
+        stop("ST must be an integer")
+    }
+    if(!(identical(class(df$ASP), "integer"))) {
+        stop("ASP must be an integer")
+    }
+    if(!(identical(class(df$GLN), "integer"))) {
+        stop("GLN must be an integer")
+    }
+    if(!(identical(class(df$GLT), "integer"))) {
+        stop("GLT must be an integer")
+    }
+    if(!(identical(class(df$GLY), "integer"))) {
+            stop("GLY must be an integer")
+    }
+    if(!(identical(class(df$PGM), "integer"))) {
+        stop("PGM must be an integer")
+    }
+    if(!(identical(class(df$TKT), "integer"))) {
+        stop("TKT must be an integer")
+    }
+    if(!(identical(class(df$UNC), "integer"))) {
+        stop("UNC must be an integer")
     }
 
     df <- df[df$country == country,]
@@ -84,7 +127,7 @@ clean_data <- function(df = sample_data(), country){
                    PGM = PGM, TKT = TKT, UNC = UNC, ns =  ns,
                    beta = beta, nat = nat, alpha = alpha,
                    group_names = group_names)
-    ## The follwing are arbitrary changes to fulfill the structure of
+    ## The following are arbitrary changes to fulfil the structure of
     ## the BUGS code
     humansASP <- as.vector(result$ASP[1,])
     humansGLN <- as.vector(result$GLN[1,])
