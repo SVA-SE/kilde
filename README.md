@@ -162,6 +162,7 @@ for(i in 1:df$bugs_data$ns){
 ## Wishlist
 
 * Transition to JAGS
-* Multiple well described models
+* Multiple well described models (This is currently being done...)
+* Add tests (Work in progress)
 * Remove as much BUGS code as possible ie. Do most of the data
   handling in R
