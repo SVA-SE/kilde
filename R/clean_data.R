@@ -37,7 +37,27 @@
 ##' @author Thomas Rosendal
 ##' @export
 clean_data <- function(df = sample_data(), country){
+
+    if(!identical(names(df), c("id", "country", "group", "ST", "ASP",
+                               "GLN", "GLT", "GLY", "PGM", "TKT",
+                               "UNC"))) {
+        stop("The input data must have the column names:\'id', 'country', 'group', 'ST', 'ASP',
+                               'GLN', 'GLT', 'GLY', 'PGM', 'TKT',
+                               'UNC'")
+    }
+    if(!identical(class(df$group), "factor")) {
+        stop("The group variable should be a factor")
+    }
+    if(!(class(df$country) %in% c("factor", "character"))) {
+        stop("The country variable should be a factor or a character")
+    }
+
     df <- df[df$country == country,]
+
+    if((nrow(df) == 0)) {
+        stop("There are no observations in the data with the selected country name")
+    }
+    
     ASP <- table(df$group, df$ASP)
     GLN <- table(df$group, df$GLN)
     GLT <- table(df$group, df$GLT)
