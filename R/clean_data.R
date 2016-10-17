@@ -163,5 +163,6 @@ clean_data <- function(df = sample_data(), country){
                    alpha = alpha)
     result <- list(bugs_data = result,
                    group_names = group_names)
+    class(result) <- c(class(result), "kilde_data")
     return(result)
 }
