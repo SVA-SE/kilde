@@ -1,6 +1,6 @@
 |Linux Build|Windows Build|Test Coverage|
 |----|----|----|
-|[![Build Status](https://travis-ci.org/SVA-SE/kilde.svg)](https://travis-ci.org/SVA-SE/kilde)|[![Build status](https://ci.appveyor.com/api/projects/status/dlxa7wxqs2lrc2eh?svg=true)](https://ci.appveyor.com/project/trosendal/kilde)|[![Coverage Status](https://coveralls.io/repos/github/trosendal/kilde/badge.svg?maxAge=600&branch=master)](https://coveralls.io/github/trosendal/kilde?branch=master)|
+|[![Build Status](https://travis-ci.org/trosendal/kilde.svg)](https://travis-ci.org/trosendal/kilde)|[![Build status](https://ci.appveyor.com/api/projects/status/dlxa7wxqs2lrc2eh?svg=true)](https://ci.appveyor.com/project/trosendal/kilde)|[![Coverage Status](https://coveralls.io/repos/github/trosendal/kilde/badge.svg?maxAge=600&branch=master)](https://coveralls.io/github/trosendal/kilde?branch=master)|
 # A package to perform Bayesian source attribution of Campylobacter in R
 
 An R package that connects to
