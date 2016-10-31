@@ -1,5 +1,5 @@
 
-DATA <- read.table("NMDD2015data_vers21_modif.txt",header=TRUE)
+DATA <- read.table("../NMDD2015data_vers21_modif.txt",header=TRUE)
 
 attach(DATA)
 # use ALL allele types
@@ -267,72 +267,79 @@ NsourcesUNC <- sum(sourcesUNC[]);
 h<-0  # control parameter (for avoiding very small values of q ~Dirich)
 for(mc in 2:MCMC){ 
 
-# FULL CONDITIONAL DISTRIBUTIONS FOR 
-# THE RELATIVE ALLELE TYPE FREQUENCIES IN EACH SOURCE POPULATION:
-# (qASP,qGLN,qGLT,qGLY,qPGM,qTKT,qUNC: these are defined for each loci)
-for(i in 1:ns){   # ns = number of source populations
-for(j in 1:nat[1]){ 
-  for(s in 1:Nisolates){prodASP[s,i,j] <- S[s,i]*IASP[s,j]}
-  ASPpar0[i,j] <- rgamma(1,sourcesASP[i,j]+sum(prodASP[,i,j])+sum(sourcesASP[,j])+1/nat[1],1)
-  qASP[mc,i,j] <-  (ASPpar0[i,j]+h) / (sum(ASPpar0[i,])+h*nat[1])
-}
-for(j in 1:nat[2]){ 
-  for(s in 1:Nisolates){prodGLN[s,i,j] <- S[s,i]*IGLN[s,j]}
-  GLNpar0[i,j] <- rgamma(1,sourcesGLN[i,j]+sum(prodGLN[,i,j])+sum(sourcesGLN[,j])+1/nat[2],1)
-  qGLN[mc,i,j] <-  (GLNpar0[i,j]+h) / (sum(GLNpar0[i,])+h*nat[2])
-}
-for(j in 1:nat[3]){ 
-  for(s in 1:Nisolates){prodGLT[s,i,j] <- S[s,i]*IGLT[s,j]}
-  GLTpar0[i,j] <- rgamma(1,sourcesGLT[i,j]+sum(prodGLT[,i,j])+sum(sourcesGLT[,j])+1/nat[3],1)
-  qGLT[mc,i,j] <-  (GLTpar0[i,j]+h) / (sum(GLTpar0[i,])+h*nat[3])
-}
-for(j in 1:nat[4]){ 
-  for(s in 1:Nisolates){prodGLY[s,i,j] <- S[s,i]*IGLY[s,j]} 
-  GLYpar0[i,j] <- rgamma(1,sourcesGLY[i,j]+sum(prodGLY[,i,j])+sum(sourcesGLY[,j])+1/nat[4],1)
-  qGLY[mc,i,j] <-  (GLYpar0[i,j]+h) / (sum(GLYpar0[i,])+h*nat[4])
-}
-for(j in 1:nat[5]){ 
-  for(s in 1:Nisolates){prodPGM[s,i,j] <- S[s,i]*IPGM[s,j]}
-  PGMpar0[i,j] <- rgamma(1,sourcesPGM[i,j]+sum(prodPGM[,i,j])+sum(sourcesPGM[,j])+1/nat[5],1)
-  qPGM[mc,i,j] <-  (PGMpar0[i,j]+h) / (sum(PGMpar0[i,])+h*nat[5])
-}
-for(j in 1:nat[6]){ 
-  for(s in 1:Nisolates){prodTKT[s,i,j] <- S[s,i]*ITKT[s,j]}   
-  TKTpar0[i,j] <- rgamma(1,sourcesTKT[i,j]+sum(prodTKT[,i,j])+sum(sourcesTKT[,j])+1/nat[6],1)
-  qTKT[mc,i,j] <-  (TKTpar0[i,j]+h) / (sum(TKTpar0[i,])+h*nat[6])
-}
-for(j in 1:nat[7]){ 
-  for(s in 1:Nisolates){prodUNC[s,i,j] <- S[s,i]*IUNC[s,j]}   
-  UNCpar0[i,j] <- rgamma(1,sourcesUNC[i,j]+sum(prodUNC[,i,j])+sum(sourcesUNC[,j])+1/nat[7],1)
-  qUNC[mc,i,j] <-  (UNCpar0[i,j]+h) / (sum(UNCpar0[i,])+h*nat[7])
-}
-}  # end of ns
+    ## FULL CONDITIONAL DISTRIBUTIONS FOR 
+    ## THE RELATIVE ALLELE TYPE FREQUENCIES IN EACH SOURCE POPULATION:
+    ## (qASP,qGLN,qGLT,qGLY,qPGM,qTKT,qUNC: these are defined for each loci)
+    for(i in 1:ns){   # ns = number of source populations
+        for(j in 1:nat[1]){ 
+            for(s in 1:Nisolates){prodASP[s,i,j] <- S[s,i]*IASP[s,j]}
+            ASPpar0[i,j] <- rgamma(1,sourcesASP[i,j]+sum(prodASP[,i,j])+sum(sourcesASP[,j])+1/nat[1],1)
+            qASP[mc,i,j] <-  (ASPpar0[i,j]+h) / (sum(ASPpar0[i,])+h*nat[1])
+        }
+        for(j in 1:nat[2]){ 
+            for(s in 1:Nisolates){prodGLN[s,i,j] <- S[s,i]*IGLN[s,j]}
+            GLNpar0[i,j] <- rgamma(1,sourcesGLN[i,j]+sum(prodGLN[,i,j])+sum(sourcesGLN[,j])+1/nat[2],1)
+            qGLN[mc,i,j] <-  (GLNpar0[i,j]+h) / (sum(GLNpar0[i,])+h*nat[2])
+        }
+        for(j in 1:nat[3]){ 
+            for(s in 1:Nisolates){prodGLT[s,i,j] <- S[s,i]*IGLT[s,j]}
+            GLTpar0[i,j] <- rgamma(1,sourcesGLT[i,j]+sum(prodGLT[,i,j])+sum(sourcesGLT[,j])+1/nat[3],1)
+            qGLT[mc,i,j] <-  (GLTpar0[i,j]+h) / (sum(GLTpar0[i,])+h*nat[3])
+        }
+        for(j in 1:nat[4]){ 
+            for(s in 1:Nisolates){prodGLY[s,i,j] <- S[s,i]*IGLY[s,j]} 
+            GLYpar0[i,j] <- rgamma(1,sourcesGLY[i,j]+sum(prodGLY[,i,j])+sum(sourcesGLY[,j])+1/nat[4],1)
+            qGLY[mc,i,j] <-  (GLYpar0[i,j]+h) / (sum(GLYpar0[i,])+h*nat[4])
+        }
+        for(j in 1:nat[5]){ 
+            for(s in 1:Nisolates){prodPGM[s,i,j] <- S[s,i]*IPGM[s,j]}
+            PGMpar0[i,j] <- rgamma(1,sourcesPGM[i,j]+sum(prodPGM[,i,j])+sum(sourcesPGM[,j])+1/nat[5],1)
+            qPGM[mc,i,j] <-  (PGMpar0[i,j]+h) / (sum(PGMpar0[i,])+h*nat[5])
+        }
+        for(j in 1:nat[6]){ 
+            for(s in 1:Nisolates){prodTKT[s,i,j] <- S[s,i]*ITKT[s,j]}   
+            TKTpar0[i,j] <- rgamma(1,sourcesTKT[i,j]+sum(prodTKT[,i,j])+sum(sourcesTKT[,j])+1/nat[6],1)
+            qTKT[mc,i,j] <-  (TKTpar0[i,j]+h) / (sum(TKTpar0[i,])+h*nat[6])
+        }
+        for(j in 1:nat[7]){ 
+            for(s in 1:Nisolates){prodUNC[s,i,j] <- S[s,i]*IUNC[s,j]}   
+            UNCpar0[i,j] <- rgamma(1,sourcesUNC[i,j]+sum(prodUNC[,i,j])+sum(sourcesUNC[,j])+1/nat[7],1)
+            qUNC[mc,i,j] <-  (UNCpar0[i,j]+h) / (sum(UNCpar0[i,])+h*nat[7])
+        }
+    }  ## end of ns
 
-# FULL CONDITIONAL DISTRIBUTION FOR EACH Z: 
-# (Z = group indicators for each isolate) 
-for(i in 1:Nisolates){
-for(k in 1:ns){ 
-phii0[i,k] <- exp( log(phi[mc-1,k])+log(qASP[mc,k,ind[i,1]])+log(qGLN[mc,k,ind[i,2]])+log(qGLT[mc,k,ind[i,3]])+log(qGLY[mc,k,ind[i,4]])+log(qPGM[mc,k,ind[i,5]])+log(qTKT[mc,k,ind[i,6]])+log(qUNC[mc,k,ind[i,7]]) )
-}
-for(k in 1:ns){
-phii[i,k] <- exp(log(phii0[i,k])-log(sum(phii0[i,])) ) # normalize
-}
-nn <- 1:ns
-Z[i] <- min(nn[runif(1)<cumsum(phii[i,])])     # "rcat(1,phii[i,])"
-for(k in 1:ns){
-    S[i,k] <- Z[i]==k   # membership of ith isolate to group k  
+    ## FULL CONDITIONAL DISTRIBUTION FOR EACH Z: 
+    ## (Z = group indicators for each isolate) 
+    for(i in 1:Nisolates){
+        for(k in 1:ns){ 
+            phii0[i,k] <- exp( log(phi[mc-1,k])+
+                               log(qASP[mc,k,ind[i,1]])+
+                               log(qGLN[mc,k,ind[i,2]])+
+                               log(qGLT[mc,k,ind[i,3]])+
+                               log(qGLY[mc,k,ind[i,4]])+
+                               log(qPGM[mc,k,ind[i,5]])+
+                               log(qTKT[mc,k,ind[i,6]])+
+                               log(qUNC[mc,k,ind[i,7]]) )
+        }
+        for(k in 1:ns){
+            phii[i,k] <- exp(log(phii0[i,k])-log(sum(phii0[i,])) ) # normalize
+        }
+        nn <- 1:ns
+        Z[i] <- min(nn[runif(1)<cumsum(phii[i,])])     # "rcat(1,phii[i,])"
+        for(k in 1:ns){
+            S[i,k] <- Z[i]==k   # membership of ith isolate to group k  
+        }
+    } ## end Nisolates
+
+    ## FULL CONDITIONAL DISTRIBUTION FOR phi:
+    ## (phi = proportions of source populations)
+    for(k in 1:ns){
+        phi0[k] <- rgamma(1,sum(S[,k])+1/ns,1)
     }
-} # end Nisolates
-
-# FULL CONDITIONAL DISTRIBUTION FOR phi:
-# (phi = proportions of source populations)
-for(k in 1:ns){
-phi0[k] <- rgamma(1,sum(S[,k])+1/ns,1)
-}
-for(k in 1:ns){
-phi[mc,k] <- phi0[k]/sum(phi0[])
-}  
-}  # end of MCMC
+    for(k in 1:ns){
+        phi[mc,k] <- phi0[k]/sum(phi0[])
+    }  
+}  ## end of MCMC
 #################
 
 burnin <- 11
