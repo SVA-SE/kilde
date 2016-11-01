@@ -1,5 +1,26 @@
 library(kilde)
 
+## Test 0 - A clean run of a model
+
+df <- clean_data(sample_data(), "Canada")
+inits <- function() {
+    list(g0 = rep(1, df$bugs_data$ns), 
+         pmuta = structure(.Data = rep(0.5, df$bugs_data$ns * 7), 
+                           .Dim = c(df$bugs_data$ns, 7)), 
+         h0=structure(.Data=rep(1, df$bugs_data$ns * df$bugs_data$ns), 
+                      .Dim=c(df$bugs_data$ns, df$bugs_data$ns)))
+}
+
+parameters <- c("qASP", "phi", "etaASP")
+
+run_model(model = "SA_allelemodel1.jag",
+          df,
+          inits,
+          parameters,
+          n.chains = 2,
+          n.burnin = 99,
+          n.iter = 999)
+
 ## Test 1 - The data object has the wrong class
 df <- clean_data(sample_data(), "Canada")
 class(df) <- "foo"
