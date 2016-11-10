@@ -4,7 +4,7 @@ DATA <- read.table("NMDD2015data_vers21_modif.txt",header=TRUE)
 z <- !is.na(DATA$ST)
  
 Ctr = "FI"    # choose the Country  (DK, SE, NO, FI)
-MCMC = 2100   # choose number of MCMC iterations
+MCMC = 200   # choose number of MCMC iterations
 burnin = 100  # choose burnin period
 FULL = 0      # choose 1 for full Bayesian model (semi-supervised), but
               # choose 0 for separated estimation (supervised) of relative type frequencies
@@ -40,7 +40,7 @@ source("initializebugs.R")
 # Below, BUGS model cannot handle large number of MCMC iterations for all parameters.
 # Therefore, advisable to try with smaller number:
  
-MCMC <- 2000
+MCMC <- 200
 burnin <- 100
  
 res <- bugs(data,inits,parameters,"SA_allele_isolate.txt",n.chains=1,n.burnin=burnin,n.iter=MCMC)
