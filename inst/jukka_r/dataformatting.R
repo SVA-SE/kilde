@@ -203,7 +203,13 @@ sourcesUNC[ns,positionUNC[UNCu==STtable[j,8]]]<-sourcesUNC[ns,positionUNC[UNCu==
 }
 }
 
-
-
+## The objects that I need here where * is the list of Allele names
+## ASP PGM and so on are:
+##
+## These are passed directly onto the runMCMC script:
+## FULL, ind, nn, and the sources*, and I*
+##
+##These are passed to the initilizemcmc.R script
+## ns, nat, MCMC, Nisoloates
 
 
