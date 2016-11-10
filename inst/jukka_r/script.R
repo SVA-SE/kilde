@@ -2,7 +2,7 @@ DATA <- read.table("NMDD2015data_vers21_modif.txt",header=TRUE)
  
 ##attach(DATA)
 z <- !is.na(DATA$ST)
- 
+
 Ctr = "FI"    # choose the Country  (DK, SE, NO, FI)
 MCMC = 200    # choose number of MCMC iterations
 burnin = 100  # choose burnin period
@@ -12,7 +12,8 @@ UM = 2        # choose 0 for setting 0 as 'data sample' for unknown source.
               # choose 1 for taking the mean type frequencies as 'data sample' for unknown source.
               # choose 2 for taking the type frequencies drawn from the STs that were unique to humans, as 'data sample' for unknown source.             
 source("dataformatting.R")
- 
+ob <- dataformatting(DATA, Ctr, UM, z)
+
 ## ·         After this formatting is completed, the data should be
 ## ·         ready for either running the Gibbs sampling solely in R,
 ## ·         or running the corresponding BUGS model.  The MCMC
@@ -26,6 +27,14 @@ source("dataformatting.R")
 ## ·         After formatting, the MCMC running solely in R is done with the commands:
  
 source("initializemcmc.R")
+result <- initialize_mcmc(ob$inits$ns, ob$inits$nat, MCMC, ob$inits$Nisolates)
+
+## Temporarily assign all the returned object to the current environment to make the next code work
+lapply(seq_len(length(result)), function(x){
+    assign(names(result[x]), result[[x]])
+    return(NULL)
+})
+
 source("runmcmc.R")
 source("plotting.R")
  

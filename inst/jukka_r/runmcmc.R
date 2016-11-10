@@ -21,7 +21,7 @@ h<-0  # control parameter (for avoiding very small values of q ~Dirich, maybe ne
 ## Nisolates, phii0, ind, phii, S
 ## phi, phi0
 ##
-## The follwoing of objects come from the data cleaning script:
+## The following of objects come from the data cleaning script:
 ##
 ## FULL, ind, and the sources*, and I*
 

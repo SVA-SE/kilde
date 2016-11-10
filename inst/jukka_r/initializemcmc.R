@@ -58,10 +58,3 @@ initialize_mcmc <- function(ns, nat, MCMC, Nisolates){
      return(result)   
 }
 
-result <- initialize_mcmc(ns, nat, MCMC, Nisolates)
-
-## Temporarily assign all the returned object to the current environment to make the next code work
-lapply(seq_len(length(result)), function(x){
-    assign(names(result[x]), result[[x]])
-    return(NULL)
-})

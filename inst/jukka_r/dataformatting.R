@@ -215,16 +215,6 @@ dataformatting <- function(DATA, Ctr, UM, z) {
     return(result)
 }
 
-ob <- dataformatting(DATA, Ctr, UM, z)
-
-## Temporarily assign all the returned object to the current environment to make the next code work
-lapply(seq_len(length(ob)), function(x){
-    assign(names(result[x]), result[[x]])
-    return(NULL)
-})
-
-
-
 ## The objects that I need here where * is the list of Allele names
 ## ASP PGM and so on are:
 ##
