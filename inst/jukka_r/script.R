@@ -1,7 +1,7 @@
 DATA <- read.table("NMDD2015data_vers21_modif.txt",header=TRUE)
  
-attach(DATA)
-z <- !is.na(ST)
+##attach(DATA)
+z <- !is.na(DATA$ST)
  
 Ctr = "FI"    # choose the Country  (DK, SE, NO, FI)
 MCMC = 2100   # choose number of MCMC iterations
