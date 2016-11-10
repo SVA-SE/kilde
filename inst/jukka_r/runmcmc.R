@@ -5,7 +5,22 @@
 ## Pella & Masuda: Bayesian methods for analysis of stock
 ## mixtures from genetic characters. Fish. Bull. 99: 151-167 (2001).
 h<-0  # control parameter (for avoiding very small values of q ~Dirich, maybe never needed)
-## This code needs a series of objects to function. These need to be submitted to the code and are currently assumed to be in the global environment
+## This code needs a series of objects to function. These need to be
+## submitted to the code and are currently assumed to be in the global
+## environment; They are:
+## h, mc, MCMC, ns, nat, FULL,
+##
+## qASP, ASPpar0, sourcesASP, IASP,
+## qGLN, GLNpar0, sourcesGLN, IGLN,
+## qGLT, GLTpar0, sourcesGLT, IGLT,
+## qPGM, PGMpar0, sourcesPGM, IPGM,
+## qGLY, GLYpar0, sourcesGLY, IGLY,
+## qTKT, TKTpar0, sourcesTKT, ITKT,
+## qUNC, UNCpar0, sourcesUNC, IUNC,
+##
+## Nisolates, phii0, ind, nn, phii, S
+## phi, phi0
+
 for(mc in 2:MCMC){ 
 
     ## FULL CONDITIONAL DISTRIBUTIONS FOR 
