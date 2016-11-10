@@ -8,7 +8,7 @@ h<-0  # control parameter (for avoiding very small values of q ~Dirich, maybe ne
 ## This code needs a series of objects to function. These need to be
 ## submitted to the code and are currently assumed to be in the global
 ## environment; They are:
-## h, mc, MCMC, ns, nat, FULL,
+## h, MCMC, ns, nat, FULL,
 ##
 ## qASP, ASPpar0, sourcesASP, IASP,
 ## qGLN, GLNpar0, sourcesGLN, IGLN,
@@ -18,8 +18,12 @@ h<-0  # control parameter (for avoiding very small values of q ~Dirich, maybe ne
 ## qTKT, TKTpar0, sourcesTKT, ITKT,
 ## qUNC, UNCpar0, sourcesUNC, IUNC,
 ##
-## Nisolates, phii0, ind, nn, phii, S
+## Nisolates, phii0, ind, phii, S
 ## phi, phi0
+##
+## The follwoing of objects come from the data cleaning script:
+##
+## FULL, ind, nn, and the sources*, and I*
 
 for(mc in 2:MCMC){ 
 

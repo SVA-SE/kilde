@@ -28,8 +28,7 @@ initialize_mcmc <- function(ns, nat, MCMC, Nisolates){
     S <- matrix(0,Nisolates,ns) 
     phi0 <- numeric()
     phi <- matrix(0,MCMC,ns) 
-###################
-## INITIAL VALUES FOR MCMC (GIBBS):
+    ## INITIAL VALUES FOR MCMC (GIBBS):
     for(i in 1:ns){
         for(j in 1:nat[1]){qASP[1,i,j] <- 1/nat[1]} 
         for(j in 1:nat[2]){qGLN[1,i,j] <- 1/nat[2]} 
@@ -40,23 +39,23 @@ initialize_mcmc <- function(ns, nat, MCMC, Nisolates){
         for(j in 1:nat[7]){qUNC[1,i,j] <- 1/nat[7]} 
     }
     ga <- rgamma(ns,1,1)
-    phi[1,1:ns] <- ga/sum(ga)  # source probabilities
-                                        # Indicators for group membership of human isolates:
+    phi[1,1:ns] <- ga/sum(ga)  ## source probabilities
+    ## Indicators for group membership of human isolates:
     Z[1,1:Nisolates]<-  round(runif(Nisolates,0.5/ns,1+0.5/ns)*ns)
     for(s in 1:Nisolates){
         for(k in 1:ns){
             S[s,k] <- Z[1,s]==k   # membership of sth isolate to group k  
         }
     }
-    result <- list(ASPpar0 = ASPpar0, ga = ga, GLNpar0 = GLNpar0,
-                   GLTpar0 = GLTpar0, GLYpar0 = GLYpar0, i = i, j = j,
-                   k = k, MCMC = MCMC, nat = nat,
-                   Nisolates = Nisolates, ns = ns, PGMpar0 = PGMpar0,
-                   phi = phi, phi0 = phi0, phii = phii, phii0 = phii0,
-                   qASP = qASP, qGLN = qGLN, qGLT = qGLT, qGLY = qGLY,
-                   qPGM = qPGM, qTKT = qTKT, qUNC = qUNC, s = s,
-                   S = S, TKTpar0 = TKTpar0, UNCpar0 = UNCpar0, Z = Z)
-    return(result)
+    result <- list(ASPpar0 = ASPpar0, GLNpar0 = GLNpar0,
+                   GLTpar0 = GLTpar0, GLYpar0 = GLYpar0, MCMC = MCMC,
+                   nat = nat, Nisolates = Nisolates, ns = ns,
+                   PGMpar0 = PGMpar0, phi = phi, phi0 = phi0,
+                   phii = phii, phii0 = phii0, qASP = qASP,
+                   qGLN = qGLN, qGLT = qGLT, qGLY = qGLY, qPGM = qPGM,
+                   qTKT = qTKT, qUNC = qUNC, S = S, TKTpar0 = TKTpar0,
+                   UNCpar0 = UNCpar0, Z = Z)
+     return(result)   
 }
 
 result <- initialize_mcmc(ns, nat, MCMC, Nisolates)

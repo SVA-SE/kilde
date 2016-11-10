@@ -11,9 +11,7 @@ FULL = 0      # choose 1 for full Bayesian model (semi-supervised), but
 UM = 2        # choose 0 for setting 0 as 'data sample' for unknown source. 
               # choose 1 for taking the mean type frequencies as 'data sample' for unknown source.
               # choose 2 for taking the type frequencies drawn from the STs that were unique to humans, as 'data sample' for unknown source.             
- 
 source("dataformatting.R")
- 
  
 ## ·         After this formatting is completed, the data should be
 ## ·         ready for either running the Gibbs sampling solely in R,
