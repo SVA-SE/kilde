@@ -1,4 +1,3 @@
-
 dataformatting <- function(DATA, Ctr, UM, z) {
     sourcenames=setdiff(unique(DATA$Group[DATA$Country==Ctr]),"Human")
     ns <- length(sourcenames)
@@ -201,17 +200,36 @@ dataformatting <- function(DATA, Ctr, UM, z) {
             sourcesUNC[ns,positionUNC[UNCu==STtable[j,8]]]<-sourcesUNC[ns,positionUNC[UNCu==STtable[j,8]]]+sum((DATA$ST==STu[j])&is.element(STu[j],STuHo)&(DATA$Group=="Human")&(DATA$Country==Ctr)&z) 
         }
     }
-    result <- list()
+    data <- list(FULL = FULL, ind = ind,
+                 sourcesASP = sourcesASP, IASP = IASP,
+                 sourcesGLN = sourcesGLN, IGLN = IGLN,
+                 sourcesGLT = sourcesGLT, IGLT = IGLT,
+                 sourcesGLY = sourcesGLY, IGLY = IGLY,
+                 sourcesPGM = sourcesPGM, IPGM = IPGM,
+                 sourcesTKT = sourcesTKT, ITKT = ITKT,
+                 sourcesUNC = sourcesUNC, IUNC = IUNC)
+    inits <- list(ns = ns, nat = nat,
+                  Nisolates = Nisolates)
+    result <- list(data = data,
+                   inits = inits)
+    return(result)
 }
 
-dataformatting(DATA, Ctr, UM, z)
+ob <- dataformatting(DATA, Ctr, UM, z)
+
+## Temporarily assign all the returned object to the current environment to make the next code work
+lapply(seq_len(length(ob)), function(x){
+    assign(names(result[x]), result[[x]])
+    return(NULL)
+})
+
 
 
 ## The objects that I need here where * is the list of Allele names
 ## ASP PGM and so on are:
 ##
 ## These are passed directly onto the runMCMC script:
-## FULL, ind, nn, and the sources*, and I*
+## FULL, ind, and the sources*, and I*
 ##
 ##These are passed to the initilizemcmc.R script
 ## ns, nat, MCMC, Nisoloates

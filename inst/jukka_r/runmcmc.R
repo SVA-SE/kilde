@@ -23,7 +23,7 @@ h<-0  # control parameter (for avoiding very small values of q ~Dirich, maybe ne
 ##
 ## The follwoing of objects come from the data cleaning script:
 ##
-## FULL, ind, nn, and the sources*, and I*
+## FULL, ind, and the sources*, and I*
 
 for(mc in 2:MCMC){ 
 
