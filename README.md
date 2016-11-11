@@ -81,14 +81,14 @@ of A, B or C:
 3. Navigate the the directory that you saved the file to, perhaps your
    Downloads folder like this:
 
-```r
-setwd("C:/Users/thomas.rosendal/Downloads")
-```
+    ```r
+    setwd("C:/Users/thomas.rosendal/Downloads")
+    ```	
 4. Install the package like this:
 
-```r
-install.packages("kilde_0.1.zip", repos = NULL)
-```
+    ```r
+    install.packages("kilde_0.1.zip", repos = NULL)
+    ```
 
 5. Install `R2OpenBUGS`
 
