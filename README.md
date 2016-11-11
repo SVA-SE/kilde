@@ -79,7 +79,7 @@ of A, B or C:
 [here](https://ci.appveyor.com/api/projects/trosendal/kilde/artifacts/kilde_0.1.zip)
 2. Start R
 3. Navigate the the directory that you saved the file to, perhaps your
-Downloads folder like this:
+   Downloads folder like this:
 
 ```r
 setwd("C:/Users/thomas.rosendal/Downloads")
