@@ -30,12 +30,14 @@ source("initializemcmc.R")
 result <- initialize_mcmc(ob$inits$ns, ob$inits$nat, MCMC, ob$inits$Nisolates)
 
 ## Temporarily assign all the returned object to the current environment to make the next code work
-lapply(seq_len(length(result)), function(x){
-    assign(names(result[x]), result[[x]])
-    return(NULL)
-})
+## invisible(lapply(seq_len(length(result)), function(x){
+##     assign(names(result[x]), result[[x]])
+##     return(NULL)
+## }))
 
 source("runmcmc.R")
+temp <- runmcmc(result, ob, MCMC, h = 0, FULL = 0)
+
 source("plotting.R")
  
 ## ·         And the MCMC with the BUGS model:

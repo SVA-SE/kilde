@@ -25,104 +25,112 @@ h<-0  # control parameter (for avoiding very small values of q ~Dirich, maybe ne
 ##
 ## FULL, ind, and the sources*, and I*
 
-for(mc in 2:MCMC){ 
+runmcmc <- function(result,
+                    ob,
+                    MCMC,
+                    h = 0,
+                    FULL = 0){
+    
+    for(mc in 2:MCMC){ 
 
-    ## FULL CONDITIONAL DISTRIBUTIONS FOR 
-    ## THE RELATIVE ALLELE TYPE FREQUENCIES IN EACH SOURCE POPULATION:
-    ## (qASP, GLN, GLT, GLY, PGM, TKT, UNC: these are defined for each loci)
-    for(i in 1:ns){   # ns = number of source populations
-        for(j in 1:nat[1]){ 
-            ASPpar0[i, j] <- rgamma(1,
-                                    sourcesASP[i, j] + FULL * sum(S[, i] * IASP[, j] > 0) + 1/nat[1],
-                                    1)
-        }
-        for(j in 1:nat[1]){
-            qASP[mc, i, j] <-  (ASPpar0[i, j] + h) / (sum(ASPpar0[i, ]) + h * nat[1])
-        }
-        for(j in 1:nat[2]){ 
-            GLNpar0[i, j] <- rgamma(1,
-                                    sourcesGLN[i, j] + FULL * sum(S[, i] * IGLN[, j] > 0) + 1/nat[2],
-                                    1)
-        }
-        for(j in 1:nat[2]){
-            qGLN[mc, i, j] <-  (GLNpar0[i, j] + h) / (sum(GLNpar0[i, ]) + h * nat[2])
-        }
-        for(j in 1:nat[3]){ 
-            GLTpar0[i, j] <- rgamma(1,
-                                    sourcesGLT[i, j] + FULL * sum(S[, i] * IGLT[, j] > 0) + 1/nat[3],
-                                    1)
-        }
-        for(j in 1:nat[3]){
-            qGLT[mc, i, j] <-  (GLTpar0[i, j] + h) / (sum(GLTpar0[i, ]) + h * nat[3])
-        }
-        for(j in 1:nat[4]){ 
-            GLYpar0[i, j] <- rgamma(1,
-                                    sourcesGLY[i, j] + FULL * sum(S[, i] * IGLY[, j] > 0) + 1/nat[4],
-                                    1)
-        }
-        for(j in 1:nat[4]){
-            qGLY[mc, i, j] <-  (GLYpar0[i, j] + h) / (sum(GLYpar0[i, ]) + h * nat[4])
-        }
-        for(j in 1:nat[5]){ 
-            PGMpar0[i, j] <- rgamma(1,
-                                    sourcesPGM[i, j] + FULL * sum(S[, i] * IPGM[, j] > 0) + 1/nat[5],
-                                    1)
-        }
-        for(j in 1:nat[5]){
-            qPGM[mc, i, j] <-  (PGMpar0[i, j] + h) / (sum(PGMpar0[i, ]) + h * nat[5])
-        }
-        for(j in 1:nat[6]){ 
-            TKTpar0[i, j] <- rgamma(1,
-                                    sourcesTKT[i, j] + FULL * sum(S[, i] * ITKT[, j] > 0) + 1/nat[6],
-                                    1)
-        }
-        for(j in 1:nat[6]){
-            qTKT[mc, i, j] <-  (TKTpar0[i, j] + h) / (sum(TKTpar0[i, ]) + h * nat[6])
-        }
-        for(j in 1:nat[7]){ 
-            UNCpar0[i, j] <- rgamma(1,
-                                    sourcesUNC[i, j] + FULL * sum(S[, i] * IUNC[, j] > 0) + 1/nat[7],
-                                    1)
-        }
-        for(j in 1:nat[7]){
-            qUNC[mc, i, j] <-  (UNCpar0[i, j] + h) / (sum(UNCpar0[i, ]) + h * nat[7])
-        }
-    }  ## end of ns
+        ## FULL CONDITIONAL DISTRIBUTIONS FOR 
+        ## THE RELATIVE ALLELE TYPE FREQUENCIES IN EACH SOURCE POPULATION:
+        ## (qASP, GLN, GLT, GLY, PGM, TKT, UNC: these are defined for each loci)
+        for(i in 1:ob$inits$ns){   # ns = number of source populations
+            for(j in 1:ob$inits$nat[1]){ 
+                result$ASPpar0[i, j] <- rgamma(1,
+                                        ob$data$sourcesASP[i, j] + FULL * sum(result$S[, i] * ob$data$IASP[, j] > 0) + 1/ob$inits$nat[1],
+                                        1)
+            }
+            for(j in 1:ob$inits$nat[1]){
+                result$qASP[mc, i, j] <-  (result$ASPpar0[i, j] + h) / (sum(result$ASPpar0[i, ]) + h * ob$inits$nat[1])
+            }
+            for(j in 1:ob$inits$nat[2]){ 
+                result$GLNpar0[i, j] <- rgamma(1,
+                                        ob$data$sourcesGLN[i, j] + FULL * sum(result$S[, i] * ob$data$IGLN[, j] > 0) + 1/ob$inits$nat[2],
+                                        1)
+            }
+            for(j in 1:ob$inits$nat[2]){
+                result$qGLN[mc, i, j] <-  (result$GLNpar0[i, j] + h) / (sum(result$GLNpar0[i, ]) + h * ob$inits$nat[2])
+            }
+            for(j in 1:ob$inits$nat[3]){ 
+                result$GLTpar0[i, j] <- rgamma(1,
+                                        ob$data$sourcesGLT[i, j] + FULL * sum(result$S[, i] * ob$data$IGLT[, j] > 0) + 1/ob$inits$nat[3],
+                                        1)
+            }
+            for(j in 1:ob$inits$nat[3]){
+                result$qGLT[mc, i, j] <-  (result$GLTpar0[i, j] + h) / (sum(result$GLTpar0[i, ]) + h * ob$inits$nat[3])
+            }
+            for(j in 1:ob$inits$nat[4]){ 
+                result$GLYpar0[i, j] <- rgamma(1,
+                                        ob$data$sourcesGLY[i, j] + FULL * sum(result$S[, i] * ob$data$IGLY[, j] > 0) + 1/ob$inits$nat[4],
+                                        1)
+            }
+            for(j in 1:ob$inits$nat[4]){
+                result$qGLY[mc, i, j] <-  (result$GLYpar0[i, j] + h) / (sum(result$GLYpar0[i, ]) + h * ob$inits$nat[4])
+            }
+            for(j in 1:ob$inits$nat[5]){ 
+                result$PGMpar0[i, j] <- rgamma(1,
+                                        ob$data$sourcesPGM[i, j] + FULL * sum(result$S[, i] * ob$data$IPGM[, j] > 0) + 1/ob$inits$nat[5],
+                                        1)
+            }
+            for(j in 1:ob$inits$nat[5]){
+                result$qPGM[mc, i, j] <-  (result$PGMpar0[i, j] + h) / (sum(result$PGMpar0[i, ]) + h * ob$inits$nat[5])
+            }
+            for(j in 1:ob$inits$nat[6]){ 
+                result$TKTpar0[i, j] <- rgamma(1,
+                                        ob$data$sourcesTKT[i, j] + FULL * sum(result$S[, i] * ob$data$ITKT[, j] > 0) + 1/ob$inits$nat[6],
+                                        1)
+            }
+            for(j in 1:ob$inits$nat[6]){
+                result$qTKT[mc, i, j] <-  (result$TKTpar0[i, j] + h) / (sum(result$TKTpar0[i, ]) + h * ob$inits$nat[6])
+            }
+            for(j in 1:ob$inits$nat[7]){ 
+                result$UNCpar0[i, j] <- rgamma(1,
+                                        ob$data$sourcesUNC[i, j] + FULL * sum(result$S[, i] * ob$data$IUNC[, j] > 0) + 1/ob$inits$nat[7],
+                                        1)
+            }
+            for(j in 1:ob$inits$nat[7]){
+                result$qUNC[mc, i, j] <-  (result$UNCpar0[i, j] + h) / (sum(result$UNCpar0[i, ]) + h * ob$inits$nat[7])
+            }
+        }  ## end of ns
 
-    ## FULL CONDITIONAL DISTRIBUTION FOR EACH Z: 
-    ## (Z = group indicators for each isolate) 
-    for(i in 1:Nisolates){
-        for(k in 1:ns){ 
-            phii0[i, k] <- exp( log(phi[mc-1, k]) +
-                                log(qASP[mc, k, ind[i, 1]]) +
-                                log(qGLN[mc, k, ind[i, 2]]) +
-                                log(qGLT[mc, k, ind[i, 3]]) +
-                                log(qGLY[mc, k, ind[i, 4]]) +
-                                log(qPGM[mc, k, ind[i, 5]]) +
-                                log(qTKT[mc, k, ind[i, 6]]) +
-                                log(qUNC[mc, k, ind[i, 7]])
-                               )
-        }
-        for(k in 1:ns){
-            phii[i, k] <- exp(log(phii0[i, k])-log(sum(phii0[i, ])) ) ## normalize
-        }
-        nn <- 1:ns
-        Z[mc, i] <- min(nn[runif(1)<cumsum(phii[i, ])])     ## "rcat(1, phii[i, ])"
-        
-        for(k in 1:ns){
-            S[i, k] <- Z[mc, i]==k   ## membership of ith isolate to group k  
-        }
-    } ## end Nisolates
+        ## FULL CONDITIONAL DISTRIBUTION FOR EACH Z: 
+        ## (Z = group indicators for each isolate) 
+        for(i in 1:result$Nisolates){
+            for(k in 1:ob$inits$ns){ 
+                result$phii0[i, k] <- exp( log(result$phi[mc-1, k]) +
+                                    log(result$qASP[mc, k, ob$data$ind[i, 1]]) +
+                                    log(result$qGLN[mc, k, ob$data$ind[i, 2]]) +
+                                    log(result$qGLT[mc, k, ob$data$ind[i, 3]]) +
+                                    log(result$qGLY[mc, k, ob$data$ind[i, 4]]) +
+                                    log(result$qPGM[mc, k, ob$data$ind[i, 5]]) +
+                                    log(result$qTKT[mc, k, ob$data$ind[i, 6]]) +
+                                    log(result$qUNC[mc, k, ob$data$ind[i, 7]])
+                                   )
+            }
+            for(k in 1:ob$inits$ns){
+                result$phii[i, k] <- exp(log(result$phii0[i, k])-log(sum(result$phii0[i, ])) ) ## normalize
+            }
+            nn <- 1:ob$inits$ns
+            result$Z[mc, i] <- min(nn[runif(1) < cumsum(result$phii[i, ])])     ## "rcat(1, result$phii[i, ])"
+            
+            for(k in 1:ob$inits$ns){
+                result$S[i, k] <- result$Z[mc, i]==k   ## membership of ith isolate to group k  
+            }
+        } ## end Nisolates
 
-    ## FULL CONDITIONAL DISTRIBUTION FOR phi:
-    ## (phi = proportions of source populations)
-    for(k in 1:ns){
-        phi0[k] <- rgamma(1,
-                          sum(S[, k]) + 1/ns,
-                          1)
-    }
-    for(k in 1:ns){
-        phi[mc, k] <- phi0[k]/sum(phi0[])
-    }  
-}  ## end of MCMC
-################################################
+        ## FULL CONDITIONAL DISTRIBUTION FOR phi:
+        ## (phi = proportions of source populations)
+        for(k in 1:ob$inits$ns){
+            result$phi0[k] <- rgamma(1,
+                              sum(result$S[, k]) + 1/ob$inits$ns,
+                              1)
+        }
+        for(k in 1:ob$inits$ns){
+            result$phi[mc, k] <- result$phi0[k]/sum(result$phi0[])
+        }  
+    }  ## end of MCMC
+    result <- list(result, ob)
+    return(result)
+}
