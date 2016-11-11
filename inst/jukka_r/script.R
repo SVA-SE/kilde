@@ -7,7 +7,6 @@ result <- initialize_mcmc(ns = ob$inits$ns,
                           nat = ob$inits$nat,
                           MCMC = 100,
                           Nisolates = ob$inits$Nisolates)
-source("runmcmc.R")
 mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
 source("plotting.R")
 plota(mcmc_ob, 50)
