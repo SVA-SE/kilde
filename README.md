@@ -70,9 +70,10 @@ Invoke-WebRequest "http://www.openbugs.net/w/OpenBUGS_3_2_3?action=AttachFile&do
 ```
 
 Then install the package from github. You can do this in a few
-different ways depending on what you are comfortable with:
+different ways depending on what you are comfortable with, choose one
+of A, B or C:
 
-#### Download prebuilt package:
+#### A: Download prebuilt package:
 
 1. Download the package from
 [here](https://ci.appveyor.com/api/projects/trosendal/kilde/artifacts/kilde_0.1.zip)
@@ -95,7 +96,7 @@ install.packages("kilde_0.1.zip", repos = NULL)
 install.packages("R2OpenBUGS")
 ```
 
-#### Use the `ghit` package to install from github source
+#### B: Use the `ghit` package to install from github source
 
 To install from source you need the appropriate build tools for
 Windows, you can read more about that
@@ -108,7 +109,7 @@ library(ghit)
 install_github("trosendal/kilde")
 ```
 
-#### Clone it build it, install it
+#### C: Clone it build it, install it
 
 1. Clone this repository with `git`
 2. Navigate the the repository root and run `make install`
