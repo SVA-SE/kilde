@@ -92,9 +92,9 @@ of A, B or C:
 
 5. Install `R2OpenBUGS`
 
-```r
-install.packages("R2OpenBUGS")
-```
+    ```r
+    install.packages("R2OpenBUGS")
+    ```
 
 #### B: Use the `ghit` package to install from github source
 
