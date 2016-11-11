@@ -36,7 +36,7 @@ result <- initialize_mcmc(ob$inits$ns, ob$inits$nat, MCMC, ob$inits$Nisolates)
 ## }))
 
 source("runmcmc.R")
-temp <- runmcmc(result, ob, MCMC, h = 0, FULL = 0)
+mcmc_ob <- runmcmc(result, ob, MCMC = 150, h = 0, FULL = 0)
 
 source("plotting.R")
  

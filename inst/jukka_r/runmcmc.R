@@ -131,6 +131,6 @@ runmcmc <- function(result,
             result$phi[mc, k] <- result$phi0[k]/sum(result$phi0[])
         }  
     }  ## end of MCMC
-    result <- list(result, ob)
+    result <- list(var_a = result, var_b = ob)
     return(result)
 }

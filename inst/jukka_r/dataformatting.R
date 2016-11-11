@@ -200,7 +200,8 @@ dataformatting <- function(DATA, Ctr, UM, z) {
             sourcesUNC[ns,positionUNC[UNCu==STtable[j,8]]]<-sourcesUNC[ns,positionUNC[UNCu==STtable[j,8]]]+sum((DATA$ST==STu[j])&is.element(STu[j],STuHo)&(DATA$Group=="Human")&(DATA$Country==Ctr)&z) 
         }
     }
-    data <- list(FULL = FULL, ind = ind,
+    data <- list(sourcenames = sourcenames,
+                 FULL = FULL, ind = ind,
                  sourcesASP = sourcesASP, IASP = IASP,
                  sourcesGLN = sourcesGLN, IGLN = IGLN,
                  sourcesGLT = sourcesGLT, IGLT = IGLT,
