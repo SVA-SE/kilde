@@ -11,8 +11,6 @@ plota <- function(mcmc_ob, burnin){
              )
     }
 }
-
-plota(mcmc_ob, 100)
     
 ## dev.new()
 
