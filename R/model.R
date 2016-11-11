@@ -22,6 +22,9 @@
 ## OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 ## OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 ## SUCH DAMAGE.  ' A method to run a model in bugs
+##
+##' A method to run the model
+##' 
 ##' @title run_model
 ##' @param model The name of the model This is the file name in the
 ##'     inst/models directory of the package

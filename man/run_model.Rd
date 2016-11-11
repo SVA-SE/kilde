@@ -8,26 +8,30 @@ run_model(model = "SA_allelemodel1.jag", df, inits, parameters,
   n.chains = 1, n.burnin = 99, n.iter = 999)
 }
 \arguments{
-\item{model}{The name of the model
-This is the file name in the inst/models directory of the package}
+\item{model}{The name of the model This is the file name in the
+inst/models directory of the package}
 
 \item{df}{the object from clean_data}
 
-\item{inits}{An inits function}
+\item{inits}{An inits function. This is a function that returns
+the object that is congruent with the structure required by
+the model.}
 
-\item{parameters}{Parameters to monitor}
+\item{parameters}{Parameters to monitor. A character vector of the
+parameters to monitor from BUGS}
 
-\item{n.chains}{The number of chains}
+\item{n.chains}{The number of independent Markov chains}
 
-\item{n.burnin}{The burning length}
+\item{n.burnin}{The number of samples to discard at the start of
+the Markov chains (burnin length)}
 
-\item{n.iter}{The number of iterations}
+\item{n.iter}{The total number of iterations including the burnin}
 }
 \value{
 A model object
 }
 \description{
-A method to run a model in bugs
+A method to run the model
 }
 \author{
 Thomas Rosendal

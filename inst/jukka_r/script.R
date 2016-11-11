@@ -1,18 +1,11 @@
+library(kilde)
 DATA <- read.table("NMDD2015data_vers21_modif.txt",header=TRUE)
- 
-##attach(DATA)
-z <- !is.na(DATA$ST)
-
 Ctr = "FI"    # choose the Country  (DK, SE, NO, FI)
-MCMC = 200    # choose number of MCMC iterations
-burnin = 100  # choose burnin period
-FULL = 0      # choose 1 for full Bayesian model (semi-supervised), but
-              # choose 0 for separated estimation (supervised) of relative type frequencies
 UM = 2        # choose 0 for setting 0 as 'data sample' for unknown source.
               # choose 1 for taking the mean type frequencies as 'data sample' for unknown source.
               # choose 2 for taking the type frequencies drawn from the STs that were unique to humans, as 'data sample' for unknown source.             
 source("dataformatting.R")
-ob <- dataformatting(DATA, Ctr, UM, z)
+ob <- dataformatting(DATA, Ctr, UM)
 
 source("initializemcmc.R")
 result <- initialize_mcmc(ob$inits$ns, ob$inits$nat, MCMC, ob$inits$Nisolates)
