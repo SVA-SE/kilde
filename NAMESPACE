@@ -2,7 +2,10 @@
 
 export(clean_data)
 export(dataformatting)
+export(initialize_mcmc)
 export(run_model)
 export(sample_data)
 import(R2OpenBUGS)
 import(utils)
+importFrom(stats,rgamma)
+importFrom(stats,runif)

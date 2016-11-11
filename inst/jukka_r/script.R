@@ -1,20 +1,16 @@
 library(kilde)
 DATA <- read.table("NMDD2015data_vers21_modif.txt",header=TRUE)
-Ctr = "FI"    # choose the Country  (DK, SE, NO, FI)
-UM = 2        # choose 0 for setting 0 as 'data sample' for unknown source.
-              # choose 1 for taking the mean type frequencies as 'data sample' for unknown source.
-              # choose 2 for taking the type frequencies drawn from the STs that were unique to humans, as 'data sample' for unknown source.             
-##source("dataformatting.R")
-ob <- dataformatting(DATA, Ctr, UM)
-
-source("initializemcmc.R")
-result <- initialize_mcmc(ob$inits$ns, ob$inits$nat, MCMC, ob$inits$Nisolates)
-
+Ctr <- "FI"
+UM <- 2
+ob <- dataformatting(DATA = DATA, Ctr = Ctr, UM = UM)
+result <- initialize_mcmc(ns = ob$inits$ns,
+                          nat = ob$inits$nat,
+                          MCMC = 100,
+                          Nisolates = ob$inits$Nisolates)
 source("runmcmc.R")
-mcmc_ob <- runmcmc(result, ob, MCMC = 150, h = 0, FULL = 0)
-
+mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
 source("plotting.R")
-plota(mcmc_ob, 100)
+plota(mcmc_ob, 50)
 
 ## ## ·         And the MCMC with the BUGS model:
  

@@ -1,12 +1,16 @@
 ## VARIABLE STRUCTURES FOR THE MCMC (GIBBS) SAMPLER:
 ## This script requires a few variables in the global env
+##' A method to initialize the data objects for mcmc
+##'
 ##' @title initialize_mcmc
-##' @param ns an interger, the number of sources
+##' @param ns an integer, the number of sources
 ##' @param nat A vector the the number of alleles at each loci. In the
 ##'     Order: c("ASP", "GLN", "GLT", "GLY", "PGM", "TKT", "UNC")
 ##' @param MCMC the Number of iterations for the MCMC
 ##' @param Nisolates The number of human isolates
 ##' @return a list of the initial values for the simulation
+##' @importFrom stats rgamma
+##' @importFrom stats runif
 ##' @export
 ##' @author Jukka Ranta
 initialize_mcmc <- function(ns, nat, MCMC, Nisolates){
