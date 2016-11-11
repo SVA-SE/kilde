@@ -1,15 +1,13 @@
 library(kilde)
-DATA <- read.table("NMDD2015data_vers21_modif.txt",header=TRUE)
-Ctr <- "FI"
-UM <- 2
-ob <- dataformatting(DATA = DATA, Ctr = Ctr, UM = UM)
+ob <- dataformatting(DATA = read.table("NMDD2015data_vers21_modif.txt",header=TRUE),
+                     Ctr = "FI",
+                     UM = 2)
 result <- initialize_mcmc(ns = ob$inits$ns,
                           nat = ob$inits$nat,
                           MCMC = 100,
                           Nisolates = ob$inits$Nisolates)
 mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
-source("plotting.R")
-plota(mcmc_ob, 50)
+plot_r_mcmc(mcmc_ob, 50)
 
 ## ## ·         And the MCMC with the BUGS model:
  

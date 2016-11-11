@@ -28,6 +28,6 @@ A list of objects to be passed onto the plot function
 A method to run the mcmc
 }
 \author{
-Thomas Rosendal
+Jukka Ranta
 }
 

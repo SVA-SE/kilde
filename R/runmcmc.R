@@ -12,7 +12,7 @@
 ##'     type frequencies
 ##' @return A list of objects to be passed onto the plot function
 ##' @export
-##' @author Thomas Rosendal
+##' @author Jukka Ranta
 runmcmc <- function(result,
                     ob,
                     MCMC,

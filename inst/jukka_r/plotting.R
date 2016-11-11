@@ -1,4 +1,4 @@
-plota <- function(mcmc_ob, burnin){
+plot_r_mcmc <- function(mcmc_ob, burnin){
     dev.new()
     par(mfrow = c(mcmc_ob$var_a$ns, 1), mar = c(2.5, 5.5, 2.5, 2.5))
     for(i in 1 : mcmc_ob$var_a$ns){
