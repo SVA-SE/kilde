@@ -13,6 +13,7 @@
 ##' @return A list of objects that will be passed to the mcmc and
 ##'     initializer
 ##' @author Jukka Ranta
+##' @export
 dataformatting <- function(DATA, Ctr, UM) {
     z <- !is.na(DATA$ST)
     sourcenames <- setdiff(unique(DATA$Group[DATA$Country == Ctr]),"Human")

@@ -4,7 +4,7 @@ Ctr = "FI"    # choose the Country  (DK, SE, NO, FI)
 UM = 2        # choose 0 for setting 0 as 'data sample' for unknown source.
               # choose 1 for taking the mean type frequencies as 'data sample' for unknown source.
               # choose 2 for taking the type frequencies drawn from the STs that were unique to humans, as 'data sample' for unknown source.             
-source("dataformatting.R")
+##source("dataformatting.R")
 ob <- dataformatting(DATA, Ctr, UM)
 
 source("initializemcmc.R")
