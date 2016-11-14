@@ -4,7 +4,6 @@
 ##' mcmc and initialization functions
 ##' @title data formatting
 ##' @param DATA A data set
-##' @param Ctr a string that is one of the countries in the dataset
 ##' @param UM An integer 0, 1, 2. Choose 0 for setting 0 as 'data
 ##'     sample' for unknown source. Choose 1 for taking the mean type
 ##'     frequencies as 'data sample' for unknown source. Choose 2 for
@@ -14,36 +13,36 @@
 ##'     initializer
 ##' @author Jukka Ranta
 ##' @export
-dataformatting <- function(DATA, Ctr, UM) {
+dataformatting <- function(DATA, UM) {
     z <- !is.na(DATA$ST)
-    sourcenames <- setdiff(unique(DATA$group[DATA$country == Ctr]),"human")
+    sourcenames <- setdiff(unique(DATA$group), "human")
     ns <- length(sourcenames)
 
     ## find how many different STs there are (in all isolates), and list them:
-    STu <- sort(unique(DATA$ST[(DATA$country==Ctr) & (z)]))
-    STuH <- sort(unique(DATA$ST[(DATA$country==Ctr) & (z)&(DATA$group=="human")]))
-    STuS <- sort(unique(DATA$ST[(DATA$country==Ctr) & (z)&(DATA$group!="human")]))
-    STuHo <- setdiff(STuH,STuS) 
+    STu <- sort(unique(DATA$ST[z]))
+    STuH <- sort(unique(DATA$ST[z & (DATA$group == "human")]))
+    STuS <- sort(unique(DATA$ST[z & (DATA$group != "human")]))
+    STuHo <- setdiff(STuH, STuS) 
 
-    HumanST <- DATA$ST[(z)&(DATA$group=="human")&(DATA$country==Ctr)]
+    HumanST <- DATA$ST[z & (DATA$group == "human")]
     Humnovel <- 0
     for(i in 1:length(HumanST)){
-        Humnovel <- Humnovel + is.element(HumanST[i],STuHo)*1
+        Humnovel <- Humnovel + is.element(HumanST[i], STuHo) * 1
     }
     ## Sample probability to see ST in Human isolates that was not seen in sources: 
-    PUNST <- Humnovel/length(HumanST)
+    PUNST <- Humnovel / length(HumanST)
 
     ## make a table of STs and corresponding alleles:
-    STtable<- matrix(NA,length(STu),8)
+    STtable<- matrix(NA, length(STu), 8)
     for(i in 1:length(STu)){
-        STtable[i,1] <- STu[i]
-        STtable[i,2] <- unique(DATA$ASP[(DATA$ST==STu[i]) & !is.na(DATA$ST) & DATA$country==Ctr])
-        STtable[i,3] <- unique(DATA$GLN[(DATA$ST==STu[i]) & !is.na(DATA$ST) & DATA$country==Ctr])
-        STtable[i,4] <- unique(DATA$GLT[(DATA$ST==STu[i]) & !is.na(DATA$ST) & DATA$country==Ctr])
-        STtable[i,5] <- unique(DATA$GLY[(DATA$ST==STu[i]) & !is.na(DATA$ST) & DATA$country==Ctr])
-        STtable[i,6] <- unique(DATA$PGM[(DATA$ST==STu[i]) & !is.na(DATA$ST) & DATA$country==Ctr])
-        STtable[i,7] <- unique(DATA$TKT[(DATA$ST==STu[i]) & !is.na(DATA$ST) & DATA$country==Ctr])
-        STtable[i,8] <- unique(DATA$UNC[(DATA$ST==STu[i]) & !is.na(DATA$ST) & DATA$country==Ctr])
+        STtable[i, 1] <- STu[i]
+        STtable[i, 2] <- unique(DATA$ASP[(DATA$ST == STu[i]) & !is.na(DATA$ST)])
+        STtable[i, 3] <- unique(DATA$GLN[(DATA$ST == STu[i]) & !is.na(DATA$ST)])
+        STtable[i, 4] <- unique(DATA$GLT[(DATA$ST == STu[i]) & !is.na(DATA$ST)])
+        STtable[i, 5] <- unique(DATA$GLY[(DATA$ST == STu[i]) & !is.na(DATA$ST)])
+        STtable[i, 6] <- unique(DATA$PGM[(DATA$ST == STu[i]) & !is.na(DATA$ST)])
+        STtable[i, 7] <- unique(DATA$TKT[(DATA$ST == STu[i]) & !is.na(DATA$ST)])
+        STtable[i, 8] <- unique(DATA$UNC[(DATA$ST == STu[i]) & !is.na(DATA$ST)])
     }
 
     ## find how many different a-types there are, and list them:
@@ -86,58 +85,58 @@ dataformatting <- function(DATA, Ctr, UM) {
 
     ## sample frequencies (counts) of each a-type
     for(i in 1:length(ASPu)){
-        humansASP[i] <- sum((DATA$ASP==ASPu[i])&(DATA$group=="human")&(DATA$country==Ctr)&z)
+        humansASP[i] <- sum((DATA$ASP == ASPu[i]) & (DATA$group == "human") & z)
         for(j in 1:ns){
-            sourcesASP[j,i] <- sum((DATA$ASP==ASPu[i])&(DATA$group==sourcenames[j])&(DATA$country==Ctr)&z)
+            sourcesASP[j, i] <- sum((DATA$ASP == ASPu[i]) & (DATA$group == sourcenames[j]) & z)
         }
     }
     for(i in 1:length(GLNu)){
-        humansGLN[i] <- sum((DATA$GLN==GLNu[i])&(DATA$group=="human")&(DATA$country==Ctr)&z)
+        humansGLN[i] <- sum((DATA$GLN == GLNu[i]) & (DATA$group == "human") & z)
         for(j in 1:ns){
-            sourcesGLN[j,i] <- sum((DATA$GLN==GLNu[i])&(DATA$group==sourcenames[j])&(DATA$country==Ctr)&z)
+            sourcesGLN[j, i] <- sum((DATA$GLN == GLNu[i]) & (DATA$group == sourcenames[j]) & z)
         }
     }
     for(i in 1:length(GLTu)){
-        humansGLT[i] <- sum((DATA$GLT==GLTu[i])&(DATA$group=="human")&(DATA$country==Ctr)&z)
+        humansGLT[i] <- sum((DATA$GLT == GLTu[i]) & (DATA$group == "human") & z)
         for(j in 1:ns){
-            sourcesGLT[j,i] <- sum((DATA$GLT==GLTu[i])&(DATA$group==sourcenames[j])&(DATA$country==Ctr)&z)
+            sourcesGLT[j, i] <- sum((DATA$GLT==GLTu[i])&(DATA$group==sourcenames[j]) & z)
         }
     }
     for(i in 1:length(GLYu)){
-        humansGLY[i] <- sum((DATA$GLY==GLYu[i])&(DATA$group=="human")&(DATA$country==Ctr)&z)
+        humansGLY[i] <- sum((DATA$GLY == GLYu[i]) & (DATA$group == "human") & z)
         for(j in 1:ns){
-            sourcesGLY[j,i] <- sum((DATA$GLY==GLYu[i])&(DATA$group==sourcenames[j])&(DATA$country==Ctr)&z)
+            sourcesGLY[j, i] <- sum((DATA$GLY == GLYu[i]) & (DATA$group == sourcenames[j]) & z)
         }
     }
     for(i in 1:length(PGMu)){
-        humansPGM[i] <-sum((DATA$PGM==PGMu[i])&(DATA$group=="human")&(DATA$country==Ctr)&z)
+        humansPGM[i] <-sum((DATA$PGM == PGMu[i]) & (DATA$group == "human") & z)
         for(j in 1:ns){ 
-            sourcesPGM[j,i] <- sum((DATA$PGM==PGMu[i])&(DATA$group==sourcenames[j])&(DATA$country==Ctr)&z)
+            sourcesPGM[j, i] <- sum((DATA$PGM == PGMu[i]) & (DATA$group == sourcenames[j]) & z)
         }
     }
     for(i in 1:length(TKTu)){
-        humansTKT[i] <- sum((DATA$TKT==TKTu[i])&(DATA$group=="human")&(DATA$country==Ctr)&z)
+        humansTKT[i] <- sum((DATA$TKT == TKTu[i]) & (DATA$group == "human") & z)
         for(j in 1:ns){
-            sourcesTKT[j,i] <- sum((DATA$TKT==TKTu[i])&(DATA$group==sourcenames[j])&(DATA$country==Ctr)&z)
+            sourcesTKT[j, i] <- sum((DATA$TKT == TKTu[i]) & (DATA$group == sourcenames[j]) & z)
         }
     }
     for(i in 1:length(UNCu)){
-        humansUNC[i] <- sum((DATA$UNC==UNCu[i])&(DATA$group=="human")&(DATA$country==Ctr)&z)
+        humansUNC[i] <- sum((DATA$UNC == UNCu[i]) & (DATA$group == "human") & z)
         for(j in 1:ns){
-            sourcesUNC[j,i] <- sum((DATA$UNC==UNCu[i])&(DATA$group==sourcenames[j])&(DATA$country==Ctr)&z)
+            sourcesUNC[j, i] <- sum((DATA$UNC == UNCu[i]) & (DATA$group == sourcenames[j]) & z)
         }
     }
     ## Number of all human isolates:
-    Nisolates <- sum((DATA$country==Ctr) & (z) & (DATA$group=="human"))
+    Nisolates <- sum(z & (DATA$group=="human"))
 
     ## Get allele numbers for each human isolate:
-    HumanASP <- DATA$ASP[(DATA$country==Ctr) & (z) & (DATA$group=="human")]
-    HumanGLN <- DATA$GLN[(DATA$country==Ctr) & (z) & (DATA$group=="human")]
-    HumanGLT <- DATA$GLT[(DATA$country==Ctr) & (z) & (DATA$group=="human")]
-    HumanGLY <- DATA$GLY[(DATA$country==Ctr) & (z) & (DATA$group=="human")]
-    HumanPGM <- DATA$PGM[(DATA$country==Ctr) & (z) & (DATA$group=="human")]
-    HumanTKT <- DATA$TKT[(DATA$country==Ctr) & (z) & (DATA$group=="human")]
-    HumanUNC <- DATA$UNC[(DATA$country==Ctr) & (z) & (DATA$group=="human")]
+    HumanASP <- DATA$ASP[z & (DATA$group == "human")]
+    HumanGLN <- DATA$GLN[z & (DATA$group == "human")]
+    HumanGLT <- DATA$GLT[z & (DATA$group == "human")]
+    HumanGLY <- DATA$GLY[z & (DATA$group == "human")]
+    HumanPGM <- DATA$PGM[z & (DATA$group == "human")]
+    HumanTKT <- DATA$TKT[z & (DATA$group == "human")]
+    HumanUNC <- DATA$UNC[z & (DATA$group == "human")]
 
     positionASP <- 1:length(ASPu)
     IASP <- matrix(0,Nisolates,nat[1])
@@ -193,38 +192,38 @@ dataformatting <- function(DATA, Ctr, UM) {
 
     ## If UM=1, set the average sample as "data" for the unknown source:
     if(UM==1){   
-        for(j in 1:nat[1]){sourcesASP[ns,j] <- round(mean(sourcesASP[1:ns-1,j]))}
-        for(j in 1:nat[2]){sourcesGLN[ns,j] <- round(mean(sourcesGLN[1:ns-1,j]))}
-        for(j in 1:nat[3]){sourcesGLT[ns,j] <- round(mean(sourcesGLT[1:ns-1,j]))}
-        for(j in 1:nat[4]){sourcesGLY[ns,j] <- round(mean(sourcesGLY[1:ns-1,j]))}
-        for(j in 1:nat[5]){sourcesPGM[ns,j] <- round(mean(sourcesPGM[1:ns-1,j]))}
-        for(j in 1:nat[6]){sourcesTKT[ns,j] <- round(mean(sourcesTKT[1:ns-1,j]))}
-        for(j in 1:nat[7]){sourcesUNC[ns,j] <- round(mean(sourcesUNC[1:ns-1,j]))}
+        for(j in 1:nat[1]){sourcesASP[ns, j] <- round(mean(sourcesASP[1:ns - 1, j]))}
+        for(j in 1:nat[2]){sourcesGLN[ns, j] <- round(mean(sourcesGLN[1:ns - 1, j]))}
+        for(j in 1:nat[3]){sourcesGLT[ns, j] <- round(mean(sourcesGLT[1:ns - 1, j]))}
+        for(j in 1:nat[4]){sourcesGLY[ns, j] <- round(mean(sourcesGLY[1:ns - 1, j]))}
+        for(j in 1:nat[5]){sourcesPGM[ns, j] <- round(mean(sourcesPGM[1:ns - 1, j]))}
+        for(j in 1:nat[6]){sourcesTKT[ns, j] <- round(mean(sourcesTKT[1:ns - 1, j]))}
+        for(j in 1:nat[7]){sourcesUNC[ns, j] <- round(mean(sourcesUNC[1:ns - 1, j]))}
     }
 
     if(UM==2){
         ## This will set the allele counts for the "unknown source sample" 
         ## such that it represents the counts drawn from STs that were unique to humans.
         for(j in 1:length(STu)){
-            sourcesASP[ns, positionASP[ASPu == STtable[j, 2]]] <- sourcesASP[ns, positionASP[ASPu==STtable[j,2]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human") & (DATA$country==Ctr) & z) 
+            sourcesASP[ns, positionASP[ASPu == STtable[j, 2]]] <- sourcesASP[ns, positionASP[ASPu==STtable[j,2]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human")  & z) 
         }
         for(j in 1:length(STu)){
-            sourcesGLN[ns, positionGLN[GLNu == STtable[j, 3]]] <- sourcesGLN[ns, positionGLN[GLNu==STtable[j,3]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human") & (DATA$country==Ctr) & z) 
+            sourcesGLN[ns, positionGLN[GLNu == STtable[j, 3]]] <- sourcesGLN[ns, positionGLN[GLNu==STtable[j,3]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human")  & z) 
         }
         for(j in 1:length(STu)){
-            sourcesGLT[ns, positionGLT[GLTu == STtable[j, 4]]] <- sourcesGLT[ns, positionGLT[GLTu==STtable[j,4]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human") & (DATA$country==Ctr) & z) 
+            sourcesGLT[ns, positionGLT[GLTu == STtable[j, 4]]] <- sourcesGLT[ns, positionGLT[GLTu==STtable[j,4]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human")  & z) 
         }
         for(j in 1:length(STu)){
-            sourcesGLY[ns, positionGLY[GLYu == STtable[j, 5]]] <- sourcesGLY[ns, positionGLY[GLYu==STtable[j,5]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human") & (DATA$country==Ctr) & z) 
+            sourcesGLY[ns, positionGLY[GLYu == STtable[j, 5]]] <- sourcesGLY[ns, positionGLY[GLYu==STtable[j,5]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human")  & z) 
         }
         for(j in 1:length(STu)){
-            sourcesPGM[ns, positionPGM[PGMu == STtable[j, 6]]] <- sourcesPGM[ns, positionPGM[PGMu==STtable[j,6]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human") & (DATA$country==Ctr) & z) 
+            sourcesPGM[ns, positionPGM[PGMu == STtable[j, 6]]] <- sourcesPGM[ns, positionPGM[PGMu==STtable[j,6]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human")  & z) 
         }
         for(j in 1:length(STu)){
-            sourcesTKT[ns, positionTKT[TKTu == STtable[j, 7]]] <- sourcesTKT[ns, positionTKT[TKTu==STtable[j,7]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human") & (DATA$country==Ctr) & z) 
+            sourcesTKT[ns, positionTKT[TKTu == STtable[j, 7]]] <- sourcesTKT[ns, positionTKT[TKTu==STtable[j,7]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human")  & z) 
         }
         for(j in 1:length(STu)){
-            sourcesUNC[ns, positionUNC[UNCu == STtable[j, 8]]] <- sourcesUNC[ns, positionUNC[UNCu==STtable[j,8]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human") & (DATA$country==Ctr) & z) 
+            sourcesUNC[ns, positionUNC[UNCu == STtable[j, 8]]] <- sourcesUNC[ns, positionUNC[UNCu==STtable[j,8]]] + sum((DATA$ST==STu[j]) & is.element(STu[j],STuHo) & (DATA$group=="human")  & z) 
         }
     }
     data <- list(sourcenames = sourcenames, ind = ind,

@@ -4,12 +4,10 @@
 \alias{dataformatting}
 \title{data formatting}
 \usage{
-dataformatting(DATA, Ctr, UM)
+dataformatting(DATA, UM)
 }
 \arguments{
 \item{DATA}{A data set}
-
-\item{Ctr}{a string that is one of the countries in the dataset}
 
 \item{UM}{An integer 0, 1, 2. Choose 0 for setting 0 as 'data
 sample' for unknown source. Choose 1 for taking the mean type
