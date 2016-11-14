@@ -1,7 +1,18 @@
 library(kilde)
-ob <- dataformatting(DATA = read.table("NMDD2015data_vers21_modif.txt",header=TRUE),
-                     Ctr = "FI",
+
+## In order to make the sample data work I needed to add some
+## capitalization to a few strings
+df <- sample_data()
+## names(df)[names(df)=="country"] <- "Country"
+## names(df)[names(df)=="group"] <- "Group"
+## df$Group <- as.character(df$Group)
+## df$Group[df$Group == "human"] <- "Human"
+ob <- dataformatting(DATA = df,
+                     Ctr = "Estonia",
                      UM = 2)
+## ob <- dataformatting(DATA = read.table("NMDD2015data_vers21_modif.txt",header=TRUE),
+##                      Ctr = "FI",
+##                      UM = 2)
 result <- initialize_mcmc(ns = ob$inits$ns,
                           nat = ob$inits$nat,
                           MCMC = 100,
