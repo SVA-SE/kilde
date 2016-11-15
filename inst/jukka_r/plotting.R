@@ -12,8 +12,6 @@ plot_r_mcmc <- function(mcmc_ob, burnin){
     }
 }
     
-dev.new()
-
 loASP <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[1])
 loGLN <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[2])
 loGLT <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[3])
@@ -21,7 +19,7 @@ loGLY <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[4])
 loPGM <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[5])
 loTKT <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[6])
 loUNC <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[7])
-
+##
 upASP <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[1])
 upGLN <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[2])
 upGLT <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[3])
@@ -29,7 +27,7 @@ upGLY <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[4])
 upPGM <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[5])
 upTKT <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[6])
 upUNC <- matrix(0, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[7])
-
+##
 # check the fit of estimated freqs and observed freqs:
 # Set the number of picture frames as suitable:
 par(mfrow=c(2,4))
@@ -47,7 +45,6 @@ errorGLYhum <- numeric()
 errorPGMhum <- numeric()
 errorTKThum <- numeric()
 errorUNChum <- numeric()
-
 ## ASP plot
 mqASP <- matrix(NA, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[1])
 for(i in 1:mcmc_ob$var_a$ns){
@@ -77,9 +74,9 @@ for(i in 1:(mcmc_ob$var_a$ns - 1)){
     }
 }
 ## GLN plot
-mqGLN <- matrix(NA, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[1])
+mqGLN <- matrix(NA, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[2])
 for(i in 1:mcmc_ob$var_a$ns){
-    for(j in 1:mcmc_ob$var_b$inits$nat[1]){
+    for(j in 1:mcmc_ob$var_b$inits$nat[2]){
         mqGLN[i, j] <- mean(mcmc_ob$var_a$qGLN[burnin:mcmc_ob$var_a$MCMC, i, j]) 
         loup <- quantile(mcmc_ob$var_a$qGLN[burnin:mcmc_ob$var_a$MCMC, i, j], c(0.025, 0.975), names=FALSE)
         loGLN[i, j] <- loup[1]; upGLN[i,j] <- loup[2]
@@ -94,25 +91,23 @@ plot(c(0, 1),
      ylab = "Observed sample freq",
      main = "GLN")
 for(i in 1:(mcmc_ob$var_a$ns - 1)){
-    errorGLN[i, 1:mcmc_ob$var_b$inits$nat[1]] <- (mqGLN[i, ] - mcmc_ob$var_b$data$sourcesGLN[i, ] /
+    errorGLN[i, 1:mcmc_ob$var_b$inits$nat[2]] <- (mqGLN[i, ] - mcmc_ob$var_b$data$sourcesGLN[i, ] /
                               sum(mcmc_ob$var_b$data$sourcesGLN[i, ]))^2
     points(mqGLN[i, ], mcmc_ob$var_b$data$sourcesGLN[i, ] /
                        sum(mcmc_ob$var_b$data$sourcesGLN[i, ]), col=i, pch=16)
-    for(j in 1:mcmc_ob$var_b$inits$nat[1]){ 
+    for(j in 1:mcmc_ob$var_b$inits$nat[2]){ 
         points(c(loGLN[i, j], upGLN[i, j]),
                rep(mcmc_ob$var_b$data$sourcesGLN[i, j] /
                    sum(mcmc_ob$var_b$data$sourcesGLN[i, ]), 2), col=i, type="l")
     }
 }
-##################################3
-##
-mqGLN <- matrix(NA, mcmc_ob$var_a$ns, nat[2])
+## GLT plot
+mqGLT <- matrix(NA, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[3])
 for(i in 1:mcmc_ob$var_a$ns){
-    for(j in 1:nat[2]){
-        mqGLN[i, j] <- mean(qGLN[burnin:MCMC, i, j]) 
-        loup <- quantile(qGLN[burnin:MCMC, i, j], c(0.025, 0.975), names=FALSE)
-        loGLN[i, j] <- loup[1]
-        upGLN[i, j] <- loup[2]
+    for(j in 1:mcmc_ob$var_b$inits$nat[3]){
+        mqGLT[i, j] <- mean(mcmc_ob$var_a$qGLT[burnin:mcmc_ob$var_a$MCMC, i, j]) 
+        loup <- quantile(mcmc_ob$var_a$qGLT[burnin:mcmc_ob$var_a$MCMC, i, j], c(0.025, 0.975), names=FALSE)
+        loGLT[i, j] <- loup[1]; upGLT[i,j] <- loup[2]
     }
 }
 plot(c(0, 1),
@@ -120,49 +115,27 @@ plot(c(0, 1),
      type = "l",
      xlim = c(0, 1),
      ylim = c(0, 1),
-     xlab = "Estimated freq",
-     ylab = "Observed sample freq",
-     main="GLN")
-for(i in 1:(mcmc_ob$var_a$ns - 1)){
-    errorGLN[i, 1:nat[2]] <- (mqGLN[i, ] - sourcesGLN[i, ]/sum(sourcesGLN[i, ]))^2
-    points(mqGLN[i, ], sourcesGLN[i, ] / sum(sourcesGLN[i, ]), col=i, pch=16)
-    for(j in 1:nat[2]){
-        points(c(loGLN[i, j], upGLN[i, j]),
-               rep(sourcesGLN[i, j] / sum(sourcesGLN[i, ]), 2), col=i, type="l")
-    }
-}
-mqGLT <- matrix(NA, mcmc_ob$var_a$ns,nat[3])
-for(i in 1:mcmc_ob$var_a$ns){
-    for(j in 1:nat[3]){
-        mqGLT[i, j] <- mean(qGLT[burnin:MCMC, i, j]) 
-        loup <- quantile(qGLT[burnin:MCMC, i, j], c(0.025, 0.975), names=FALSE)
-        loGLT[i, j] <- loup[1]
-        upGLT[i, j] <- loup[2]
-    }
-}
-plot(c(0, 1),
-     c(0, 1),
-     type = "l",
-     xlim = c(0, 1),
-     ylim = c(0,1),
      xlab = "Estimated freq",
      ylab = "Observed sample freq",
      main = "GLT")
 for(i in 1:(mcmc_ob$var_a$ns - 1)){
-    errorGLT[i, 1:nat[3]] <- ( mqGLT[i, ] - sourcesGLT[i, ] / sum(sourcesGLT[i, ]) )^2
-    points(mqGLT[i, ], sourcesGLT[i, ] / sum(sourcesGLT[i, ]), col=i, pch=16)
-    for(j in 1:nat[3]){
+    errorGLT[i, 1:mcmc_ob$var_b$inits$nat[3]] <- (mqGLT[i, ] - mcmc_ob$var_b$data$sourcesGLT[i, ] /
+                              sum(mcmc_ob$var_b$data$sourcesGLT[i, ]))^2
+    points(mqGLT[i, ], mcmc_ob$var_b$data$sourcesGLT[i, ] /
+                       sum(mcmc_ob$var_b$data$sourcesGLT[i, ]), col=i, pch=16)
+    for(j in 1:mcmc_ob$var_b$inits$nat[3]){ 
         points(c(loGLT[i, j], upGLT[i, j]),
-               rep(sourcesGLT[i, j] / sum(sourcesGLT[i, ]), 2), col=i, type="l")
+               rep(mcmc_ob$var_b$data$sourcesGLT[i, j] /
+                   sum(mcmc_ob$var_b$data$sourcesGLT[i, ]), 2), col=i, type="l")
     }
 }
-mqGLY <- matrix(NA, mcmc_ob$var_a$ns, nat[4])
+## GLY plot
+mqGLY <- matrix(NA, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[4])
 for(i in 1:mcmc_ob$var_a$ns){
-    for(j in 1:nat[4]){
-        mqGLY[i, j] <- mean(qGLY[burnin:MCMC, i, j]) 
-        loup <- quantile(qGLY[burnin:MCMC, i, j], c(0.025, 0.975), names=FALSE)
-        loGLY[i,j] <- loup[1]
-        upGLY[i,j] <- loup[2]
+    for(j in 1:mcmc_ob$var_b$inits$nat[4]){
+        mqGLY[i, j] <- mean(mcmc_ob$var_a$qGLY[burnin:mcmc_ob$var_a$MCMC, i, j]) 
+        loup <- quantile(mcmc_ob$var_a$qGLY[burnin:mcmc_ob$var_a$MCMC, i, j], c(0.025, 0.975), names=FALSE)
+        loGLY[i, j] <- loup[1]; upGLY[i,j] <- loup[2]
     }
 }
 plot(c(0, 1),
@@ -172,22 +145,25 @@ plot(c(0, 1),
      ylim = c(0, 1),
      xlab = "Estimated freq",
      ylab = "Observed sample freq",
-     main="GLY")
+     main = "GLY")
 for(i in 1:(mcmc_ob$var_a$ns - 1)){
-    errorGLY[i, 1:nat[4]] <- (mqGLY[i,] - sourcesGLY[i,] / sum(sourcesGLY[i, ]))^2
-    points(mqGLY[i, ], sourcesGLY[i, ] / sum(sourcesGLY[i, ]), col=i, pch=16)
-    for(j in 1:nat[4]){
+    errorGLY[i, 1:mcmc_ob$var_b$inits$nat[4]] <- (mqGLY[i, ] - mcmc_ob$var_b$data$sourcesGLY[i, ] /
+                              sum(mcmc_ob$var_b$data$sourcesGLY[i, ]))^2
+    points(mqGLY[i, ], mcmc_ob$var_b$data$sourcesGLY[i, ] /
+                       sum(mcmc_ob$var_b$data$sourcesGLY[i, ]), col=i, pch=16)
+    for(j in 1:mcmc_ob$var_b$inits$nat[4]){ 
         points(c(loGLY[i, j], upGLY[i, j]),
-               rep(sourcesGLY[i, j] / sum(sourcesGLY[i, ]), 2), col=i, type="l")
+               rep(mcmc_ob$var_b$data$sourcesGLY[i, j] /
+                   sum(mcmc_ob$var_b$data$sourcesGLY[i, ]), 2), col=i, type="l")
     }
 }
-mqPGM <- matrix(NA, mcmc_ob$var_a$ns, nat[5])
+## PGM plot
+mqPGM <- matrix(NA, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[5])
 for(i in 1:mcmc_ob$var_a$ns){
-    for(j in 1:nat[5]){
-        mqPGM[i, j] <- mean(qPGM[burnin:MCMC, i, j]) 
-        loup <- quantile(qPGM[burnin:MCMC, i, j], c(0.025, 0.975), names=FALSE)
-        loPGM[i, j] <- loup[1]
-        upPGM[i, j] <- loup[2]
+    for(j in 1:mcmc_ob$var_b$inits$nat[5]){
+        mqPGM[i, j] <- mean(mcmc_ob$var_a$qPGM[burnin:mcmc_ob$var_a$MCMC, i, j]) 
+        loup <- quantile(mcmc_ob$var_a$qPGM[burnin:mcmc_ob$var_a$MCMC, i, j], c(0.025, 0.975), names=FALSE)
+        loPGM[i, j] <- loup[1]; upPGM[i,j] <- loup[2]
     }
 }
 plot(c(0, 1),
@@ -198,21 +174,24 @@ plot(c(0, 1),
      xlab = "Estimated freq",
      ylab = "Observed sample freq",
      main = "PGM")
-for(i in 1:(mcmc_ob$var_a$ns-1)){
-    errorPGM[i, 1:nat[5]] <- (mqPGM[i, ] - sourcesPGM[i, ] / sum(sourcesPGM[i, ]) )^2
-    points(mqPGM[i, ], sourcesPGM[i, ] / sum(sourcesPGM[i, ]), col = i, pch = 16)
-    for(j in 1:nat[5]){
+for(i in 1:(mcmc_ob$var_a$ns - 1)){
+    errorPGM[i, 1:mcmc_ob$var_b$inits$nat[5]] <- (mqPGM[i, ] - mcmc_ob$var_b$data$sourcesPGM[i, ] /
+                              sum(mcmc_ob$var_b$data$sourcesPGM[i, ]))^2
+    points(mqPGM[i, ], mcmc_ob$var_b$data$sourcesPGM[i, ] /
+                       sum(mcmc_ob$var_b$data$sourcesPGM[i, ]), col=i, pch=16)
+    for(j in 1:mcmc_ob$var_b$inits$nat[5]){ 
         points(c(loPGM[i, j], upPGM[i, j]),
-               rep(sourcesPGM[i, j] / sum(sourcesPGM[i, ]), 2), col = i, type = "l")
+               rep(mcmc_ob$var_b$data$sourcesPGM[i, j] /
+                   sum(mcmc_ob$var_b$data$sourcesPGM[i, ]), 2), col=i, type="l")
     }
 }
-mqTKT <- matrix(NA, mcmc_ob$var_a$ns, nat[6])
+## TKT plot
+mqTKT <- matrix(NA, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[6])
 for(i in 1:mcmc_ob$var_a$ns){
-    for(j in 1:nat[6]){
-        mqTKT[i, j] <- mean(qTKT[burnin:MCMC, i, j]) 
-        loup <- quantile(qTKT[burnin:MCMC, i, j], c(0.025, 0.975), names=FALSE)
-        loTKT[i, j] <- loup[1]
-        upTKT[i, j] <- loup[2]
+    for(j in 1:mcmc_ob$var_b$inits$nat[6]){
+        mqTKT[i, j] <- mean(mcmc_ob$var_a$qTKT[burnin:mcmc_ob$var_a$MCMC, i, j]) 
+        loup <- quantile(mcmc_ob$var_a$qTKT[burnin:mcmc_ob$var_a$MCMC, i, j], c(0.025, 0.975), names=FALSE)
+        loTKT[i, j] <- loup[1]; upTKT[i,j] <- loup[2]
     }
 }
 plot(c(0, 1),
@@ -222,22 +201,25 @@ plot(c(0, 1),
      ylim = c(0, 1),
      xlab = "Estimated freq",
      ylab = "Observed sample freq",
-     main="TKT")
+     main = "TKT")
 for(i in 1:(mcmc_ob$var_a$ns - 1)){
-    errorTKT[i, 1:nat[6]] <- ( mqTKT[i,] - sourcesTKT[i, ] / sum(sourcesTKT[i, ]) )^2
-    points(mqTKT[i, ], sourcesTKT[i, ] / sum(sourcesTKT[i, ]), col = i, pch = 16)
-    for(j in 1:nat[6]){
+    errorTKT[i, 1:mcmc_ob$var_b$inits$nat[6]] <- (mqTKT[i, ] - mcmc_ob$var_b$data$sourcesTKT[i, ] /
+                              sum(mcmc_ob$var_b$data$sourcesTKT[i, ]))^2
+    points(mqTKT[i, ], mcmc_ob$var_b$data$sourcesTKT[i, ] /
+                       sum(mcmc_ob$var_b$data$sourcesTKT[i, ]), col=i, pch=16)
+    for(j in 1:mcmc_ob$var_b$inits$nat[6]){ 
         points(c(loTKT[i, j], upTKT[i, j]),
-               rep(sourcesTKT[i, j] / sum(sourcesTKT[i, ]), 2), col = i, type = "l")
+               rep(mcmc_ob$var_b$data$sourcesTKT[i, j] /
+                   sum(mcmc_ob$var_b$data$sourcesTKT[i, ]), 2), col=i, type="l")
     }
 }
-mqUNC <- matrix(NA, mcmc_ob$var_a$ns, nat[7])
+## UNC plot
+mqUNC <- matrix(NA, mcmc_ob$var_a$ns, mcmc_ob$var_b$inits$nat[7])
 for(i in 1:mcmc_ob$var_a$ns){
-    for(j in 1:nat[7]){
-        mqUNC[i, j] <- mean(qUNC[burnin:MCMC, i, j]) 
-        loup <- quantile(qUNC[burnin:MCMC, i, j], c(0.025, 0.975), names=FALSE)
-        loUNC[i, j] <- loup[1]
-        upUNC[i, j] <- loup[2]
+    for(j in 1:mcmc_ob$var_b$inits$nat[7]){
+        mqUNC[i, j] <- mean(mcmc_ob$var_a$qUNC[burnin:mcmc_ob$var_a$MCMC, i, j]) 
+        loup <- quantile(mcmc_ob$var_a$qUNC[burnin:mcmc_ob$var_a$MCMC, i, j], c(0.025, 0.975), names=FALSE)
+        loUNC[i, j] <- loup[1]; upUNC[i,j] <- loup[2]
     }
 }
 plot(c(0, 1),
@@ -247,42 +229,48 @@ plot(c(0, 1),
      ylim = c(0, 1),
      xlab = "Estimated freq",
      ylab = "Observed sample freq",
-     main="UNC")
+     main = "UNC")
 for(i in 1:(mcmc_ob$var_a$ns - 1)){
-    errorUNC[i, 1:nat[7]] <- (mqUNC[i, ] - sourcesUNC[i, ] / sum(sourcesUNC[i, ]) )^2
-    points(mqUNC[i, ], sourcesUNC[i, ] / sum(sourcesUNC[i, ]), col = i, pch = 16)
-    for(j in 1:nat[7]){
+    errorUNC[i, 1:mcmc_ob$var_b$inits$nat[7]] <- (mqUNC[i, ] - mcmc_ob$var_b$data$sourcesUNC[i, ] /
+                              sum(mcmc_ob$var_b$data$sourcesUNC[i, ]))^2
+    points(mqUNC[i, ], mcmc_ob$var_b$data$sourcesUNC[i, ] /
+                       sum(mcmc_ob$var_b$data$sourcesUNC[i, ]), col=i, pch=16)
+    for(j in 1:mcmc_ob$var_b$inits$nat[7]){ 
         points(c(loUNC[i, j], upUNC[i, j]),
-               rep(sourcesUNC[i, j] / sum(sourcesUNC[i, ]), 2), col = i, type = "l")
+               rep(mcmc_ob$var_b$data$sourcesUNC[i, j] /
+                   sum(mcmc_ob$var_b$data$sourcesUNC[i, ]), 2), col=i, type="l")
     }
 }
+#####
+
+
 
 # start plotting SA results:
 s <- numeric()
 for(i in 1:mcmc_ob$var_a$ns){
-    s[i] <- sd(mcmc_ob$var_a$phi[burnin:MCMC, i])
+    s[i] <- sd(mcmc_ob$var_a$phi[burnin:mcmc_ob$var_a$MCMC, i])
 }
 iix <- sort(s, index.return = TRUE)
 attach(iix)
 ##pdf("SAresult.pdf")
-plot(density(mcmc_ob$var_a$phi[burnin:MCMC, ix[1]]),
-     col = ix[1],
+plot(density(mcmc_ob$var_a$phi[burnin:mcmc_ob$var_a$MCMC, iix$ix[1]]),
+     col = iix$ix[1],
      xlim = c(0, 1),
      xlab = "Source attribution",
      ylab = "",
-     main = Ctr,
+     main = "",
      lwd = 2)
 for(i in 2:mcmc_ob$var_a$ns){
-    points(density(mcmc_ob$var_a$phi[burnin:MCMC, ix[i]]),
+    points(density(mcmc_ob$var_a$phi[burnin:mcmc_ob$var_a$MCMC, iix$ix[i]]),
            type = "l",
-           col = ix[i],
+           col = iix$ix[i],
            lwd = 2)
 }
-names <- c(sourcenames, rep("Unknown", 10))
+names <- c(mcmc_ob$var_b$data$sourcenames, rep("Unknown", 10))
 legend(x = "topright",
-       names[ix],
-       text.col=ix)
-  #dev.off()
+       names[iix$ix],
+       text.col=iix$ix)
+
 
 
 
