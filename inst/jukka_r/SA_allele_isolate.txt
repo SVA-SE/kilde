@@ -1,14 +1,13 @@
 model{
 # This is a straightforward model for SA with allele data without genetic parameters.
 # The model has only multinomial-dirichlet parameters as such.  
-# The "unknown source" has relative frequencies from uninformative Dir(1/n)-prior
+# The "unknown source" is the the last one (i=ns) indexed, and could be modeled in a different way than the other groups.
 
 ##########################
 # posterior of allele frequencies (q***):
 # solved here analytically as dirichlet for each source population.
-# (Alternatively: could set q*** fixed to observed frequency)
-# For simplicity, the whole set of allele types (from all sources) are used as a vector
-# of possible allele types [1:nat[j]] for each locus.
+# For simplicity, the whole set of allele types are used as a vector
+# of possible allele types [1:nat[j]] for each locus j=1,...,7.
 # Prior for q*** is of the form: "Dir(1/n)", "n" is the number of allele types (length of vector). 
 
 for(i in 1:ns-1){   # ns = number of source populations
