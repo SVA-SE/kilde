@@ -13,20 +13,36 @@ result <- initialize_mcmc(ns = ob$inits$ns,
 mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
 plot_r_mcmc(mcmc_ob, 50)
 plot_posterior_mcmc(mcmc_ob, 50)
-## ## ·         And the MCMC with the BUGS model:
+
+##And the MCMC with the BUGS model:
  
-## library("R2OpenBUGS")
+library("R2OpenBUGS")
  
-## source("initializebugs.R")
+source("initializebugs.R")
  
 ## # Below, BUGS model cannot handle large number of MCMC iterations for all parameters.
 ## # Therefore, advisable to try with smaller number:
- 
-## MCMC <- 200
-## burnin <- 100
- 
-## res <- bugs(data,inits,parameters,"SA_allele_isolate.txt",n.chains=1,n.burnin=burnin,n.iter=MCMC)
- 
+result <- initialize_bugs(ob)
+run_bugs <- function(result,
+                     MCMC,
+                     burnin,
+                     FULL,
+                     model = "SA_allele_isolate.txt",
+                     n.chains = 1) {
+    result$data <- c(result$data, FULL = FULL)
+    res2 <- bugs(result$data,
+                 result$inits,
+                 result$parameters,
+                 model,
+                 n.chains = n.chains,
+                 n.burnin = burnin,
+                 n.iter=MCMC)
+}
+run_bugs(result = result,
+         MCMC = 1000,
+         burnin = 100,
+         FULL = 0)
+
 ## attach.bugs(res)
  
 ## # BUGS has returned iterations from burnin+1
