@@ -272,7 +272,6 @@ plot_posterior_mcmc <- function(mcmc_ob, burnin) {
         s[i] <- sd(mcmc_ob$var_a$phi[burnin:mcmc_ob$var_a$MCMC, i])
     }
     iix <- sort(s, index.return = TRUE)
-    attach(iix)
     ##pdf("SAresult.pdf")
     plot(density(mcmc_ob$var_a$phi[burnin:mcmc_ob$var_a$MCMC, iix$ix[1]]),
          col = iix$ix[1],
