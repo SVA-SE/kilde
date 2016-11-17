@@ -24,10 +24,11 @@ result <- run_bugs(result = result,
                    MCMC = 1000,
                    n.burnin = 100,
                    FULL = 0)
-## attach.bugs(res)
- 
-## # BUGS has returned iterations from burnin+1
- 
+## How to plot this?
+
+## attach.bugs(result)
+## ## BUGS has returned iterations from burnin+1
+
 ## MCMC <- MCMC-burnin
 ## burnin <- 1
 ## source("plotting.R")
