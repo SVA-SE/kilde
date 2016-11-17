@@ -2,9 +2,11 @@
 
 export(clean_data)
 export(dataformatting)
+export(initialize_bugs)
 export(initialize_mcmc)
 export(plot_posterior_mcmc)
 export(plot_r_mcmc)
+export(run_bugs)
 export(run_model)
 export(runmcmc)
 export(sample_data)

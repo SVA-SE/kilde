@@ -1,4 +1,4 @@
-##' A method to run the mcmc
+##' A method to run the mcmc in R
 ##'
 ##' @title runmcmc
 ##' @param result An object from the initialize mcmc function

@@ -25,7 +25,7 @@ type frequencies}
 A list of objects to be passed onto the plot function
 }
 \description{
-A method to run the mcmc
+A method to run the mcmc in R
 }
 \author{
 Jukka Ranta

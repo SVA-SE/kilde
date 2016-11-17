@@ -1,0 +1,64 @@
+model{
+# This is a straightforward model for SA with allele data without genetic parameters.
+# The model has only multinomial-dirichlet parameters as such.  
+# The "unknown source" is the the last one (i=ns) indexed, and could be modeled in a different way than the other groups.
+
+##########################
+# posterior of allele frequencies (q***):
+# solved here analytically as dirichlet for each source population.
+# For simplicity, the whole set of allele types are used as a vector
+# of possible allele types [1:nat[j]] for each locus j=1,...,7.
+# Prior for q*** is of the form: "Dir(1/n)", "n" is the number of allele types (length of vector). 
+
+for(i in 1:ns-1){   # ns = number of source populations
+qASP[i,1:nat[1]] ~ ddirich(ASPpar[i,])
+for(j in 1:nat[1]){  ASPpar[i,j] <- sourcesASP[i,j] + 1/nat[1] ; qASP.cut[i,j]  <- FULL*(qASP[i,j])+(1-FULL)*cut(qASP[i,j]) }
+qGLN[i,1:nat[2]] ~ ddirich(GLNpar[i,])
+for(j in 1:nat[2]){  GLNpar[i,j] <- sourcesGLN[i,j] + 1/nat[2] ; qGLN.cut[i,j]  <- FULL*(qGLN[i,j])+(1-FULL)*cut(qGLN[i,j]) }
+qGLT[i,1:nat[3]] ~ ddirich(GLTpar[i,])
+for(j in 1:nat[3]){  GLTpar[i,j] <- sourcesGLT[i,j] + 1/nat[3] ; qGLT.cut[i,j]  <- FULL*(qGLT[i,j])+(1-FULL)*cut(qGLT[i,j]) }
+qGLY[i,1:nat[4]] ~ ddirich(GLYpar[i,])
+for(j in 1:nat[4]){  GLYpar[i,j] <- sourcesGLY[i,j] + 1/nat[4] ; qGLY.cut[i,j]  <- FULL*(qGLY[i,j])+(1-FULL)*cut(qGLY[i,j]) }
+qPGM[i,1:nat[5]] ~ ddirich(PGMpar[i,])
+for(j in 1:nat[5]){  PGMpar[i,j] <- sourcesPGM[i,j] + 1/nat[5] ; qPGM.cut[i,j]  <- FULL*(qPGM[i,j])+(1-FULL)*cut(qPGM[i,j]) }
+qTKT[i,1:nat[6]] ~ ddirich(TKTpar[i,])
+for(j in 1:nat[6]){  TKTpar[i,j] <- sourcesTKT[i,j] + 1/nat[6] ; qTKT.cut[i,j]  <- FULL*(qTKT[i,j])+(1-FULL)*cut(qTKT[i,j]) }
+qUNC[i,1:nat[7]] ~ ddirich(UNCpar[i,])
+for(j in 1:nat[7]){  UNCpar[i,j] <- sourcesUNC[i,j] + 1/nat[7] ; qUNC.cut[i,j]  <- FULL*(qUNC[i,j])+(1-FULL)*cut(qUNC[i,j]) }
+}
+qASP[ns,1:nat[1]] ~ ddirich(ASPpar[ns,])
+for(j in 1:nat[1]){ ASPpar[ns,j]<- sourcesASP[ns,j]+1/nat[1] ; qASP.cut[ns,j] <- FULL*(qASP[ns,j])+(1-FULL)*cut(qASP[ns,j]) }
+qGLN[ns,1:nat[2]] ~ ddirich(GLNpar[ns,])
+for(j in 1:nat[2]){ GLNpar[ns,j]<- sourcesGLN[ns,j]+1/nat[2] ; qGLN.cut[ns,j] <- FULL*(qGLN[ns,j])+(1-FULL)*cut(qGLN[ns,j]) }
+qGLT[ns,1:nat[3]] ~ ddirich(GLTpar[ns,])
+for(j in 1:nat[3]){ GLTpar[ns,j]<- sourcesGLT[ns,j]+1/nat[3] ; qGLT.cut[ns,j]  <- FULL*(qGLT[ns,j])+(1-FULL)*cut(qGLT[ns,j]) }
+qGLY[ns,1:nat[4]] ~ ddirich(GLYpar[ns,])
+for(j in 1:nat[4]){ GLYpar[ns,j]<- sourcesGLY[ns,j]+1/nat[4] ; qGLY.cut[ns,j]  <- FULL*(qGLY[ns,j])+(1-FULL)*cut(qGLY[ns,j]) }
+qPGM[ns,1:nat[5]] ~ ddirich(PGMpar[ns,])
+for(j in 1:nat[5]){ PGMpar[ns,j]<- sourcesPGM[ns,j]+1/nat[5]; qPGM.cut[ns,j] <-  FULL*(qPGM[ns,j])+(1-FULL)*cut(qPGM[ns,j]) }
+qTKT[ns,1:nat[6]] ~ ddirich(TKTpar[ns,])
+for(j in 1:nat[6]){  TKTpar[ns,j]<- sourcesTKT[ns,j]+1/nat[6]; qTKT.cut[ns,j]  <- FULL*(qTKT[ns,j])+(1-FULL)*cut(qTKT[ns,j]) }
+qUNC[ns,1:nat[7]] ~ ddirich(UNCpar[ns,])
+for(j in 1:nat[7]){  UNCpar[ns,j]<- sourcesUNC[ns,j]+1/nat[7]; qUNC.cut[ns,j] <- FULL*(qUNC[ns,j])+(1-FULL)*cut(qUNC[ns,j]) }
+
+
+
+# Human isolates: Z[i] = indicator for the underlying source for isolate i.
+for(i in 1:Nisolates){
+Z[i] ~ dcat(phi[1:ns])  
+IASP[i,1:nat[1]] ~  dmulti(qASP.cut[Z[i],1:nat[1]],1)
+IGLN[i,1:nat[2]] ~  dmulti(qGLN.cut[Z[i],1:nat[2]],1)
+IGLT[i,1:nat[3]] ~  dmulti(qGLT.cut[Z[i],1:nat[3]],1)
+IGLY[i,1:nat[4]] ~  dmulti(qGLY.cut[Z[i],1:nat[4]],1)
+IPGM[i,1:nat[5]] ~  dmulti(qPGM.cut[Z[i],1:nat[5]],1)
+ITKT[i,1:nat[6]] ~  dmulti(qTKT.cut[Z[i],1:nat[6]],1)
+IUNC[i,1:nat[7]] ~  dmulti(qUNC.cut[Z[i],1:nat[7]],1)
+for(k in 1:ns){S[i,k] <- equals(Z[i],k)}
+}
+for(k in 1:ns){P[k] <- mean(S[,k])}   # average membership to group k 
+
+for(i in 1:ns){  
+ phi[i] <- g0[i]/sum(g0[]) 
+g0[i] ~ dgamma(beta[i],1)  # use beta[i] = 1 for Dir(1,1,1,....) prior
+}  
+} # End of model
