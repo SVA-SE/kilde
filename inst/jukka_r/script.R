@@ -19,12 +19,15 @@ plot_posterior_mcmc(mcmc_ob, 50)
 ## advisable to try with smaller number:
 ##
 ## Initialize and then run the model in bugs
-result <- initialize_bugs(ob)
-result <- run_bugs(result = result,
+initial_result <- initialize_bugs(ob)
+result <- run_bugs(result = initial_result,
                    MCMC = 1000,
                    n.burnin = 100,
                    FULL = 0)
 ## How to plot this?
+## result$
+
+## str(df)
 
 ## attach.bugs(result)
 ## ## BUGS has returned iterations from burnin+1

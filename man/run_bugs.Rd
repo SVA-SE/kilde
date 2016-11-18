@@ -4,7 +4,7 @@
 \alias{run_bugs}
 \title{run_bugs}
 \usage{
-run_bugs(result, MCMC, n.burnin, FULL, model = "SA_allelemodel3.jag",
+run_bugs(result, MCMC, n.burnin, FULL, model = "SA_allele_model.jag",
   n.chains = 1)
 }
 \arguments{

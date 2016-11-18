@@ -18,7 +18,7 @@ run_bugs <- function(result,
                      MCMC,
                      n.burnin,
                      FULL,
-                     model = "SA_allelemodel3.jag",
+                     model = "SA_allele_model.jag",
                      n.chains = 1) {
     if(file.exists(system.file(package = "kilde", paste0("models/", model)))){
         modelfile <- system.file(package = "kilde", paste0("models/", model))    
