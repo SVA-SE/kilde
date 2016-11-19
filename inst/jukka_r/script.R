@@ -12,15 +12,18 @@ result <- initialize_mcmc(ns = ob$inits$ns,
                           MCMC = 100,
                           Nisolates = ob$inits$Nisolates)
 mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
-##  Plot it
+##  Plot the results of this model.
 plot_history(mcmc_ob, 50)
 plot_population_attribution(mcmc_ob, 50)
-## 
-## And the MCMC with the BUGS model: Below, BUGS model cannot handle
-## large number of MCMC iterations for all parameters.  Therefore,
-## advisable to try with smaller number:
 ##
-## Initialize and then run the model in bugs
+################################################
+## Initialize and then run the model in OpenBugs
+################################################
+##
+## Below, BUGS model cannot handle a large number of MCMC iterations
+## for all parameters.  Therefore, advisable to try with smaller
+## number of iterations to start, perhaps 1000
+##
 initial_result <- initialize_bugs(ob)
 result_bugs <- run_bugs(result = initial_result,
                         ob = ob,
@@ -29,23 +32,3 @@ result_bugs <- run_bugs(result = initial_result,
                         FULL = 0)
 plot_history(result_bugs, 100)
 plot_population_attribution(result_bugs, 100)
-
-## How to plot this?
-## result$
-
-## str(df)
-
-library(R2OpenBUGS)
-attach.bugs(result_bugs)
-str(result_bugs$sims.list)
-str(result_bugs$n.chains)
-str(result_bugs$n.iter)
-str(result_bugs$n.burnin)
-plot_r_mcmc()
-
-
-## ## BUGS has returned iterations from burnin+1
-
-## MCMC <- MCMC-burnin
-## burnin <- 1
-## source("plotting.R")
