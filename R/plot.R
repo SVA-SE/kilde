@@ -57,6 +57,24 @@ plot_history.kilde_rmcmc <- function(x, burnin){
     sourcenames <- x$var_b$data$sourcenames
     plot_history_internal(ns, phi, MCMC, sourcenames, burnin)
 }
+##' plot_history.kilde_bugsmcmc
+##'
+##' A plotting method for the history of the bugs object
+##' 
+##' @title plot_history.kilde_bugsmcmc
+##' @param x The kilde_bugsmcmc class object
+##' @param burnin the burnin length
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+plot_history.kilde_bugsmcmc <- function(x, burnin){
+    ns <- x$other$ns
+    phi <- x$bugs_result$sims.list$phi
+    MCMC <- x$bugs_result$n.iter - burnin
+    sourcenames <- x$other$sourcenames
+    burnin <- 0
+    plot_history_internal(ns, phi, MCMC, sourcenames, burnin)
+}
 ##' plot_posterior_mcmc: A second plotting method
 ##'
 ##' @title plot_posterior_mcmc

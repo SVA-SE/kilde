@@ -89,6 +89,8 @@ initialize_bugs <- function(ob) {
     parameters <- c("qASP", "qGLN", "qGLT",
                     "qGLY", "qPGM", "qTKT",
                     "qUNC", "phi", "P", "Z")
+    other <- list(ns = ob$inits$ns,
+               sourcenames = ob$data$sourcenames)
     inits <- function(){
         list(g0 = rgamma(data$ns, 1, 1),
              Z = round(
@@ -111,5 +113,6 @@ initialize_bugs <- function(ob) {
     }
     result <- list(data = data,
                    parameters = parameters,
-                   inits = inits)
+                   inits = inits,
+                   other = other)
 }

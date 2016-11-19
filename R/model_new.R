@@ -35,4 +35,8 @@ run_bugs <- function(result,
                  n.chains = n.chains,
                  n.burnin = n.burnin,
                  n.iter = MCMC)
+    result <- list(bugs_result = res2,
+                   other = result$other)
+    class(result) <- "kilde_bugsmcmc"
+    return(result)
 }

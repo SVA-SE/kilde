@@ -20,12 +20,12 @@ plot_posterior_mcmc(mcmc_ob, 50)
 ##
 ## Initialize and then run the model in bugs
 initial_result <- initialize_bugs(ob)
-result_bugs <- run_bugs(result = initial_result,
-                   MCMC = 1000,
-                   n.burnin = 100,
-                   FULL = 0)
-str(result_bugs$sims.list)
 
+result_bugs <- run_bugs(result = initial_result,
+                        MCMC = 1000,
+                        n.burnin = 100,
+                        FULL = 0)
+plot_history(result_bugs, 100)
 
 ## How to plot this?
 ## result$
