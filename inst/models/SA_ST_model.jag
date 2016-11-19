@@ -1,0 +1,31 @@
+model{
+# This is a straightforward model for SA with ST data without genetic parameters.
+# The model has only multinomial-dirichlet parameters as such.  
+
+##########################
+# posterior of ST frequencies (qST):
+# solved here analytically as dirichlet for each source population.
+# For simplicity, the whole set of ST types (from all sources) are used as a vector
+# of possible ST types [1:nt] .
+# Prior for qST is of the form: "Dir(1/n)".
+
+for(i in 1:ns-1){   # ns = number of source populations
+qST[i,1:nt] ~ ddirich(STpar[i,])
+for(j in 1:nt){  STpar[i,j] <- sourcesST[i,j] + 1/nt; qST.cut[i,j]  <- FULL*(qST[i,j])+(1-FULL)*cut(qST[i,j]) }
+}
+qST[ns,1:nt] ~ ddirich(STpar[ns,])
+for(j in 1:nt){ STpar[ns,j]<- sourcesST[ns,j]+1/nt ; qST.cut[ns,j] <- FULL*(qST[ns,j])+(1-FULL)*cut(qST[ns,j]) }
+
+# Human isolates: Z[i] = indicator for the underlying source for isolate i.
+for(i in 1:Nisolates){
+Z[i] ~ dcat(phi[1:ns])  
+IST[i,1:nt] ~  dmulti(qST.cut[Z[i],1:nt],1)
+for(k in 1:ns){S[i,k] <- equals(Z[i],k)}
+}
+for(k in 1:ns){P[k] <- mean(S[,k])}   # average membership to group k 
+
+for(i in 1:ns){  
+ phi[i] <- g0[i]/sum(g0[]) 
+g0[i] ~ dgamma(beta[i],1)  # use beta[i] = 1 for Dir(1,1,1,....) prior
+}  
+} # End of model
