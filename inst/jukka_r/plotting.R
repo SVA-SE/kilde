@@ -271,12 +271,15 @@ legend(x = "topright",
        names[iix$ix],
        text.col=iix$ix)
 
-
-
-
-
-## dev.new()
-## hist(Z[burnin:MCMC,],0.5:(mcmc_ob$var_a$ns+0.5),col="turquoise3",labels=c(sourcenames,"Other"),axes=FALSE,ylab="",xlab="",main="P(Z | data)")
+dev.new()
+hist(Z[burnin:MCMC, ],
+     0.5:(mcmc_ob$var_a$ns + 0.5),
+     col = "turquoise3",
+     labels = c(sourcenames, "Other"),
+     axes = FALSE,
+     ylab = "",
+     xlab = "",
+     main = "P(Z | data)")
 
 
 ## errorsum <- numeric() 

@@ -15,6 +15,7 @@ mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
 ##  Plot the results of this model.
 plot_history(mcmc_ob, 50)
 plot_population_attribution(mcmc_ob, 50)
+plot_sample_attribution(mcmc_ob, 50)
 ##
 ################################################
 ## Initialize and then run the model in OpenBugs
@@ -32,3 +33,14 @@ result_bugs <- run_bugs(result = initial_result,
                         FULL = 0)
 plot_history(result_bugs, 100)
 plot_population_attribution(result_bugs, 100)
+debugonce(kilde:::plot_sample_attribution.kilde_bugsmcmc)
+plot_sample_attribution(result_bugs, 100)
+
+
+
+
+
+
+
+
+

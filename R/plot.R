@@ -391,7 +391,7 @@ plot_population_attribution_internal <- function(ns,
 plot_population_attribution <- function(x, burnin){
   UseMethod('plot_population_attribution')
 }
-plot_history.default = plot_population_attribution
+plot_population_attribution.default = plot_population_attribution
 ##' A population attribution plot for the kilde_rmcmc object
 ##'
 ##' @title plot_population_attribution.kilde_rmcmc
@@ -497,4 +497,86 @@ plot_population_attribution.kilde_bugsmcmc <- function(x,
                                          sourcesPGM,
                                          sourcesTKT,
                                          sourcesUNC)
+}
+##' The internal function to plot the sample attribution
+##'
+##' @title plot_sample_attribution_internal
+##' @param Z Z
+##' @param burnin the burning length
+##' @param MCMC The number of iterations
+##' @param ns the number of sources
+##' @param sourcenames A character vector of the source names
+##' @importFrom graphics hist
+##' @return A plot
+##' @author Jukka Ranta
+plot_sample_attribution_internal <- function(Z,
+                                             burnin,
+                                             MCMC,
+                                             ns,
+                                             sourcenames){
+    hist(Z[burnin:MCMC, ],
+         0.5:(ns + 0.5),
+         col = "turquoise3",
+         labels = c(sourcenames, "Other"),
+         axes = FALSE,
+         ylab = "",
+         xlab = "",
+         main = "P(Z | data)")
+}
+##' Method for plotting sample attribution
+##'
+##' @title plot_sample_attribution
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+##' @param x the model object
+##' @param burnin the length of the burnin
+plot_sample_attribution <- function(x, burnin){
+  UseMethod('plot_sample_attribution')
+}
+plot_sample_attribution.default = plot_sample_attribution
+##' plot_sample_attribution.kilde_rmcmc
+##'
+##' 
+##' @title plot_sample_attribution.kilde_rmcmc
+##' @param x the model output object
+##' @param burnin the burnin length
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+plot_sample_attribution.kilde_rmcmc <- function(x,
+                                                burnin) {
+    Z <- x$var_a$Z
+    ns <- x$var_a$ns
+    MCMC <- x$var_a$MCMC
+    sourcenames <- x$var_b$data$sourcenames
+    plot_sample_attribution_internal(Z,
+                                     burnin,
+                                     MCMC,
+                                     ns,
+                                     sourcenames)
+}
+##' plot_sample_attribution.kilde_bugsmcmc
+##'
+##' @title plot_sample_attribution.kilde_bugsmcmc
+##' @param x the model object
+##' @param burnin The burnin length
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+plot_sample_attribution.kilde_bugsmcmc <- function(x,
+                                                   burnin) {
+    ## pick out objects to pass to plotting
+    Z <- x$bugs_result$sims.list$Z
+    ns <- x$other$ns
+    MCMC <- x$bugs_result$n.iter
+    sourcenames <- x$other$sourcenames
+    MCMC <- MCMC - burnin
+    burnin <- 0
+    ## Run plotting function
+    plot_sample_attribution_internal(Z,
+                                     burnin,
+                                     MCMC,
+                                     ns,
+                                     sourcenames)
 }
