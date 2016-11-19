@@ -280,26 +280,67 @@ hist(Z[burnin:MCMC, ],
      ylab = "",
      xlab = "",
      main = "P(Z | data)")
+#############
+errorsum <- numeric() 
+for(i in 1:ns-1){
+    errorsum[i] <-
+        sum(errorASP[i, ]) +
+        sum(errorGLN[i, ]) +
+        sum(errorGLT[i, ]) +
+        sum(errorGLY[i, ]) +
+        sum(errorPGM[i, ]) +
+        sum(errorTKT[i, ]) +
+        sum(errorUNC[i, ])
+}
+mphi <- numeric()
+meanASPhum <- numeric()
+meanGLNhum <- numeric()
+meanGLThum <- numeric()
+meanGLYhum <- numeric()
+meanPGMhum <- numeric()
+meanTKThum <- numeric()
+meanUNChum <- numeric()
 
+for(i in 1:ns){
+    mphi[i] <- mean(phi[burnin:MCMC, i])
+} 
+for(j in 1:nat[1]){
+    meanASPhum[j] <- sum(mphi * mqASP[, j])
+    errorASPhum[j] <- (humansASP[j] / sum(humansASP) - meanASPhum[j])^2
+}
+for(j in 1:nat[2]){
+    meanGLNhum[j] <- sum(mphi * mqGLN[, j])
+    errorGLNhum[j] <- (humansGLN[j] / sum(humansGLN) - meanGLNhum[j])^2
+}
+for(j in 1:nat[3]){
+    meanGLThum[j] <- sum(mphi * mqGLT[, j])
+    errorGLThum[j] <- (humansGLT[j] / sum(humansGLT) - meanGLThum[j])^2
+}
+for(j in 1:nat[4]){
+    meanGLYhum[j] <- sum(mphi * mqGLY[, j])
+    errorGLYhum[j] <- (humansGLY[j] / sum(humansGLY) - meanGLYhum[j])^2
+}
+for(j in 1:nat[5]){
+    meanPGMhum[j] <- sum(mphi * mqPGM[, j])
+    errorPGMhum[j] <- (humansPGM[j] / sum(humansPGM) - meanPGMhum[j])^2
+}
+for(j in 1:nat[6]){
+    meanTKThum[j] <- sum(mphi * mqTKT[, j])
+    errorTKThum[j] <- (humansTKT[j] / sum(humansTKT) - meanTKThum[j])^2
+}
+for(j in 1:nat[7]){
+    meanUNChum[j] <- sum(mphi * mqUNC[, j])
+    errorUNChum[j] <- (humansUNC[j] / sum(humansUNC) - meanUNChum[j])^2
+}
 
-## errorsum <- numeric() 
-## for(i in 1:mcmc_ob$var_a$ns-1){
-## errorsum[i] <- sum(errorASP[i,])+sum(errorGLN[i,])+sum(errorGLT[i,])+sum(errorGLY[i,])+sum(errorPGM[i,])+sum(errorTKT[i,])+sum(errorUNC[i,])
-## }
-## mphi <- numeric()
-## meanASPhum <- numeric();meanGLNhum <- numeric();meanGLThum <- numeric();meanGLYhum <- numeric()
-## meanPGMhum <- numeric();meanTKThum <- numeric();meanUNChum <- numeric();
-
-## for(i in 1:mcmc_ob$var_a$ns){mphi[i] <- mean(mcmc_ob$var_a$phi[burnin:MCMC,i]) } 
-## for(j in 1:nat[1]){ meanASPhum[j] <- sum(mphi*mqASP[,j]);errorASPhum[j]<-(humansASP[j]/sum(humansASP)-meanASPhum[j])^2 }
-## for(j in 1:nat[2]){ meanGLNhum[j] <- sum(mphi*mqGLN[,j]);errorGLNhum[j]<-(humansGLN[j]/sum(humansGLN)-meanGLNhum[j])^2 }
-## for(j in 1:nat[3]){ meanGLThum[j] <- sum(mphi*mqGLT[,j]);errorGLThum[j]<-(humansGLT[j]/sum(humansGLT)-meanGLThum[j])^2 }
-## for(j in 1:nat[4]){ meanGLYhum[j] <- sum(mphi*mqGLY[,j]);errorGLYhum[j]<-(humansGLY[j]/sum(humansGLY)-meanGLYhum[j])^2 }
-## for(j in 1:nat[5]){ meanPGMhum[j] <- sum(mphi*mqPGM[,j]);errorPGMhum[j]<-(humansPGM[j]/sum(humansPGM)-meanPGMhum[j])^2 }
-## for(j in 1:nat[6]){ meanTKThum[j] <- sum(mphi*mqTKT[,j]);errorTKThum[j]<-(humansTKT[j]/sum(humansTKT)-meanTKThum[j])^2 }
-## for(j in 1:nat[7]){ meanUNChum[j] <- sum(mphi*mqUNC[,j]);errorUNChum[j]<-(humansUNC[j]/sum(humansUNC)-meanUNChum[j])^2 }
-
-## ES <- sum(errorsum)   # sum of all squared errors
-## EShum <- sum(errorASPhum)+sum(errorGLNhum)+sum(errorGLThum)+sum(errorGLYhum)+sum(errorPGMhum)+sum(errorTKThum)+sum(errorUNChum)
+ES <- sum(errorsum)   # sum of all squared errors
+EShum <-
+    sum(errorASPhum) +
+    sum(errorGLNhum) +
+    sum(errorGLThum) +
+    sum(errorGLYhum) +
+    sum(errorPGMhum) +
+    sum(errorTKThum) +
+    sum(errorUNChum)
 
 

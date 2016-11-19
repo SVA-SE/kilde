@@ -233,7 +233,14 @@ dataformatting <- function(DATA, UM) {
                  sourcesGLY = sourcesGLY, IGLY = IGLY,
                  sourcesPGM = sourcesPGM, IPGM = IPGM,
                  sourcesTKT = sourcesTKT, ITKT = ITKT,
-                 sourcesUNC = sourcesUNC, IUNC = IUNC)
+                 sourcesUNC = sourcesUNC, IUNC = IUNC,
+                 humansASP = humansASP,
+                 humansGLN = humansGLN,
+                 humansGLT = humansGLT,
+                 humansGLY = humansGLY,
+                 humansPGM = humansPGM,
+                 humansTKT = humansTKT,
+                 humansUNC = humansUNC)
     inits <- list(ns = ns, nat = nat,
                   Nisolates = Nisolates)
     result <- list(data = data,
