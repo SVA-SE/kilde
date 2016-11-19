@@ -12,7 +12,7 @@ result <- initialize_mcmc(ns = ob$inits$ns,
 mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
 ##  Plot it
 plot_history(mcmc_ob, 50)
-plot_posterior_mcmc(mcmc_ob, 50)
+plot_population_attribution(mcmc_ob, 50)
 ## 
 ## And the MCMC with the BUGS model: Below, BUGS model cannot handle
 ## large number of MCMC iterations for all parameters.  Therefore,
