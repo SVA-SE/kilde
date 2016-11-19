@@ -120,5 +120,6 @@ runmcmc <- function(result,
         }  
     }  ## end of MCMC
     result <- list(var_a = result, var_b = ob)
+    class(result) <- "kilde_rmcmc"
     return(result)
 }

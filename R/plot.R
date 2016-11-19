@@ -1,26 +1,61 @@
-##' A plotting method for the R mcmc model
+##' A plotting method for showing the mcmc history of the model
 ##'
-##' @title plot_r_mcmc
-##' @param mcmc_ob The object returned from running the mcmc
+##' @title plot_history
+##' @param ns the number of sources
+##' @param phi The phi object from the mcmc
+##' @param MCMC The number of iterations
+##' @param sourcenames A character vector of the sourcenames
 ##' @param burnin the burnin length
 ##' @return NULL
 ##' @author Jukka Ranta
-##' @export
 ##' @importFrom graphics par
 ##' @importFrom graphics plot
 ##' @importFrom grDevices dev.new
-plot_r_mcmc <- function(mcmc_ob, burnin) {
-    parsave <- par(mfrow = c(mcmc_ob$var_a$ns, 1), mar = c(2.5, 5.5, 2.5, 2.5))
+plot_history_internal <- function(ns,
+                                  phi,
+                                  MCMC,
+                                  sourcenames,
+                                  burnin) {
+    parsave <- par(mfrow = c(ns, 1), mar = c(2.5, 5.5, 2.5, 2.5))
     on.exit(par(parsave))
-    for(i in 1 : mcmc_ob$var_a$ns){
-        plot(mcmc_ob$var_a$phi[burnin:mcmc_ob$var_a$MCMC, i],
-             xlab="",
-             ylab=mcmc_ob$var_b$data$sourcenames[i],
-             pch=16,
-             cex=0.5,
-             cex.lab=1.7
+    for(i in 1 : ns){
+        plot(phi[burnin:MCMC, i],
+             xlab = "",
+             ylab = sourcenames[i],
+             pch = 16,
+             cex = 0.5,
+             cex.lab = 1.7
              )
     }
+}
+##' plot_history
+##' 
+##' Defining the generic function
+##' @title plot_history 
+##' @param x The object to be plotted
+##' @param burnin the burnin length
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+plot_history <- function(x, burnin){
+  UseMethod('plot_history')
+}
+plot_history.default = plot_history
+##' History plotting function for kilde_rmcmc object
+##'
+##' 
+##' @title plot_history.kilde_rmcmc
+##' @param x The kilde_rmcmc class object
+##' @param burnin The burning length
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+plot_history.kilde_rmcmc <- function(x, burnin){
+    ns <- x$var_a$ns
+    phi <- x$var_a$phi
+    MCMC <- x$var_a$MCMC
+    sourcenames <- x$var_b$data$sourcenames
+    plot_history_internal(ns, phi, MCMC, sourcenames, burnin)
 }
 ##' plot_posterior_mcmc: A second plotting method
 ##'

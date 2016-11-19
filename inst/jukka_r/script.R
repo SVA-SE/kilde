@@ -11,7 +11,7 @@ result <- initialize_mcmc(ns = ob$inits$ns,
                           Nisolates = ob$inits$Nisolates)
 mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
 ##  Plot it
-plot_r_mcmc(mcmc_ob, 50)
+plot_history(mcmc_ob, 50)
 plot_posterior_mcmc(mcmc_ob, 50)
 ## 
 ## And the MCMC with the BUGS model: Below, BUGS model cannot handle
@@ -20,16 +20,27 @@ plot_posterior_mcmc(mcmc_ob, 50)
 ##
 ## Initialize and then run the model in bugs
 initial_result <- initialize_bugs(ob)
-result <- run_bugs(result = initial_result,
+result_bugs <- run_bugs(result = initial_result,
                    MCMC = 1000,
                    n.burnin = 100,
                    FULL = 0)
+str(result_bugs$sims.list)
+
+
 ## How to plot this?
 ## result$
 
 ## str(df)
 
-## attach.bugs(result)
+library(R2OpenBUGS)
+attach.bugs(result_bugs)
+str(result_bugs$sims.list)
+str(result_bugs$n.chains)
+str(result_bugs$n.iter)
+str(result_bugs$n.burnin)
+plot_r_mcmc()
+
+
 ## ## BUGS has returned iterations from burnin+1
 
 ## MCMC <- MCMC-burnin
