@@ -442,3 +442,59 @@ plot_population_attribution.kilde_rmcmc <- function(x,
                                          sourcesTKT,
                                          sourcesUNC)
 }
+##' plot_population_attribution.kilde_bugsmcmc
+##'
+##' A method for ploting the population attribution from the bugs code
+##'
+##' @title plot_population_attribution.kilde_bugsmcmc
+##' @param x the kilde_bugsmcmc object
+##' @param burnin The burnin length
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+plot_population_attribution.kilde_bugsmcmc <- function(x,
+                                                       burnin) {
+    ## pick out objects to pass to plotting
+    ns <- x$other$ns
+    nat <- x$var_b$inits$nat
+    MCMC <- x$bugs_result$n.iter
+    phi <- x$bugs_result$sims.list$phi
+    sourcenames <- x$other$sourcenames
+    qASP <- x$bugs_result$sims.list$qASP
+    qGLN <- x$bugs_result$sims.list$qGLN
+    qGLT <- x$bugs_result$sims.list$qGLT
+    qGLY <- x$bugs_result$sims.list$qGLY
+    qPGM <- x$bugs_result$sims.list$qPGM
+    qTKT <- x$bugs_result$sims.list$qTKT
+    qUNC <- x$bugs_result$sims.list$qUNC
+    sourcesASP <- x$var_b$data$sourcesASP
+    sourcesGLN <- x$var_b$data$sourcesGLN
+    sourcesGLT <- x$var_b$data$sourcesGLT
+    sourcesGLY <- x$var_b$data$sourcesGLY
+    sourcesPGM <- x$var_b$data$sourcesPGM
+    sourcesTKT <- x$var_b$data$sourcesTKT
+    sourcesUNC <- x$var_b$data$sourcesUNC
+    MCMC <- MCMC - burnin
+    burnin <- 0
+    ## Run plotting function
+    plot_population_attribution_internal(ns,
+                                         nat,
+                                         MCMC,
+                                         phi,
+                                         sourcenames,
+                                         burnin,
+                                         qASP,
+                                         qGLN,
+                                         qGLT,
+                                         qGLY,
+                                         qPGM,
+                                         qTKT,
+                                         qUNC,
+                                         sourcesASP,
+                                         sourcesGLN,
+                                         sourcesGLT,
+                                         sourcesGLY,
+                                         sourcesPGM,
+                                         sourcesTKT,
+                                         sourcesUNC)
+}

@@ -4,6 +4,7 @@
 ##' 
 ##' @title run_bugs 
 ##' @param result The result from the initialize_bugs() function
+##' @param ob object from dataformatting function
 ##' @param MCMC The number of iterations in the MCMC
 ##' @param n.burnin the burnin
 ##' @param FULL Choose 1 for full Bayesian model (semi-supervised),
@@ -15,6 +16,7 @@
 ##' @export
 ##' @author Thomas Rosendal
 run_bugs <- function(result,
+                     ob,
                      MCMC,
                      n.burnin,
                      FULL,
@@ -36,7 +38,8 @@ run_bugs <- function(result,
                  n.burnin = n.burnin,
                  n.iter = MCMC)
     result <- list(bugs_result = res2,
-                   other = result$other)
+                   other = result$other,
+                   var_b = ob)
     class(result) <- "kilde_bugsmcmc"
     return(result)
 }

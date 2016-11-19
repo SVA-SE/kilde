@@ -4,7 +4,9 @@ df <- sample_data()
 df <- df[df$country == "Canada",]
 ob <- dataformatting(DATA = df,
                      UM = 2)
+######################################
 ## Initialize and then run mcmc in R
+######################################
 result <- initialize_mcmc(ns = ob$inits$ns,
                           nat = ob$inits$nat,
                           MCMC = 100,
@@ -20,12 +22,13 @@ plot_population_attribution(mcmc_ob, 50)
 ##
 ## Initialize and then run the model in bugs
 initial_result <- initialize_bugs(ob)
-
 result_bugs <- run_bugs(result = initial_result,
+                        ob = ob,
                         MCMC = 1000,
                         n.burnin = 100,
                         FULL = 0)
 plot_history(result_bugs, 100)
+plot_population_attribution(result_bugs, 100)
 
 ## How to plot this?
 ## result$

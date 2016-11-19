@@ -4,11 +4,13 @@
 \alias{run_bugs}
 \title{run_bugs}
 \usage{
-run_bugs(result, MCMC, n.burnin, FULL, model = "SA_allele_model.jag",
+run_bugs(result, ob, MCMC, n.burnin, FULL, model = "SA_allele_model.jag",
   n.chains = 1)
 }
 \arguments{
 \item{result}{The result from the initialize_bugs() function}
+
+\item{ob}{object from dataformatting function}
 
 \item{MCMC}{The number of iterations in the MCMC}
 
