@@ -1,3 +1,4 @@
+library(kilde)
 DATA <- read.table("../NMDD2015data_vers21_modif.txt",header=TRUE)
 DATA <- DATA[DATA$Country == "FI",]
 
@@ -9,20 +10,27 @@ source("dataformattingST.R")
 ob <- dataformatting_ST(DATA = DATA, UM = 2)
 
 source("initializemcmcST.R")
-result <- initialize_mcmc_ST(ob$ns, ob$STu, MCMC = 1000, ob$Nisolates)
+result <- initialize_mcmc_ST(ob$ns, ob$STu, MCMC = 100, ob$Nisolates)
 
 source("runmcmcST.R")
+mcmc_ob <- runmcmc_ST(result = result,
+           ob = ob,
+           h = 0,
+           FULL = 0)
 source("plottingST.R")
-
 
 ############################
 #### try BUGS models:
-library("R2OpenBUGS")
 source("initializebugsST.R")
-result_bugs <- initialize_bugs_ST(ob)
+initial_result <- initialize_bugs_ST(ob)
+result_bugs <- kilde::run_bugs(result = initial_result,
+                               ob = ob,
+                               MCMC = 1000,
+                               n.burnin = 100,
+                               FULL = 0,
+                               model = "SA_ST_model.jag",
+                               n.chains = 1)
 
-MCMC <- 1000
-burnin <- 100
 
 resST <- bugs(data,inits,parameters,"SA_ST_isolate.txt",n.chains=1,n.burnin=burnin,n.iter=MCMC)
 attach.bugs(resST)
