@@ -391,3 +391,130 @@ summary_kilde.kilde_bugsmcmc <- function(x, burnin){
                      nat
                      )
 }
+##' summary_kilde.kilde_bugsmcmc_ST
+##'
+##' @title summary_kilde.kilde_bugsmcmc_ST 
+##' @param x An object of class kilde_bugsmcmc_ST
+##' @param burnin the burnin length 
+##' @return A list
+##' @export
+##' @author Thomas Rosendal
+summary_kilde.kilde_bugsmcmc_ST <- function(x, burnin){
+    ns <- x$other$ns
+    phi <- x$bugs_result$sims.list$phi
+    MCMC <- x$bugs_result$n.iter
+    humansST <- x$var_b$humansST
+    STu <- x$var_b$STu
+    sourcesST <- x$var_b$sourcesST
+    qST <- x$bugs_result$sims.list$qST
+    MCMC <- MCMC - burnin
+    burnin <- 0
+    summary_kilde_ST_internal(ns,
+                              phi,
+                              burnin,
+                              MCMC,
+                              humansST,
+                              STu,
+                              sourcesST,
+                              qST)
+}
+##' summary_kilde.kilde_rmcmc_ST
+##'
+##' @title summary_kilde.kilde_rmcmc_ST 
+##' @param x An object of class kilde_rmcmc_ST
+##' @param burnin the burnin length 
+##' @return A list
+##' @export
+##' @author Thomas Rosendal
+summary_kilde.kilde_rmcmc_ST <- function(x, burnin){
+    ns <- x$var_a$ns
+    phi <- x$var_a$phi
+    MCMC <- x$var_a$MCMC
+    humansST <- x$var_b$humansST
+    STu <- x$var_a$STu
+    sourcesST <- x$var_b$sourcesST
+    qST <- x$var_a$qST
+    summary_kilde_ST_internal(ns,
+                              phi,
+                              burnin,
+                              MCMC,
+                              humansST,
+                              STu,
+                              sourcesST,
+                              qST)
+}
+##' summary_kilde_ST_internal
+##'
+##' @title summary_kilde_ST_internal 
+##' @param ns ns 
+##' @param phi phi 
+##' @param burnin burnin 
+##' @param MCMC MCMC 
+##' @param humansST humansST 
+##' @param STu STu 
+##' @param sourcesST sourcesST 
+##' @param qST qST 
+##' @return A list
+##' @author Thomas Rosendal
+summary_kilde_ST_internal <- function(ns,
+                                      phi,
+                                      burnin,
+                                      MCMC,
+                                      humansST,
+                                      STu,
+                                      sourcesST,
+                                      qST){
+    ## The population attribution plot and the fit
+    loST<-matrix(0, ns, length(STu))
+    upST<-matrix(0, ns, length(STu))
+    ## check the fit of estimated freqs and observed freqs:
+    ## Set the number of picture frames as suitable:
+    errorST <- matrix(NA, ns-1, length(STu))
+    errorSThum <- numeric()
+    mqST <- matrix(NA, ns, length(STu))
+    fST <- numeric()
+    for(i in 1:(ns - 1)){
+        for(j in 1:length(STu)){
+            fST[j] <- sourcesST[i, j] / sum(sourcesST[i, ])
+        }
+    }
+    for(i in 1:ns){
+        for(j in 1:length(STu)){
+            mqST[i,j] <- mean(qST[burnin:MCMC, i, j]) 
+            loup <- quantile(qST[burnin:MCMC, i, j],
+                             c(0.025, 0.975),
+                             names=FALSE)
+            loST[i,j] <- loup[1]
+            upST[i,j] <- loup[2]
+        }
+    }
+    limx <- max(upST) * 1.01
+    limy <- max(fST) * 1.1 
+    for(i in 1:(ns - 1)){
+        errorST[i, 1:length(STu)] <- ( mqST[i, ] - sourcesST[i, ] / sum(sourcesST[i, ]))^2
+    }
+    s <- numeric()
+    for(i in 1:ns){
+        s[i] <- sd(phi[burnin:MCMC, i])
+    }
+    iix <- sort(s, index.return=TRUE)
+    errorsum <- numeric() 
+    for(i in 1:ns - 1){
+        errorsum[i] <- sum(errorST[i, ])
+    }
+    mphi <- numeric()
+    meanSThum <- numeric()
+    for(i in 1:ns){
+        mphi[i] <- mean(phi[burnin:MCMC, i])
+    } 
+    for(j in 1:length(STu)){
+        meanSThum[j] <- sum(mphi * mqST[, j])
+        errorSThum[j] <- (humansST[j] / sum(humansST) - meanSThum[j])^2
+    }   
+    ES <- sum(errorsum)   # sum of all squared errors
+    EShum <- sum(errorSThum)
+    
+    result <- list(ES = ES,
+                   EShum = EShum)
+    return(result)
+}

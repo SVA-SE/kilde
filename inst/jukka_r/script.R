@@ -16,7 +16,7 @@ mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
 plot_history(mcmc_ob, 50)
 plot_population_attribution(mcmc_ob, 50)
 plot_sample_attribution(mcmc_ob, 50)
-summary_kilde(mcmc_ob, 100)
+summary_kilde(mcmc_ob, 50)
 ##
 ################################################
 ## Initialize and then run the model in OpenBugs

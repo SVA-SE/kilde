@@ -11,6 +11,7 @@ mcmc_ob <- runmcmc_ST(result = result,
 plot_history(mcmc_ob, 50)
 plot_sample_attribution(mcmc_ob, 50)
 plot_population_attribution(mcmc_ob, 50)
+summary_kilde(mcmc_ob, 50)
 
 ## Then the same model in BUGS
 initial_result <- initialize_bugs_ST(ob)
@@ -26,3 +27,4 @@ result_bugs <- run_bugs(result = initial_result,
 plot_history(result_bugs, 100)
 plot_population_attribution(result_bugs, 100)
 plot_sample_attribution(result_bugs, 100)
+summary_kilde(result_bugs, 100)
