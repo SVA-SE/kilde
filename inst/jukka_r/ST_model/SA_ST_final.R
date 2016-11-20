@@ -17,6 +17,9 @@ mcmc_ob <- runmcmc_ST(result = result,
            ob = ob,
            h = 0,
            FULL = 0)
+##debugonce(kilde:::plot_history.kilde_rmcmc)
+plot_history(mcmc_ob, 50)
+
 source("plottingST.R")
 
 ############################
@@ -25,12 +28,12 @@ source("initializebugsST.R")
 initial_result <- initialize_bugs_ST(ob)
 result_bugs <- kilde::run_bugs(result = initial_result,
                                ob = ob,
-                               MCMC = 1000,
+                               MCMC = 500,
                                n.burnin = 100,
                                FULL = 0,
                                model = "SA_ST_model.jag",
                                n.chains = 1)
-
+plot_history(result_bugs, 100)
 
 resST <- bugs(data,inits,parameters,"SA_ST_isolate.txt",n.chains=1,n.burnin=burnin,n.iter=MCMC)
 attach.bugs(resST)

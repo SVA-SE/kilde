@@ -2,6 +2,7 @@
 
 S3method(plot_history,kilde_bugsmcmc)
 S3method(plot_history,kilde_rmcmc)
+S3method(plot_history,kilde_rmcmc_ST)
 S3method(plot_population_attribution,kilde_bugsmcmc)
 S3method(plot_population_attribution,kilde_rmcmc)
 S3method(plot_sample_attribution,kilde_bugsmcmc)

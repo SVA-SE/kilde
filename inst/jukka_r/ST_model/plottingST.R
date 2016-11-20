@@ -1,7 +1,20 @@
 
-dev.new()
-par(mfrow=c(ns,1),mar=c(2.5,5.5,2.5,2.5))
-for(i in 1:ns){plot(phi[burnin:MCMC,i],xlab="",ylab=sourcenames[i],pch=16,cex=0.4,cex.lab=1.7)}
+function(phi, ns, MCMC, burnin, sourcenames){
+    savepar <- par(mfrow = c(ns, 1),
+                   mar = c(2.5, 5.5, 2.5, 2.5)
+                   )
+    on.exit(par(savepar))
+    for(i in 1:ns){
+        plot(phi[burnin:MCMC, i],
+             xlab = "",
+             ylab = sourcenames[i],
+             pch = 16,
+             cex = 0.4,
+             cex.lab = 1.7)
+    }
+}
+
+
 dev.new()
 
 loST<-matrix(0,ns,length(STu))

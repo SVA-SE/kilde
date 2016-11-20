@@ -11,7 +11,7 @@
 ##' @return A list of objects to be passed onto the plot function
 ##' @export
 ##' @author Jukka Ranta
-runmcmc_ST<- function(result,
+runmcmc_ST <- function(result,
                       ob,
                       h = 0,
                       FULL = 0){
@@ -62,6 +62,6 @@ runmcmc_ST<- function(result,
         }   
     }  ## end of MCMC
     result <- list(var_a = result, var_b = ob)
-    class(result) <- "kilde_rmcmc"
+    class(result) <- "kilde_rmcmc_ST"
     return(result)
 }
