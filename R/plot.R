@@ -38,7 +38,7 @@ plot_history_internal <- function(ns,
 ##' @export
 ##' @author Thomas Rosendal
 plot_history <- function(x, burnin){
-  UseMethod('plot_history')
+    UseMethod('plot_history')
 }
 plot_history.default = plot_history
 ##' History plotting function for kilde_rmcmc object
@@ -109,9 +109,9 @@ plot_history.kilde_bugsmcmc_ST<- function(x, burnin){
     burnin <- 0
     plot_history_internal(ns, phi, MCMC, sourcenames, burnin)
 }
-##' plot_population_attribution_internal: A plot of population attribution
+##' plot_modelfit_internal: A plot of population attribution
 ##'
-##' @title plot_population_attribution_internal
+##' @title plot_modelfit_internal
 ##' @param ns The number of sources
 ##' @param nat nat
 ##' @param MCMC The number of iterations 
@@ -139,26 +139,26 @@ plot_history.kilde_bugsmcmc_ST<- function(x, burnin){
 ##' @importFrom stats quantile
 ##' @importFrom stats sd
 ##' @author Jukka Ranta
-plot_population_attribution_internal <- function(ns,
-                                                 nat,
-                                                 MCMC,
-                                                 phi,
-                                                 sourcenames,
-                                                 burnin,
-                                                 qASP,
-                                                 qGLN,
-                                                 qGLT,
-                                                 qGLY,
-                                                 qPGM,
-                                                 qTKT,
-                                                 qUNC,
-                                                 sourcesASP,
-                                                 sourcesGLN,
-                                                 sourcesGLT,
-                                                 sourcesGLY,
-                                                 sourcesPGM,
-                                                 sourcesTKT,
-                                                 sourcesUNC) {
+plot_modelfit_internal <- function(ns,
+                                   nat,
+                                   MCMC,
+                                   phi,
+                                   sourcenames,
+                                   burnin,
+                                   qASP,
+                                   qGLN,
+                                   qGLT,
+                                   qGLY,
+                                   qPGM,
+                                   qTKT,
+                                   qUNC,
+                                   sourcesASP,
+                                   sourcesGLN,
+                                   sourcesGLT,
+                                   sourcesGLY,
+                                   sourcesPGM,
+                                   sourcesTKT,
+                                   sourcesUNC) {
     loASP <- matrix(0, ns, nat[1])
     loGLN <- matrix(0, ns, nat[2])
     loGLT <- matrix(0, ns, nat[3])
@@ -212,7 +212,7 @@ plot_population_attribution_internal <- function(ns,
          main = "ASP")
     for(i in 1:(ns - 1)){
         errorASP[i, 1:nat[1]] <- (mqASP[i, ] - sourcesASP[i, ] /
-                                                      sum(sourcesASP[i, ]))^2
+                                  sum(sourcesASP[i, ]))^2
         points(mqASP[i, ], sourcesASP[i, ] /
                            sum(sourcesASP[i, ]), col=i, pch=16)
         for(j in 1:nat[1]){ 
@@ -240,7 +240,7 @@ plot_population_attribution_internal <- function(ns,
          main = "GLN")
     for(i in 1:(ns - 1)){
         errorGLN[i, 1:nat[2]] <- (mqGLN[i, ] - sourcesGLN[i, ] /
-                                                      sum(sourcesGLN[i, ]))^2
+                                  sum(sourcesGLN[i, ]))^2
         points(mqGLN[i, ], sourcesGLN[i, ] /
                            sum(sourcesGLN[i, ]), col=i, pch=16)
         for(j in 1:nat[2]){ 
@@ -268,7 +268,7 @@ plot_population_attribution_internal <- function(ns,
          main = "GLT")
     for(i in 1:(ns - 1)){
         errorGLT[i, 1:nat[3]] <- (mqGLT[i, ] - sourcesGLT[i, ] /
-                                                      sum(sourcesGLT[i, ]))^2
+                                  sum(sourcesGLT[i, ]))^2
         points(mqGLT[i, ], sourcesGLT[i, ] /
                            sum(sourcesGLT[i, ]), col=i, pch=16)
         for(j in 1:nat[3]){ 
@@ -296,7 +296,7 @@ plot_population_attribution_internal <- function(ns,
          main = "GLY")
     for(i in 1:(ns - 1)){
         errorGLY[i, 1:nat[4]] <- (mqGLY[i, ] - sourcesGLY[i, ] /
-                                                      sum(sourcesGLY[i, ]))^2
+                                  sum(sourcesGLY[i, ]))^2
         points(mqGLY[i, ], sourcesGLY[i, ] /
                            sum(sourcesGLY[i, ]), col=i, pch=16)
         for(j in 1:nat[4]){ 
@@ -324,7 +324,7 @@ plot_population_attribution_internal <- function(ns,
          main = "PGM")
     for(i in 1:(ns - 1)){
         errorPGM[i, 1:nat[5]] <- (mqPGM[i, ] - sourcesPGM[i, ] /
-                                                      sum(sourcesPGM[i, ]))^2
+                                  sum(sourcesPGM[i, ]))^2
         points(mqPGM[i, ], sourcesPGM[i, ] /
                            sum(sourcesPGM[i, ]), col=i, pch=16)
         for(j in 1:nat[5]){ 
@@ -352,7 +352,7 @@ plot_population_attribution_internal <- function(ns,
          main = "TKT")
     for(i in 1:(ns - 1)){
         errorTKT[i, 1:nat[6]] <- (mqTKT[i, ] - sourcesTKT[i, ] /
-                                                      sum(sourcesTKT[i, ]))^2
+                                  sum(sourcesTKT[i, ]))^2
         points(mqTKT[i, ], sourcesTKT[i, ] /
                            sum(sourcesTKT[i, ]), col=i, pch=16)
         for(j in 1:nat[6]){ 
@@ -380,7 +380,7 @@ plot_population_attribution_internal <- function(ns,
          main = "UNC")
     for(i in 1:(ns - 1)){
         errorUNC[i, 1:nat[7]] <- (mqUNC[i, ] - sourcesUNC[i, ] /
-                                                      sum(sourcesUNC[i, ]))^2
+                                  sum(sourcesUNC[i, ]))^2
         points(mqUNC[i, ], sourcesUNC[i, ] /
                            sum(sourcesUNC[i, ]), col=i, pch=16)
         for(j in 1:nat[7]){ 
@@ -416,26 +416,26 @@ plot_population_attribution_internal <- function(ns,
 }
 ##' Method for plotting population attribution
 ##'
-##' @title plot_population_attribution
+##' @title plot_modelfit
 ##' @param x the mcmc object 
 ##' @param burnin the burnin length
 ##' @return A plot
 ##' @export
 ##' @author Thomas Rosendal
-plot_population_attribution <- function(x, burnin){
-  UseMethod('plot_population_attribution')
+plot_modelfit <- function(x, burnin){
+    UseMethod('plot_modelfit')
 }
-plot_population_attribution.default = plot_population_attribution
+plot_modelfit.default = plot_modelfit
 ##' A population attribution plot for the kilde_rmcmc object
 ##'
-##' @title plot_population_attribution.kilde_rmcmc
+##' @title plot_modelfit.kilde_rmcmc
 ##' @param x the mcmc_object of class kilde_rmcmc
 ##' @param burnin the burnin length
 ##' @return A plot
 ##' @export
 ##' @author Thomas Rosendal
-plot_population_attribution.kilde_rmcmc <- function(x,
-                                                    burnin) {
+plot_modelfit.kilde_rmcmc <- function(x,
+                                      burnin) {
     ns <- x$var_a$ns
     nat <- x$var_b$inits$nat
     MCMC <- x$var_a$MCMC
@@ -455,39 +455,39 @@ plot_population_attribution.kilde_rmcmc <- function(x,
     sourcesPGM <- x$var_b$data$sourcesPGM
     sourcesTKT <- x$var_b$data$sourcesTKT
     sourcesUNC <- x$var_b$data$sourcesUNC
-    plot_population_attribution_internal(ns,
-                                         nat,
-                                         MCMC,
-                                         phi,
-                                         sourcenames,
-                                         burnin,
-                                         qASP,
-                                         qGLN,
-                                         qGLT,
-                                         qGLY,
-                                         qPGM,
-                                         qTKT,
-                                         qUNC,
-                                         sourcesASP,
-                                         sourcesGLN,
-                                         sourcesGLT,
-                                         sourcesGLY,
-                                         sourcesPGM,
-                                         sourcesTKT,
-                                         sourcesUNC)
+    plot_modelfit_internal(ns,
+                           nat,
+                           MCMC,
+                           phi,
+                           sourcenames,
+                           burnin,
+                           qASP,
+                           qGLN,
+                           qGLT,
+                           qGLY,
+                           qPGM,
+                           qTKT,
+                           qUNC,
+                           sourcesASP,
+                           sourcesGLN,
+                           sourcesGLT,
+                           sourcesGLY,
+                           sourcesPGM,
+                           sourcesTKT,
+                           sourcesUNC)
 }
-##' plot_population_attribution.kilde_bugsmcmc
+##' plot_modelfit.kilde_bugsmcmc
 ##'
 ##' A method for ploting the population attribution from the bugs code
 ##'
-##' @title plot_population_attribution.kilde_bugsmcmc
+##' @title plot_modelfit.kilde_bugsmcmc
 ##' @param x the kilde_bugsmcmc object
 ##' @param burnin The burnin length
 ##' @return A plot
 ##' @export
 ##' @author Thomas Rosendal
-plot_population_attribution.kilde_bugsmcmc <- function(x,
-                                                       burnin) {
+plot_modelfit.kilde_bugsmcmc <- function(x,
+                                         burnin) {
     ## pick out objects to pass to plotting
     ns <- x$other$ns
     nat <- x$var_b$inits$nat
@@ -511,26 +511,26 @@ plot_population_attribution.kilde_bugsmcmc <- function(x,
     MCMC <- MCMC - burnin
     burnin <- 0
     ## Run plotting function
-    plot_population_attribution_internal(ns,
-                                         nat,
-                                         MCMC,
-                                         phi,
-                                         sourcenames,
-                                         burnin,
-                                         qASP,
-                                         qGLN,
-                                         qGLT,
-                                         qGLY,
-                                         qPGM,
-                                         qTKT,
-                                         qUNC,
-                                         sourcesASP,
-                                         sourcesGLN,
-                                         sourcesGLT,
-                                         sourcesGLY,
-                                         sourcesPGM,
-                                         sourcesTKT,
-                                         sourcesUNC)
+    plot_modelfit_internal(ns,
+                           nat,
+                           MCMC,
+                           phi,
+                           sourcenames,
+                           burnin,
+                           qASP,
+                           qGLN,
+                           qGLT,
+                           qGLY,
+                           qPGM,
+                           qTKT,
+                           qUNC,
+                           sourcesASP,
+                           sourcesGLN,
+                           sourcesGLT,
+                           sourcesGLY,
+                           sourcesPGM,
+                           sourcesTKT,
+                           sourcesUNC)
 }
 ##' The internal function to plot the sample attribution
 ##'
@@ -566,7 +566,7 @@ plot_sample_attribution_internal <- function(Z,
 ##' @param x the model object
 ##' @param burnin the length of the burnin
 plot_sample_attribution <- function(x, burnin){
-  UseMethod('plot_sample_attribution')
+    UseMethod('plot_sample_attribution')
 }
 plot_sample_attribution.default = plot_sample_attribution
 ##' plot_sample_attribution.kilde_rmcmc
@@ -600,7 +600,7 @@ plot_sample_attribution.kilde_rmcmc <- function(x,
 ##' @export
 ##' @author Thomas Rosendal
 plot_sample_attribution.kilde_rmcmc_ST<- function(x,
-                                                burnin) {
+                                                  burnin) {
     Z <- x$var_a$Z
     ns <- x$var_a$ns
     MCMC <- x$var_a$MCMC
@@ -659,15 +659,15 @@ plot_sample_attribution.kilde_bugsmcmc_ST<- function(x,
                                      ns,
                                      sourcenames)
 }
-##' plot_population_attribution.kilde_bugsmcmc_ST
+##' plot_modelfit.kilde_bugsmcmc_ST
 ##'
-##' @title plot_population_attribution.kilde_bugsmcmc_ST
+##' @title plot_modelfit.kilde_bugsmcmc_ST
 ##' @param x An object of class kilde_bugsmcmc_ST
 ##' @param burnin The burnin length
 ##' @return A plot
 ##' @export
 ##' @author Thomas Rosendal
-plot_population_attribution.kilde_bugsmcmc_ST <- function(x, burnin){
+plot_modelfit.kilde_bugsmcmc_ST <- function(x, burnin){
     ns <- x$other$ns
     STu <- x$var_b$STu
     sourcesST <- x$var_b$sourcesST
@@ -677,24 +677,24 @@ plot_population_attribution.kilde_bugsmcmc_ST <- function(x, burnin){
     sourcenames <- x$var_b$sourcenames
     MCMC <- MCMC - burnin
     burnin <- 0
-    plot_population_attribution_ST_internal(ns,
-                                            STu,
-                                            sourcesST,
-                                            MCMC,
-                                            qST,
-                                            phi,
-                                            burnin,
-                                            sourcenames)
+    plot_modelfit_ST_internal(ns,
+                              STu,
+                              sourcesST,
+                              MCMC,
+                              qST,
+                              phi,
+                              burnin,
+                              sourcenames)
 }
-##' plot_population_attribution.kilde_rmcmc_ST
+##' plot_modelfit.kilde_rmcmc_ST
 ##'
-##' @title plot_population_attribution.kilde_rmcmc_ST
+##' @title plot_modelfit.kilde_rmcmc_ST
 ##' @param x An object of class kilde_rmcmc_ST
 ##' @param burnin The burnin length
 ##' @return A plot
 ##' @export
 ##' @author Thomas Rosendal
-plot_population_attribution.kilde_rmcmc_ST <- function(x, burnin){
+plot_modelfit.kilde_rmcmc_ST <- function(x, burnin){
     ns <- x$var_a$ns
     STu <- x$var_a$STu
     sourcesST <- x$var_b$sourcesST
@@ -702,18 +702,18 @@ plot_population_attribution.kilde_rmcmc_ST <- function(x, burnin){
     qST <- x$var_a$qST
     phi <- x$var_a$phi
     sourcenames <- x$var_b$sourcenames
-    plot_population_attribution_ST_internal(ns,
-                                            STu,
-                                            sourcesST,
-                                            MCMC,
-                                            qST,
-                                            phi,
-                                            burnin,
-                                            sourcenames)
+    plot_modelfit_ST_internal(ns,
+                              STu,
+                              sourcesST,
+                              MCMC,
+                              qST,
+                              phi,
+                              burnin,
+                              sourcenames)
 }
-##' method tor plotting the ST model from R plot_population_attribution_ST_internal
+##' method tor plotting the ST model from R plot_modelfit_ST_internal
 ##'
-##' @title plot_population_attribution_ST_internal
+##' @title plot_modelfit_ST_internal
 ##' @param ns ns 
 ##' @param STu STu 
 ##' @param sourcesST sourcesST 
@@ -724,15 +724,15 @@ plot_population_attribution.kilde_rmcmc_ST <- function(x, burnin){
 ##' @param sourcenames sourcenames 
 ##' @return A plot
 ##' @author Thomas Rosendal
-plot_population_attribution_ST_internal <- function(ns,
-                                                    STu,
-                                                    sourcesST,
-                                                    MCMC,
-                                                    qST,
-                                                    phi,
-                                                    burnin,
-                                                    sourcenames
-                                                    ){
+plot_modelfit_ST_internal <- function(ns,
+                                      STu,
+                                      sourcesST,
+                                      MCMC,
+                                      qST,
+                                      phi,
+                                      burnin,
+                                      sourcenames
+                                      ){
     ## The population attribution plot and the fit
     loST<-matrix(0, ns, length(STu))
     upST<-matrix(0, ns, length(STu))

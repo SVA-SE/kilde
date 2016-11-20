@@ -13,7 +13,7 @@ mcmc_ob <- runmcmc_ST(result = result,
            FULL = 0)
 plot_history(mcmc_ob, 50)
 plot_sample_attribution(mcmc_ob, 50)
-plot_population_attribution(mcmc_ob, 50)
+plot_modelfit(mcmc_ob, 50)
 summary_kilde(mcmc_ob, 50)
 ## Then the same model in BUGS
 initial_result <- initialize_bugs_ST(ob)
@@ -27,7 +27,7 @@ result_bugs <- run_bugs(result = initial_result,
 ## load("~/Desktop/result_bugs.Rda")
 ## class(result_bugs) <- "kilde_bugsmcmc_ST"
 plot_history(result_bugs, 100)
-plot_population_attribution(result_bugs, 100)
+plot_modelfit(result_bugs, 100)
 plot_sample_attribution(result_bugs, 100)
 summary_kilde(result_bugs, 100)
 ##
@@ -49,7 +49,7 @@ result <- initialize_mcmc(ns = ob$inits$ns,
 mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
 ##  Plot the results of this model.
 plot_history(mcmc_ob, 50)
-plot_population_attribution(mcmc_ob, 50)
+plot_modelfit(mcmc_ob, 50)
 plot_sample_attribution(mcmc_ob, 50)
 summary_kilde(mcmc_ob, 50)
 ##
@@ -68,6 +68,6 @@ result_bugs <- run_bugs(result = initial_result,
                         n.burnin = 100,
                         FULL = 0)
 plot_history(result_bugs, 100)
-plot_population_attribution(result_bugs, 100)
+plot_modelfit(result_bugs, 100)
 plot_sample_attribution(result_bugs, 100)
 summary_kilde(result_bugs, 100)
