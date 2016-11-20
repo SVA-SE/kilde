@@ -13,17 +13,17 @@
 ##' @export
 dataformatting_ST <- function(DATA, UM = 2) {
     z <- !is.na(DATA$ST)
-    sourcenames <- setdiff(unique(DATA$Group), "Human")
+    sourcenames <- setdiff(unique(DATA$group), "human")
     ns <- length(sourcenames)
 
     ## find how many different STs there are (in all isolates), and
     ## list them:
     STu <- sort(unique(DATA$ST[z]))
-    STuH <- sort(unique(DATA$ST[z & (DATA$Group == "Human")]))
-    STuS <- sort(unique(DATA$ST[z & (DATA$Group != "Human")]))
+    STuH <- sort(unique(DATA$ST[z & (DATA$group == "human")]))
+    STuS <- sort(unique(DATA$ST[z & (DATA$group != "human")]))
     STuHo <- setdiff(STuH, STuS) 
 
-    HumanST <- DATA$ST[z & (DATA$Group == "Human")]
+    HumanST <- DATA$ST[z & (DATA$group == "human")]
     Humnovel <- 0
     for(i in 1:length(HumanST)){
         Humnovel <- Humnovel + is.element(HumanST[i] , STuHo)*1
@@ -39,17 +39,17 @@ dataformatting_ST <- function(DATA, UM = 2) {
     sourcesST  <- matrix(0, maxns, length(STu)) 
     humansST <- numeric()
     for(i in 1:length(STu)){
-        humansST[i] <- sum((DATA$ST == STu[i]) & (DATA$Group == "Human") & z)
+        humansST[i] <- sum((DATA$ST == STu[i]) & (DATA$group == "human") & z)
         for(j in 1:ns){
-            sourcesST[j,i] <- sum((DATA$ST == STu[i]) & (DATA$Group == sourcenames[j]) & z)
+            sourcesST[j,i] <- sum((DATA$ST == STu[i]) & (DATA$group == sourcenames[j]) & z)
         }
     }
 
     ## Number of all human isolates:
-    Nisolates <- sum(z & (DATA$Group == "Human"))
+    Nisolates <- sum(z & (DATA$group == "human"))
 
     ## ST numbers for each human isolate:
-    HumanST <- DATA$ST[z & (DATA$Group == "Human")]
+    HumanST <- DATA$ST[z & (DATA$group == "human")]
 
     ## Table of type indicators for isolates:
     positionST <- 1:length(STu)
@@ -84,7 +84,7 @@ dataformatting_ST <- function(DATA, UM = 2) {
         for(i in 1:length(STu)){
             sourcesST[ns, i] <- sum((DATA$ST == STu[i]) &
                                     is.element(STu[i], STuHo) &
-                                    (DATA$Group == "Human") &
+                                    (DATA$group == "human") &
                                     z)
         }
     }
