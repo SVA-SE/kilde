@@ -18,8 +18,8 @@ source("plottingST.R")
 ############################
 #### try BUGS models:
 library("R2OpenBUGS")
-
 source("initializebugsST.R")
+result_bugs <- initialize_bugs_ST(ob)
 
 MCMC <- 1000
 burnin <- 100
