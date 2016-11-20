@@ -800,4 +800,93 @@ plot_population_attribution_internal <- function(ns,
            names[iix$ix],
            text.col = iix$ix)
 }
-
+##' plot_population_attribution 
+##'
+##' @title plot_population_attribution 
+##' @param x x
+##' @param burnin burnin 
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+plot_population_attribution <- function(x, burnin){
+    UseMethod('plot_population_attribution')
+}
+plot_population_attribution.default = plot_population_attribution
+##' plot_population_attribution.kilde_rmcmc
+##'
+##' @title plot_population_attribution.kilde_rmcmc 
+##' @param x x 
+##' @param burnin burnin
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+plot_population_attribution.kilde_rmcmc <- function(x, burnin){
+    ns <- x$var_a$ns
+    MCMC <- x$var_a$MCMC
+    phi <- x$var_a$phi
+    sourcenames <- x$var_b$data$sourcenames
+    plot_population_attribution_internal(ns,
+                                         phi,
+                                         burnin,
+                                         MCMC,
+                                         sourcenames)
+}
+##' plot_population_attribution.kilde_rmcmc_ST
+##'
+##' @title plot_population_attribution.kilde_rmcmc_ST 
+##' @param x x 
+##' @param burnin burnin
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+plot_population_attribution.kilde_rmcmc_ST <- function(x, burnin){
+    ns <- x$var_a$ns
+    phi <- x$var_a$phi
+    MCMC <- x$var_a$MCMC
+    sourcenames <- x$var_b$sourcenames
+    plot_population_attribution_internal(ns,
+                                         phi,
+                                         burnin,
+                                         MCMC,
+                                         sourcenames)
+}
+##' plot_population_attribution.kilde_bugsmcmc
+##'
+##' @title plot_population_attribution.kilde_bugsmcmc 
+##' @param x x 
+##' @param burnin burnin
+##' @return A plot
+##' @export
+##' @author Thomas Rosendal
+plot_population_attribution.kilde_bugsmcmc <- function(x, burnin){
+    ns <- x$other$ns
+    phi <- x$bugs_result$sims.list$phi
+    MCMC <- x$bugs_result$n.iter - burnin
+    sourcenames <- x$other$sourcenames
+    burnin <- 0
+    plot_population_attribution_internal(ns,
+                                         phi,
+                                         burnin,
+                                         MCMC,
+                                         sourcenames)
+}
+##' plot_population_attribution.kilde_bugsmcmc_ST
+##'
+##' @title plot_population_attribution.kilde_bugsmcmc_ST 
+##' @param x x 
+##' @param burnin burnin
+##' @return  A plot
+##' @export
+##' @author Thomas Rosendal
+plot_population_attribution.kilde_bugsmcmc_ST <- function(x, burnin){
+    ns <- x$other$ns
+    phi <- x$bugs_result$sims.list$phi
+    MCMC <- x$bugs_result$n.iter - burnin
+    sourcenames <- x$other$sourcenames
+    burnin <- 0
+    plot_population_attribution_internal(ns,
+                                         phi,
+                                         burnin,
+                                         MCMC,
+                                         sourcenames)
+}

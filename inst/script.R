@@ -12,9 +12,11 @@ mcmc_ob <- runmcmc_ST(result = result,
            h = 0,
            FULL = 0)
 plot_history(mcmc_ob, 50)
-plot_sample_attribution(mcmc_ob, 50)
 plot_modelfit(mcmc_ob, 50)
 summary_kilde(mcmc_ob, 50)
+plot_sample_attribution(mcmc_ob, 50)
+plot_population_attribution(mcmc_ob, 50)
+
 ## Then the same model in BUGS
 initial_result <- initialize_bugs_ST(ob)
 result_bugs <- run_bugs(result = initial_result,
@@ -24,12 +26,12 @@ result_bugs <- run_bugs(result = initial_result,
                         FULL = 0,
                         model = "SA_ST_model.jag",
                         n.chains = 1)
-## load("~/Desktop/result_bugs.Rda")
-## class(result_bugs) <- "kilde_bugsmcmc_ST"
+##load("~/Desktop/result_bugs_ST.Rda")
 plot_history(result_bugs, 100)
 plot_modelfit(result_bugs, 100)
-plot_sample_attribution(result_bugs, 100)
 summary_kilde(result_bugs, 100)
+plot_sample_attribution(result_bugs, 100)
+plot_population_attribution(result_bugs, 100)
 ##
 ## Then the model estimated by using the Allele level results
 ##
@@ -50,8 +52,9 @@ mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
 ##  Plot the results of this model.
 plot_history(mcmc_ob, 50)
 plot_modelfit(mcmc_ob, 50)
-plot_sample_attribution(mcmc_ob, 50)
 summary_kilde(mcmc_ob, 50)
+plot_sample_attribution(mcmc_ob, 50)
+plot_population_attribution(mcmc_ob, 50)
 ##
 ################################################
 ## Initialize and then run the model in OpenBugs
@@ -67,7 +70,9 @@ result_bugs <- run_bugs(result = initial_result,
                         MCMC = 1000,
                         n.burnin = 100,
                         FULL = 0)
+##load("~/Desktop/result_bugs_allele.Rda")
 plot_history(result_bugs, 100)
 plot_modelfit(result_bugs, 100)
-plot_sample_attribution(result_bugs, 100)
 summary_kilde(result_bugs, 100)
+plot_sample_attribution(result_bugs, 100)
+plot_population_attribution(result_bugs, 100)
