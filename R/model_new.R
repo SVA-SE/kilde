@@ -41,5 +41,12 @@ run_bugs <- function(result,
                    other = result$other,
                    var_b = ob)
     class(result) <- "kilde_bugsmcmc"
+    ## This is an ugly fix to allow the plotting to behave differently
+    ## for the different models. I need to better understand nested
+    ## classes and inheritance to have multiple methods that work
+    ## together:
+    if(model == "SA_ST_model.jag"){
+        class(result) <- "kilde_bugsmcmc_ST"
+    }
     return(result)
 }
