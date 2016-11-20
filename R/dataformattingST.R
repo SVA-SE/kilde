@@ -12,6 +12,18 @@
 ##' @author Jukka Ranta
 ##' @export
 dataformatting_ST <- function(DATA, UM = 2) {
+    if(!all(c("ST", "group") %in% names(DATA))){
+        stop("DATA must contain at least the columns: ST and group")
+    }
+    if(!is.factor(DATA$group)){
+        stop("The group variable must be a factor")
+    }
+    if(!("human" %in% levels(DATA$group))){
+        stop("The group variable must have a level 'human'")
+    }
+    if(length(DATA$group[DATA$group == "human"]) < 1){
+        stop("There must be greater than 0 'human' observations in the data")
+    }
     z <- !is.na(DATA$ST)
     sourcenames <- setdiff(unique(DATA$group), "human")
     ns <- length(sourcenames)

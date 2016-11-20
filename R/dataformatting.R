@@ -14,6 +14,19 @@
 ##' @author Jukka Ranta
 ##' @export
 dataformatting <- function(DATA, UM) {
+    if(!all(c("ST", "group", "ASP", "GLN", "GLT", "GLY", "PGM", "TKT",
+              "UNC") %in% names(DATA))){
+        stop("DATA must contain at least the columns: ST and group")
+    }
+    if(!is.factor(DATA$group)){
+        stop("The group variable must be a factor")
+    }
+    if(!("human" %in% levels(DATA$group))){
+        stop("The group variable must have a level 'human'")
+    }
+    if(length(DATA$group[DATA$group == "human"]) < 1){
+        stop("There must be greater than 0 'human' observations in the data")
+    }
     z <- !is.na(DATA$ST)
     sourcenames <- setdiff(unique(DATA$group), "human")
     ns <- length(sourcenames)
@@ -246,14 +259,6 @@ dataformatting <- function(DATA, UM) {
     result <- list(data = data,
                    inits = inits)
     return(result)
-}
-## The objects that I need here where * is the list of Allele names
-## ASP PGM and so on are:
-##
-## These are passed directly onto the runMCMC script:
-## FULL, ind, and the sources*, and I*
-##
-##These are passed to the initilizemcmc.R script
-## ns, nat, MCMC, Nisoloates
+    }
 
 
