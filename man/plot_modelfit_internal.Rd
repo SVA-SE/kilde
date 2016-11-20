@@ -53,7 +53,7 @@ plot_modelfit_internal(ns, nat, MCMC, phi, sourcenames, burnin, qASP, qGLN,
 A plot
 }
 \description{
-plot_modelfit_internal: A plot of population attribution
+plot_modelfit_internal: A plot of modelfit
 }
 \author{
 Jukka Ranta

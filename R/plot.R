@@ -109,7 +109,7 @@ plot_history.kilde_bugsmcmc_ST<- function(x, burnin){
     burnin <- 0
     plot_history_internal(ns, phi, MCMC, sourcenames, burnin)
 }
-##' plot_modelfit_internal: A plot of population attribution
+##' plot_modelfit_internal: A plot of modelfit
 ##'
 ##' @title plot_modelfit_internal
 ##' @param ns The number of sources
@@ -389,32 +389,9 @@ plot_modelfit_internal <- function(ns,
                        sum(sourcesUNC[i, ]), 2), col=i, type="l")
         }
     }
-    ## start plotting SA results:
-    s <- numeric()
-    for(i in 1:ns){
-        s[i] <- sd(phi[burnin:MCMC, i])
-    }
-    iix <- sort(s, index.return = TRUE)
-    ##pdf("SAresult.pdf")
-    plot(density(phi[burnin:MCMC, iix$ix[1]]),
-         col = iix$ix[1],
-         xlim = c(0, 1),
-         xlab = "Posterior",
-         ylab = "",
-         main = "",
-         lwd = 2)
-    for(i in 2:ns){
-        points(density(phi[burnin:MCMC, iix$ix[i]]),
-               type = "l",
-               col = iix$ix[i],
-               lwd = 2)
-    }
-    names <- c(sourcenames, rep("Unknown", 10))
-    legend(x = "topright",
-           names[iix$ix],
-           text.col=iix$ix)
+    plot_population_attribution_internal(ns, phi, burnin, MCMC, sourcenames)
 }
-##' Method for plotting population attribution
+##' Method for plotting modelfit
 ##'
 ##' @title plot_modelfit
 ##' @param x the mcmc object 
@@ -736,8 +713,8 @@ plot_modelfit_ST_internal <- function(ns,
     ## The population attribution plot and the fit
     loST<-matrix(0, ns, length(STu))
     upST<-matrix(0, ns, length(STu))
-                                        # check the fit of estimated freqs and observed freqs:
-                                        # Set the number of picture frames as suitable:
+    ## check the fit of estimated freqs and observed freqs:
+    ## Set the number of picture frames as suitable:
     savepar <- par(mfrow=c(2, 1))
     on.exit(par(savepar))
     errorST <- matrix(NA, ns-1, length(STu))
@@ -781,6 +758,23 @@ plot_modelfit_ST_internal <- function(ns,
                    col = i,
                    type = "l")}
     }
+    plot_population_attribution_internal(ns, phi, burnin, MCMC, sourcenames)
+}
+##' plot_population_attribution_internal
+##'
+##' @title plot_population_attribution_internal
+##' @param ns ns 
+##' @param phi phi 
+##' @param burnin burnin 
+##' @param MCMC MCMC 
+##' @param sourcenames sourcenames 
+##' @return A plot
+##' @author Thomas Rosendal
+plot_population_attribution_internal <- function(ns,
+                                                 phi,
+                                                 burnin,
+                                                 MCMC,
+                                                 sourcenames){
     ## start plotting SA results:
     s <- numeric()
     for(i in 1:ns){
@@ -806,3 +800,4 @@ plot_modelfit_ST_internal <- function(ns,
            names[iix$ix],
            text.col = iix$ix)
 }
+

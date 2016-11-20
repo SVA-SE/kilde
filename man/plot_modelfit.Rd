@@ -15,7 +15,7 @@ plot_modelfit(x, burnin)
 A plot
 }
 \description{
-Method for plotting population attribution
+Method for plotting modelfit
 }
 \author{
 Thomas Rosendal
