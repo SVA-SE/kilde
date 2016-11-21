@@ -11,8 +11,7 @@ Type: Package
 LazyLoad: yes
 Suggests:
     knitr,
-    rmarkdown
-VignetteBuilder: knitr
-Depends:
+    rmarkdown,
     R2OpenBUGS
+VignetteBuilder: knitr
 RoxygenNote: 5.0.1
