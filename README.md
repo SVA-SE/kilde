@@ -117,6 +117,10 @@ this is untested.
 
 ### Have a look at the Vignette
 
+You can browse the vignette on
+[Github](https://sva-se.github.io/kilde/attribution.html) or it also
+comes bundled with the package:
+
 ```r
 library(kilde)
 vignette("attribution", package = "kilde")
