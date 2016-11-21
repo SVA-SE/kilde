@@ -6,10 +6,11 @@
 An R package that connects to
 [OpenBUGS](http://www.openbugs.net) via
 [R2OpenBUGS](https://cran.r-project.org/web/packages/R2OpenBUGS/vignettes/R2OpenBUGS.pdf) to
-perform source attribution analysis on MLST data from *Campylobacter
+perform source attribution analysis multiple character data. The
+examples are focused on its application to MLST data from *Campylobacter
 jejuni*. This is a working implementation of 2 models: One using just
 the ST-type as the definition of genotype and the second using the 7
-alleles each as character definitions in the model. These two models
+alleles, each as character definitions in the model. These two models
 have both been implemented with the MCMC running in R and the MCMC
 running in OpenBUGS.
 
@@ -114,8 +115,99 @@ this is untested.
 
 ## Usage
 
-```r
+### An example of running the model with ST level character data
 
+```r
+## Load the library
+library(kilde)
+## Get some data
+df <- sample_data()
+## This dataset contains 4 different countries, we'll pick Canada:
+df <- df[df$country == "Canada",]
+## We need to format the data to the form accepted by the model function.
+ob <- dataformatting_ST(DATA = df, UM = 2)
+## Initialize the mcmc data objects. Note: 100 iterations is too few.
+result <- initialize_mcmc_ST(ob$ns, ob$STu, MCMC = 100, ob$Nisolates)
+## Run the MCMC for the ST model in R
+mcmc_ob <- runmcmc_ST(result = result,
+           ob = ob,
+           h = 0,
+           FULL = 0)
+## plot the history of the MCMC
+plot_history(mcmc_ob, 50)
+## plot the modelfit
+plot_modelfit(mcmc_ob, 50)
+## A summary of the model fit
+summary_kilde(mcmc_ob, 50)
+## The sample attribution
+plot_sample_attribution(mcmc_ob, 50)
+## a plot of the population attribution
+plot_population_attribution(mcmc_ob, 50)
+##
+##
+## We can run the same ST model in BUGS
+##
+## Then the same model in BUGS
+## Initialize the MCMC objects
+initial_result <- initialize_bugs_ST(ob)
+## Run the model, this time with 1000 iterations, because bugs will
+## throw an error if we try to run too few.
+result_bugs <- run_bugs(result = initial_result,
+                        ob = ob,
+                        MCMC = 1000,
+                        n.burnin = 100,
+                        FULL = 0,
+                        model = "SA_ST_model.jag",
+                        n.chains = 1)
+plot_history(result_bugs, 100)
+plot_modelfit(result_bugs, 100)
+summary_kilde(result_bugs, 100)
+plot_sample_attribution(result_bugs, 100)
+plot_population_attribution(result_bugs, 100)
+```
+### The model estimated by using the Allele level results
+
+```r
+library(kilde)
+## Read in a format data
+df <- sample_data()
+df <- df[df$country == "Canada",]
+ob <- dataformatting(DATA = df,
+                     UM = 2)
+######################################
+## Initialize and then run mcmc in R
+######################################
+result <- initialize_mcmc(ns = ob$inits$ns,
+                          nat = ob$inits$nat,
+                          MCMC = 100,
+                          Nisolates = ob$inits$Nisolates)
+mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
+##  Plot the results of this model.
+plot_history(mcmc_ob, 50)
+plot_modelfit(mcmc_ob, 50)
+summary_kilde(mcmc_ob, 50)
+plot_sample_attribution(mcmc_ob, 50)
+plot_population_attribution(mcmc_ob, 50)
+##
+################################################
+## Initialize and then run the model in OpenBugs
+################################################
+##
+## Below, BUGS model cannot handle a large number of MCMC iterations
+## for all parameters.  Therefore, it is advisable to try with smaller
+## number of iterations to start, perhaps 1000.
+##
+initial_result <- initialize_bugs(ob)
+result_bugs <- run_bugs(result = initial_result,
+                        ob = ob,
+                        MCMC = 1000,
+                        n.burnin = 100,
+                        FULL = 0)
+plot_history(result_bugs, 100)
+plot_modelfit(result_bugs, 100)
+summary_kilde(result_bugs, 100)
+plot_sample_attribution(result_bugs, 100)
+plot_population_attribution(result_bugs, 100)
 
 ```
 
