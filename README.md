@@ -115,6 +115,13 @@ this is untested.
 
 ## Usage
 
+### Have a look at the Vignette
+
+```r
+library(kilde)
+vignette("attribution", package = "kilde")
+```
+
 ### An example of running the model with ST level character data
 
 ```r

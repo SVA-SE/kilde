@@ -7,33 +7,98 @@ vignette: >
 ---
 # Demonstration of package
 
+### An example of running the model with ST level character data
+
+```{r, echo = TRUE, eval = TRUE, message = TRUE, fig.width = 7.3, fig.height = 6}
+## Load the library
+library(kilde)
+## Get some data
+df <- sample_data()
+## This dataset contains 4 different countries, we'll pick Canada:
+df <- df[df$country == "Canada",]
+## We need to format the data to the form accepted by the model function.
+ob <- dataformatting_ST(DATA = df, UM = 2)
+## Initialize the mcmc data objects. Note: 100 iterations is too few.
+result <- initialize_mcmc_ST(ob$ns, ob$STu, MCMC = 100, ob$Nisolates)
+## Run the MCMC for the ST model in R
+mcmc_ob <- runmcmc_ST(result = result,
+           ob = ob,
+           h = 0,
+           FULL = 0)
+## plot the history of the MCMC
+plot_history(mcmc_ob, 50)
+## plot the modelfit
+plot_modelfit(mcmc_ob, 50)
+## A summary of the model fit
+summary_kilde(mcmc_ob, 50)
+## The sample attribution
+plot_sample_attribution(mcmc_ob, 50)
+## a plot of the population attribution
+plot_population_attribution(mcmc_ob, 50)
+##
+##
+## We can run the same ST model in BUGS
+##
+## Then the same model in BUGS
+## Initialize the MCMC objects
+initial_result <- initialize_bugs_ST(ob)
+## Run the model, this time with 1000 iterations, because bugs will
+## throw an error if we try to run too few.
+## result_bugs <- run_bugs(result = initial_result,
+##                         ob = ob,
+##                         MCMC = 1000,
+##                         n.burnin = 100,
+##                         FULL = 0,
+##                         model = "SA_ST_model.jag",
+##                         n.chains = 1)
+## plot_history(result_bugs, 100)
+## plot_modelfit(result_bugs, 100)
+## summary_kilde(result_bugs, 100)
+## plot_sample_attribution(result_bugs, 100)
+## plot_population_attribution(result_bugs, 100)
+```
+### The model estimated by using the Allele level results
+
 ```{r, echo = TRUE, eval = TRUE, message = TRUE, fig.width = 7.3, fig.height = 6}
 library(kilde)
-df <- clean_data(country = "Peru")
-inits <- function() {
-    list(g0 = rep(1, df$bugs_data$ns), 
-         pmuta = structure(.Data = rep(0.5, df$bugs_data$ns * 7), 
-                           .Dim = c(df$bugs_data$ns, 7)), 
-         h0=structure(.Data=rep(1, df$bugs_data$ns * df$bugs_data$ns), 
-                      .Dim=c(df$bugs_data$ns, df$bugs_data$ns)))
-}
-parameters <- c("qASP", "phi", "etaASP")
-res <- run_model(df = df, 
-                 inits = inits, 
-                 parameters = parameters)
-par(mfrow = c(df$bugs_data$ns, 1),
-    mar = c(5,5,1,1))
-plotrows <- ceiling(df$bugs_data$ns ^ 0.5)
-plotcols <- ceiling(df$bugs_data$ns / plotrows)
-par(mfrow=c(plotrows, plotcols))
-for(i in 1:df$bugs_data$ns){
-    plot(density(res$sims.list$phi[,i]),
-         main="",
-         xlab=df$group_names[i],
-         xlim=c(0,1))
-    points(mean(res$sims.list$phi[,i]),
-           0,
-           col="red",
-           pch=16)
-}
+## Read in a format data
+df <- sample_data()
+df <- df[df$country == "Canada",]
+ob <- dataformatting(DATA = df,
+                     UM = 2)
+######################################
+## Initialize and then run mcmc in R
+######################################
+result <- initialize_mcmc(ns = ob$inits$ns,
+                          nat = ob$inits$nat,
+                          MCMC = 100,
+                          Nisolates = ob$inits$Nisolates)
+mcmc_ob <- runmcmc(result, ob, MCMC = 100, h = 0, FULL = 0)
+##  Plot the results of this model.
+plot_history(mcmc_ob, 50)
+plot_modelfit(mcmc_ob, 50)
+summary_kilde(mcmc_ob, 50)
+plot_sample_attribution(mcmc_ob, 50)
+plot_population_attribution(mcmc_ob, 50)
+##
+################################################
+## Initialize and then run the model in OpenBugs
+################################################
+##
+## Below, BUGS model cannot handle a large number of MCMC iterations
+## for all parameters.  Therefore, it is advisable to try with smaller
+## number of iterations to start, perhaps 1000.
+##
+## initial_result <- initialize_bugs(ob)
+## result_bugs <- run_bugs(result = initial_result,
+##                         ob = ob,
+##                         MCMC = 1000,
+##                         n.burnin = 100,
+##                         FULL = 0)
+## plot_history(result_bugs, 100)
+## plot_modelfit(result_bugs, 100)
+## summary_kilde(result_bugs, 100)
+## plot_sample_attribution(result_bugs, 100)
+## plot_population_attribution(result_bugs, 100)
+
 ```
