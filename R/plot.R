@@ -720,10 +720,10 @@ plot_modelfit_ST_internal <- function(ns,
     errorST <- matrix(NA, ns-1, length(STu))
     errorSThum <- numeric()
     mqST <- matrix(NA, ns, length(STu))
-    fST <- numeric()
+    fST <- matrix(NA,(ns-1),length(STu))
     for(i in 1:(ns - 1)){
         for(j in 1:length(STu)){
-            fST[j] <- sourcesST[i, j] / sum(sourcesST[i, ])
+            fST[i,j] <- sourcesST[i, j] / sum(sourcesST[i, ])
         }
     }
     for(i in 1:ns){
