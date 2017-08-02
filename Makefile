@@ -42,7 +42,7 @@ check_full: clean
 	cd .. && R CMD check $(PKG_TAR)
 
 vignette: install
-	cd vignettes && Rscript -e "library('rmarkdown'); rmarkdown::render('attribution.Rmd')" && rm .Rhistory
+	cd vignettes && Rscript -e "library('rmarkdown'); rmarkdown::render('attribution.Rmd')" && rm -f .Rhistory
 clean:
 	-rm -f src/*.o
 	-rm -f src/*.so
