@@ -15,13 +15,13 @@ have both been implemented with the MCMC running in R and the MCMC
 running in OpenBUGS.
 
 The package contains a fake sample dataset that is used for testing
-and generating examples. 
+and generating examples.
 
 ## Installation
 
 The package is dependent on the software `OpenBUGS` and the R package
 `R2OpenBUGS`, so you will need to install those before the package
-works. The following sections 
+works. The following sections
 
 ### Windows
 
@@ -47,12 +47,12 @@ actually install the package:
 1. Download the package from
 [here](https://ci.appveyor.com/api/projects/trosendal/kilde/artifacts/kilde_0.1.zip)
 2. Start R
-3. Navigate the the directory that you saved the file to, perhaps your
+3. Navigate the directory that you saved the file to, perhaps your
    Downloads folder like this:
 
     ```r
     setwd("C:/Users/thomas.rosendal/Downloads")
-    ```	
+    ```
 4. Install the package like this:
 
     ```r
@@ -232,4 +232,3 @@ plot_population_attribution(result_bugs, 100)
 * Take more advantage of S3 classes to construct the internal wiring
   of the package
 * When code has been substantially improved add a model for N-alleles
-
